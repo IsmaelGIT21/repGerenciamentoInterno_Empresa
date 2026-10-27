@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locais cadastrados</title>
+</head>
+
+<body>
+    <h1>Locais cadastrados</h1>
+
+    <p th:if="${mensagem}" th:text="${mensagem}"></p>
+
+    <p>
+        <a th:href="@{/locais/novo}">Cadastrar novo local</a>
+    </p>
+    <p>
+        <a th:href="@{/contas}">Ver contas cadastradas</a>
+    </p>
+    <p th:if="${#lists.isEmpty(locais)}">
+        Nenhum local cadastrado.
+    </p>
+
+    <table th:unless="${#lists.isEmpty(locais)}" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Endereço</th>
+                <th>Ativo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="local : ${locais}">
+                <td th:text="${local.id}"></td>
+                <td th:text="${local.nome}"></td>
+                <td th:text="${local.tipo}"></td>
+                <td th:text="${local.endereco}"></td>
+                <td th:text="${local.ativo ? 'Sim' : 'Não'}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <p th:unless="${#lists.isEmpty(locais)}">
+        Total de locais cadastrados: <span th:text="${#lists.size(locais)}"></span>
+    </p>
+</body>
+</html>

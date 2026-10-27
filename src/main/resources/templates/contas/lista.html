@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contas cadastradas</title>
+</head>
+
+<body>
+    <h1>Contas cadastradas</h1>
+
+    <p th:if="${mensagem}" th:text="${mensagem}"></p>
+
+    <p>
+        <a th:href="@{/contas/nova}">Cadastrar nova conta</a>
+    </p>
+
+    <p th:if="${#lists.isEmpty(contas)}">
+        Nenhuma conta cadastrada.
+    </p>
+
+    <table th:unless="${#lists.isEmpty(contas)}" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Vencimento</th>
+                <th>Local</th>
+                <th>Situação</th>
+                <th>Data do pagamento</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="conta : ${contas}">
+                <td th:text="${conta.id}"></td>
+                <td th:text="${conta.descricao}"></td>
+                <td th:text="${conta.valor}"></td>
+                <td th:text="${conta.dataVencimento}"></td>
+                <td th:text="${conta.local.nome}"></td>
+                <td>
+                    <span th:if="${conta.status == 'PAGA'}">Paga</span>
+                    <span
+                        th:if="${conta.status != 'PAGA' and conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}">
+                        Vencida
+                    </span>
+                    <span
+                        th:if="${conta.status != 'PAGA' and !conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}">
+                        Pendente
+                    </span>
+                </td>
+
+                <td
+                    th:text="${conta.dataPagamento != null ? #temporals.format(conta.dataPagamento, 'dd/MM/yyyy') : '-'}">
+                </td>
+
+                <td>
+                    <form th:if="${conta.status != 'PAGA'}" th:action="@{/contas/{id}/pagar(id=${conta.id})}"
+                        method="post">
+                        <button type="submit">Marcar como paga</button>
+                    </form>
+                    <span th:if="${conta.status == 'PAGA'}">Pagamento registrado</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><a th:href="@{/locais}">Ver locais</a></p>
+
+    <p th:unless="${#lists.isEmpty(contas)}">
+        Total de contas cadastradas: <span th:text="${#lists.size(contas)}"></span>
+    </p>
+</body>
+
+</html>

@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/locais", true)
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/login")
                         .permitAll());
 
         return http.build();

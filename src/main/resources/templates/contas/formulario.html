@@ -1,29 +1,37 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar conta</title>
-</head>
-<body>
-    <h1>Cadastrar conta</h1>
 
-    <form th:action="@{/contas}" th:object="${conta}" method="post">
+    <title th:text="${conta.id == null ? 'Nova conta' : 'Editar conta'}">
+        Conta
+    </title>
+</head>
+
+<body>
+
+    <h1 th:text="${conta.id == null ? 'Cadastrar conta' : 'Editar conta'}">
+        Conta
+    </h1>
+
+    <form th:action="${acaoFormulario}" th:object="${conta}" method="post">
+
         <div>
             <label for="descricao">Descrição:</label>
             <input type="text" id="descricao" th:field="*{descricao}" required>
         </div>
 
         <div>
-            <label for="valor">Valor (R$):</label>
-            <input type="number" id="valor" th:field="*{valor}"
-                   min="0.01" step="0.01" required>
+            <label for="valor">Valor:</label>
+            <input type="number" id="valor" th:field="*{valor}" min="0.01" step="0.01" required>
         </div>
 
         <div>
             <label for="dataVencimento">Data de vencimento:</label>
-            <input type="date" id="dataVencimento"
-                   th:field="*{dataVencimento}" required>
+            <input type="date" id="dataVencimento" th:field="*{dataVencimento}" required>
         </div>
 
         <div>
@@ -38,13 +46,53 @@
         </div>
 
         <div>
-            <label for="observacoes">Observações:</label>
-            <textarea id="observacoes" th:field="*{observacoes}"></textarea>
+            <label for="status">Situação:</label>
+            <select id="status" th:field="*{status}" required>
+                <option value="PENDENTE">Pendente</option>
+                <option value="PAGA">Paga</option>
+            </select>
         </div>
 
-        <button type="submit">Salvar conta</button>
+        <div id="campoDataPagamento"
+             th:style="${conta.status == 'PAGA'} ? 'display: block' : 'display: none'">
+
+            <label for="dataPagamento">Data do pagamento:</label>
+            <input type="date" id="dataPagamento" th:field="*{dataPagamento}">
+        </div>
+
+        <div>
+            <label for="observacoes">Observações:</label>
+            <textarea id="observacoes" th:field="*{observacoes}" rows="4"></textarea>
+        </div>
+
+        <button type="submit"
+                th:text="${conta.id == null ? 'Cadastrar conta' : 'Salvar alterações'}">
+            Salvar
+        </button>
+
+        <a th:href="@{/contas}">Cancelar</a>
+
     </form>
 
-    <p><a th:href="@{/contas}">Voltar para a lista</a></p>
+    <script>
+        const statusConta = document.getElementById('status');
+        const campoDataPagamento = document.getElementById('campoDataPagamento');
+        const dataPagamento = document.getElementById('dataPagamento');
+
+        function atualizarCampoDataPagamento() {
+            const contaPaga = statusConta.value === 'PAGA';
+
+            campoDataPagamento.style.display = contaPaga ? 'block' : 'none';
+
+            if (!contaPaga) {
+                dataPagamento.value = '';
+            }
+        }
+
+        statusConta.addEventListener('change', atualizarCampoDataPagamento);
+
+        atualizarCampoDataPagamento();
+    </script>
+
 </body>
 </html>

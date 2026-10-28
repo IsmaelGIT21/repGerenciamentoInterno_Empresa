@@ -33,19 +33,29 @@
                 <th>Ações</th>
             </tr>
         </thead>
+
         <tbody>
             <tr th:each="conta : ${contas}">
                 <td th:text="${conta.id}"></td>
+
                 <td th:text="${conta.descricao}"></td>
-                <td th:text="${conta.valor}"></td>
-                <td th:text="${conta.dataVencimento}"></td>
+
+                <td th:text="${#numbers.formatCurrency(conta.valor)}"></td>
+
+                <td th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}"></td>
+
                 <td th:text="${conta.local.nome}"></td>
+
                 <td>
-                    <span th:if="${conta.status == 'PAGA'}">Paga</span>
+                    <span th:if="${conta.status == 'PAGA'}">
+                        Paga
+                    </span>
+
                     <span
                         th:if="${conta.status != 'PAGA' and conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}">
                         Vencida
                     </span>
+
                     <span
                         th:if="${conta.status != 'PAGA' and !conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}">
                         Pendente
@@ -59,18 +69,35 @@
                 <td>
                     <form th:if="${conta.status != 'PAGA'}" th:action="@{/contas/{id}/pagar(id=${conta.id})}"
                         method="post">
+
                         <button type="submit">Marcar como paga</button>
                     </form>
-                    <span th:if="${conta.status == 'PAGA'}">Pagamento registrado</span>
+
+                    <span th:if="${conta.status == 'PAGA'}">
+                        Pagamento registrado
+                    </span>
+
+                    <a th:href="@{/contas/{id}/editar(id=${conta.id})}">
+                        Editar
+                    </a>
+
+                    <form th:action="@{/contas/{id}/excluir(id=${conta.id})}" method="post"
+                        onsubmit="return confirm('Tem certeza de que deseja excluir esta conta?');">
+
+                        <button type="submit">Excluir</button>
+                    </form>
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <p><a th:href="@{/locais}">Ver locais</a></p>
+    <p>
+        <a th:href="@{/locais}">Ver locais</a>
+    </p>
 
     <p th:unless="${#lists.isEmpty(contas)}">
-        Total de contas cadastradas: <span th:text="${#lists.size(contas)}"></span>
+        Total de contas cadastradas:
+        <span th:text="${#lists.size(contas)}"></span>
     </p>
 </body>
 

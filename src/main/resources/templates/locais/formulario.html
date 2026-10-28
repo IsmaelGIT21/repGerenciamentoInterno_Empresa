@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar local</title>
+    <title th:text="${local.id == null ? 'Cadastrar local' : 'Editar local'}">
+        Local
+    </title>
 </head>
 <body>
-    <h1>Cadastrar local</h1>
+    <h1 th:text="${local.id == null ? 'Cadastrar local' : 'Editar local'}">
+        Local
+    </h1>
 
-    <form th:action="@{/locais}" th:object="${local}" method="post">
+    <form th:action="${acaoFormulario}" th:object="${local}" method="post">
         <div>
             <label for="nome">Nome do local:</label>
             <input type="text" id="nome" th:field="*{nome}" required>
@@ -31,9 +35,12 @@
             <input type="text" id="endereco" th:field="*{endereco}">
         </div>
 
-        <button type="submit">Salvar local</button>
-    </form>
+        <button type="submit"
+                th:text="${local.id == null ? 'Cadastrar local' : 'Salvar alterações'}">
+            Salvar
+        </button>
 
-    <p><a th:href="@{/locais}">Voltar para a lista</a></p>
+        <a th:href="@{/locais}">Cancelar</a>
+    </form>
 </body>
 </html>

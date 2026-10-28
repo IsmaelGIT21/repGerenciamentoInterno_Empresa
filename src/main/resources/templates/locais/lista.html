@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Locais cadastrados</title>
 </head>
-
 <body>
     <h1>Locais cadastrados</h1>
 
@@ -15,9 +13,11 @@
     <p>
         <a th:href="@{/locais/novo}">Cadastrar novo local</a>
     </p>
+
     <p>
         <a th:href="@{/contas}">Ver contas cadastradas</a>
     </p>
+
     <p th:if="${#lists.isEmpty(locais)}">
         Nenhum local cadastrado.
     </p>
@@ -30,25 +30,36 @@
                 <th>Tipo</th>
                 <th>Endereço</th>
                 <th>Ativo</th>
+                <th>Ações</th>
             </tr>
         </thead>
+
         <tbody>
             <tr th:each="local : ${locais}">
                 <td th:text="${local.id}"></td>
+
                 <td>
-                    <a th:href="@{/contas/local/{localId}(localId=${local.id})}" th:text="${local.nome}">
+                    <a th:href="@{/contas/local/{localId}(localId=${local.id})}"
+                       th:text="${local.nome}">
                     </a>
                 </td>
+
                 <td th:text="${local.tipo}"></td>
                 <td th:text="${local.endereco}"></td>
                 <td th:text="${local.ativo ? 'Sim' : 'Não'}"></td>
+
+                <td>
+                    <a th:href="@{/locais/{id}/editar(id=${local.id})}">
+                        Editar
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>
 
     <p th:unless="${#lists.isEmpty(locais)}">
-        Total de locais cadastrados: <span th:text="${#lists.size(locais)}"></span>
+        Total de locais cadastrados:
+        <span th:text="${#lists.size(locais)}"></span>
     </p>
 </body>
-
 </html>

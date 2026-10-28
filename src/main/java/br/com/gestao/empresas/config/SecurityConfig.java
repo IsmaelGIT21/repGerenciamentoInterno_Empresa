@@ -1,3 +1,4 @@
+
 package br.com.gestao.empresas.config;
 
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/login", "/error").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

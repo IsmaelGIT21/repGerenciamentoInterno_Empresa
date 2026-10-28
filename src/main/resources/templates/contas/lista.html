@@ -19,7 +19,6 @@
     <p th:if="${#lists.isEmpty(contas)}">
         Nenhuma conta cadastrada.
     </p>
-
     <table th:unless="${#lists.isEmpty(contas)}" border="1">
         <thead>
             <tr>
@@ -31,7 +30,7 @@
                 <th>Situação</th>
                 <th>Data do pagamento</th>
                 <th>Ações</th>
-            </tr>
+            </tr>ooo
         </thead>
 
         <tbody>
@@ -40,7 +39,7 @@
 
                 <td th:text="${conta.descricao}"></td>
 
-                <td th:text="${#numbers.formatCurrency(conta.valor)}"></td>
+                <td th:text="${#numbers.formatDecimal(conta.valor, 1, 'POINT', 2, 'COMMA')}"></td>
 
                 <td th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}"></td>
 

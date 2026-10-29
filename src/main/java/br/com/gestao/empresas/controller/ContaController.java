@@ -3,9 +3,8 @@ package br.com.gestao.empresas.controller;
 
 import br.com.gestao.empresas.model.Conta;
 import br.com.gestao.empresas.model.Local;
-import br.com.gestao.empresas.repository.ContaRepository;
 import br.com.gestao.empresas.repository.LocalRepository;
-
+import br.com.gestao.empresas.service.ContaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,30 +16,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
-
 @Controller
 @RequestMapping("/contas")
 public class ContaController {
 
-    private final ContaRepository contaRepository;
     private final LocalRepository localRepository;
+    private final ContaService contaService;
 
     public ContaController(
-            ContaRepository contaRepository,
-            LocalRepository localRepository) {
-        this.contaRepository = contaRepository;
+            LocalRepository localRepository,
+            ContaService contaService) {
         this.localRepository = localRepository;
+        this.contaService = contaService;
     }
 
-    // Lista todas as contas
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("contas", contaRepository.findAll());
+        model.addAttribute("contas", contaService.listarTodas());
         return "contas/lista";
     }
 
-    // Lista apenas as contas associadas a um local
     @GetMapping("/local/{localId}")
     public String listarPorLocal(
             @PathVariable Long localId,
@@ -51,7 +46,10 @@ public class ContaController {
                         HttpStatus.NOT_FOUND,
                         "Empresa não encontrada"));
 
-        model.addAttribute("contas", contaRepository.findByLocalId(localId));
+        model.addAttribute(
+                "contas",
+                contaService.listarPorLocal(localId));
+
         model.addAttribute("local", local);
 
         return "contas/lista";
@@ -70,40 +68,12 @@ public class ContaController {
         return "contas/formulario";
     }
 
-    // Salva uma nova conta
     @PostMapping
     public String salvar(
             @ModelAttribute Conta conta,
             RedirectAttributes redirectAttributes) {
 
-        if (conta.getLocal() == null || conta.getLocal().getId() == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Selecione um local para a conta");
-        }
-
-        Long localId = conta.getLocal().getId();
-
-        Local local = localRepository.findById(localId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Local não encontrado"));
-
-        conta.setLocal(local);
-
-        if (conta.getStatus() == null || conta.getStatus().isBlank()) {
-            conta.setStatus("PENDENTE");
-        }
-
-        if ("PAGA".equals(conta.getStatus())) {
-            if (conta.getDataPagamento() == null) {
-                conta.setDataPagamento(LocalDate.now());
-            }
-        } else {
-            conta.setDataPagamento(null);
-        }
-
-        contaRepository.save(conta);
+        contaService.cadastrar(conta);
 
         redirectAttributes.addFlashAttribute(
                 "mensagem",
@@ -112,16 +82,12 @@ public class ContaController {
         return "redirect:/contas";
     }
 
-    // Abre o formulário de edição
     @GetMapping("/{id}/editar")
     public String formularioEdicao(
             @PathVariable Long id,
             Model model) {
 
-        Conta conta = contaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Conta não encontrada"));
+        Conta conta = contaService.buscarPorId(id);
 
         model.addAttribute("conta", conta);
         model.addAttribute("locais", localRepository.findAll());
@@ -133,57 +99,14 @@ public class ContaController {
     }
 
     // Salva as alterações de uma conta
+
     @PostMapping("/{id}/editar")
     public String atualizar(
             @PathVariable Long id,
             @ModelAttribute Conta dadosFormulario,
             RedirectAttributes redirectAttributes) {
 
-        Conta conta = contaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Conta não encontrada"));
-
-        if (dadosFormulario.getLocal() == null
-                || dadosFormulario.getLocal().getId() == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Selecione um local para a conta");
-        }
-
-        Long localId = dadosFormulario.getLocal().getId();
-
-        Local local = localRepository.findById(localId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Local não encontrado"));
-
-        conta.setDescricao(dadosFormulario.getDescricao());
-        conta.setValor(dadosFormulario.getValor());
-        conta.setDataVencimento(dadosFormulario.getDataVencimento());
-        conta.setObservacoes(dadosFormulario.getObservacoes());
-        conta.setLocal(local);
-
-        String status = dadosFormulario.getStatus();
-
-        if (status == null || status.isBlank()) {
-            status = "PENDENTE";
-        }
-
-        conta.setStatus(status);
-
-        if ("PAGA".equals(status)) {
-            if (dadosFormulario.getDataPagamento() != null) {
-                conta.setDataPagamento(
-                        dadosFormulario.getDataPagamento());
-            } else if (conta.getDataPagamento() == null) {
-                conta.setDataPagamento(LocalDate.now());
-            }
-        } else {
-            conta.setDataPagamento(null);
-        }
-
-        contaRepository.save(conta);
+        contaService.atualizar(id, dadosFormulario);
 
         redirectAttributes.addFlashAttribute(
                 "mensagem",
@@ -192,22 +115,12 @@ public class ContaController {
         return "redirect:/contas";
     }
 
-    // Marca uma conta como paga
     @PostMapping("/{id}/pagar")
     public String marcarComoPaga(
             @PathVariable Long id,
             RedirectAttributes redirectAttributes) {
 
-        Conta conta = contaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Conta não encontrada"));
-
-        if (!"PAGA".equals(conta.getStatus())) {
-            conta.setStatus("PAGA");
-            conta.setDataPagamento(LocalDate.now());
-            contaRepository.save(conta);
-        }
+        contaService.marcarComoPaga(id);
 
         redirectAttributes.addFlashAttribute(
                 "mensagem",
@@ -222,12 +135,7 @@ public class ContaController {
             @PathVariable Long id,
             RedirectAttributes redirectAttributes) {
 
-        Conta conta = contaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Conta não encontrada"));
-
-        contaRepository.delete(conta);
+        contaService.excluir(id);
 
         redirectAttributes.addFlashAttribute(
                 "mensagem",

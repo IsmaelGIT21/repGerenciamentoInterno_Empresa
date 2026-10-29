@@ -12,7 +12,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -57,9 +59,11 @@
             height: 6px;
             width: 6px;
         }
+
         .table-scrollbar::-webkit-scrollbar-track {
             background: #f9f7f2;
         }
+
         .table-scrollbar::-webkit-scrollbar-thumb {
             background: #c2a366;
             border-radius: 4px;
@@ -72,9 +76,11 @@
     <div class="max-w-7xl mx-auto space-y-6">
 
         <!-- HEADER BAR WITH BRANDING -->
-        <header class="bg-brand-deep rounded-2xl p-6 sm:p-8 text-white shadow-xl border border-brand-gold/30 flex flex-col md:flex-row justify-between items-center gap-6">
+        <header
+            class="bg-brand-deep rounded-2xl p-6 sm:p-8 text-white shadow-xl border border-brand-gold/30 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-4 text-center md:text-left">
-                <div class="w-12 h-12 rounded-full border border-brand-gold bg-brand-dark/60 flex items-center justify-center shrink-0 shadow-md">
+                <div
+                    class="w-12 h-12 rounded-full border border-brand-gold bg-brand-dark/60 flex items-center justify-center shrink-0 shadow-md">
                     <span class="font-serif text-brand-gold font-bold text-2xl">O</span>
                 </div>
                 <div>
@@ -86,16 +92,18 @@
                     </h1>
                 </div>
             </div>
-
+            <p>
+                <a th:href="@{/}">← Voltar ao início</a>
+            </p>
             <div class="flex flex-wrap items-center justify-center gap-3">
                 <a th:href="@{/locais}"
-                   class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-brand-gold/40 text-brand-gold hover:bg-brand-gold/10 font-semibold text-xs uppercase tracking-wider transition-all duration-200">
+                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-brand-gold/40 text-brand-gold hover:bg-brand-gold/10 font-semibold text-xs uppercase tracking-wider transition-all duration-200">
                     <i class="fa-solid fa-location-dot text-xs"></i>
                     <span>Ver locais</span>
                 </a>
 
                 <a th:href="@{/contas/nova}"
-                   class="inline-flex items-center gap-2 bg-brand-gold hover:bg-brand-goldhover text-brand-dark font-semibold px-5 py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all duration-300 shadow-lg hover:shadow-brand-gold/20 transform hover:-translate-y-0.5">
+                    class="inline-flex items-center gap-2 bg-brand-gold hover:bg-brand-goldhover text-brand-dark font-semibold px-5 py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all duration-300 shadow-lg hover:shadow-brand-gold/20 transform hover:-translate-y-0.5">
                     <i class="fa-solid fa-plus text-xs"></i>
                     <span>Cadastrar nova conta</span>
                 </a>
@@ -103,51 +111,57 @@
         </header>
 
         <!-- FLASH MESSAGE ALERT -->
-        <div th:if="${mensagem}" 
-             class="bg-emerald-50 border border-emerald-200 text-emerald-900 px-5 py-4 rounded-xl shadow-sm flex items-center justify-between gap-3 animate-fade-in" 
-             role="alert">
+        <div th:if="${mensagem}"
+            class="bg-emerald-50 border border-emerald-200 text-emerald-900 px-5 py-4 rounded-xl shadow-sm flex items-center justify-between gap-3 animate-fade-in"
+            role="alert">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0">
+                <div
+                    class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0">
                     <i class="fa-solid fa-check text-sm"></i>
                 </div>
                 <span th:text="${mensagem}" class="text-sm font-medium">
                     Operação realizada com sucesso!
                 </span>
             </div>
-            <button onclick="this.parentElement.remove()" class="text-emerald-700 hover:text-emerald-900 text-sm font-bold px-2">
+            <button onclick="this.parentElement.remove()"
+                class="text-emerald-700 hover:text-emerald-900 text-sm font-bold px-2">
                 &times;
             </button>
         </div>
 
         <!-- CONTENT CARD CONTAINER -->
         <div class="bg-white rounded-2xl shadow-xl border border-brand-border/60 overflow-hidden">
-            
+
             <!-- Table Header Bar -->
-            <div class="px-6 py-5 border-b border-brand-sand flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-brand-cream/30">
+            <div
+                class="px-6 py-5 border-b border-brand-sand flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-brand-cream/30">
                 <div>
                     <h2 class="font-serif text-xl font-bold text-brand-dark">Contas Cadastradas</h2>
                     <p class="text-xs text-brand-muted">Acompanhamento e controle de vencimentos e pagamentos</p>
                 </div>
 
-                <div th:unless="${#lists.isEmpty(contas)}" class="text-xs bg-brand-sand/60 px-3 py-1.5 rounded-lg text-brand-dark font-medium border border-brand-border">
+                <div th:unless="${#lists.isEmpty(contas)}"
+                    class="text-xs bg-brand-sand/60 px-3 py-1.5 rounded-lg text-brand-dark font-medium border border-brand-border">
                     Exibindo <span class="font-bold text-brand-deep" th:text="${#lists.size(contas)}">0</span> registros
                 </div>
             </div>
 
             <!-- EMPTY STATE CARD -->
             <div th:if="${#lists.isEmpty(contas)}" class="p-12 text-center space-y-4">
-                <div class="w-16 h-16 rounded-full bg-brand-cream border border-brand-border mx-auto flex items-center justify-center text-brand-gold text-2xl">
+                <div
+                    class="w-16 h-16 rounded-full bg-brand-cream border border-brand-border mx-auto flex items-center justify-center text-brand-gold text-2xl">
                     <i class="fa-regular fa-folder-open"></i>
                 </div>
                 <div class="space-y-1">
                     <h3 class="font-serif text-xl font-semibold text-brand-dark">Nenhuma conta cadastrada</h3>
                     <p class="text-xs text-brand-muted max-w-sm mx-auto">
-                        Não existem lançamentos financeiros registrados até o momento. Clique no botão abaixo para criar um novo registro.
+                        Não existem lançamentos financeiros registrados até o momento. Clique no botão abaixo para criar
+                        um novo registro.
                     </p>
                 </div>
                 <div class="pt-2">
                     <a th:href="@{/contas/nova}"
-                       class="inline-flex items-center gap-2 bg-brand-deep hover:bg-brand-dark text-brand-gold font-semibold px-6 py-3 rounded-xl text-xs uppercase tracking-widest transition-all shadow-md">
+                        class="inline-flex items-center gap-2 bg-brand-deep hover:bg-brand-dark text-brand-gold font-semibold px-6 py-3 rounded-xl text-xs uppercase tracking-widest transition-all shadow-md">
                         <i class="fa-solid fa-plus text-xs"></i>
                         <span>Cadastrar primeira conta</span>
                     </a>
@@ -158,7 +172,8 @@
             <div th:unless="${#lists.isEmpty(contas)}" class="overflow-x-auto table-scrollbar">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-brand-deep text-white text-[11px] font-semibold uppercase tracking-wider border-b border-brand-gold/20">
+                        <tr
+                            class="bg-brand-deep text-white text-[11px] font-semibold uppercase tracking-wider border-b border-brand-gold/20">
                             <th class="py-4 px-6">ID</th>
                             <th class="py-4 px-6">Descrição</th>
                             <th class="py-4 px-6">Valor</th>
@@ -172,24 +187,27 @@
 
                     <tbody class="divide-y divide-brand-sand/70 text-xs text-brand-text">
                         <tr th:each="conta : ${contas}" class="hover:bg-brand-cream/50 transition-colors">
-                            
+
                             <!-- ID -->
                             <td class="py-4 px-6 font-mono text-brand-muted font-medium" th:text="${conta.id}">
                                 1
                             </td>
 
                             <!-- Descrição -->
-                            <td class="py-4 px-6 font-semibold text-brand-dark max-w-xs truncate" th:text="${conta.descricao}">
+                            <td class="py-4 px-6 font-semibold text-brand-dark max-w-xs truncate"
+                                th:text="${conta.descricao}">
                                 Fornecedor Alimentício
                             </td>
 
                             <!-- Valor Formatado -->
                             <td class="py-4 px-6 font-semibold text-brand-dark whitespace-nowrap">
-                                R$&nbsp;<span th:text="${#numbers.formatDecimal(conta.valor, 1, 'POINT', 2, 'COMMA')}">0,00</span>
+                                R$&nbsp;<span
+                                    th:text="${#numbers.formatDecimal(conta.valor, 1, 'POINT', 2, 'COMMA')}">0,00</span>
                             </td>
 
                             <!-- Vencimento Formatado -->
-                            <td class="py-4 px-6 whitespace-nowrap text-brand-muted" th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}">
+                            <td class="py-4 px-6 whitespace-nowrap text-brand-muted"
+                                th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}">
                                 01/10/2026
                             </td>
 
@@ -201,22 +219,24 @@
                             <!-- Situação Badges -->
                             <td class="py-4 px-6 whitespace-nowrap">
                                 <!-- Badge Paga -->
-                                <span th:if="${conta.status == 'PAGA'}" 
-                                      class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                <span th:if="${conta.status == 'PAGA'}"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
                                     Paga
                                 </span>
 
                                 <!-- Badge Vencida -->
-                                <span th:if="${conta.status != 'PAGA' and conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}" 
-                                      class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800 border border-rose-200">
+                                <span
+                                    th:if="${conta.status != 'PAGA' and conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800 border border-rose-200">
                                     <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
                                     Vencida
                                 </span>
 
                                 <!-- Badge Pendente -->
-                                <span th:if="${conta.status != 'PAGA' and !conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}" 
-                                      class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                                <span
+                                    th:if="${conta.status != 'PAGA' and !conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 border border-amber-200">
                                     <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
                                     Pendente
                                 </span>
@@ -231,42 +251,37 @@
                             <!-- Row Actions -->
                             <td class="py-4 px-6">
                                 <div class="flex items-center justify-center gap-2 whitespace-nowrap">
-                                    
+
                                     <!-- Form Marcar como paga -->
-                                    <form th:if="${conta.status != 'PAGA'}" 
-                                          th:action="@{/contas/{id}/pagar(id=${conta.id})}" 
-                                          method="post" class="inline">
-                                        <button type="submit" 
-                                                title="Marcar como paga"
-                                                class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-medium text-[11px] transition-colors flex items-center gap-1 shadow-sm">
+                                    <form th:if="${conta.status != 'PAGA'}"
+                                        th:action="@{/contas/{id}/pagar(id=${conta.id})}" method="post" class="inline">
+                                        <button type="submit" title="Marcar como paga"
+                                            class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-medium text-[11px] transition-colors flex items-center gap-1 shadow-sm">
                                             <i class="fa-solid fa-check text-[10px]"></i>
                                             <span>Pagar</span>
                                         </button>
                                     </form>
 
                                     <!-- Pagamento Registrado Label -->
-                                    <span th:if="${conta.status == 'PAGA'}" 
-                                          class="text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                                    <span th:if="${conta.status == 'PAGA'}"
+                                        class="text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
                                         <i class="fa-solid fa-circle-check text-[10px]"></i>
                                         <span>Quitada</span>
                                     </span>
 
                                     <!-- Botão Editar -->
-                                    <a th:href="@{/contas/{id}/editar(id=${conta.id})}" 
-                                       title="Editar conta"
-                                       class="px-3 py-1.5 bg-brand-cream hover:bg-brand-sand text-brand-dark border border-brand-border rounded-lg font-medium text-[11px] transition-colors flex items-center gap-1">
+                                    <a th:href="@{/contas/{id}/editar(id=${conta.id})}" title="Editar conta"
+                                        class="px-3 py-1.5 bg-brand-cream hover:bg-brand-sand text-brand-dark border border-brand-border rounded-lg font-medium text-[11px] transition-colors flex items-center gap-1">
                                         <i class="fa-solid fa-pen-to-square text-[10px] text-brand-gold"></i>
                                         <span>Editar</span>
                                     </a>
 
                                     <!-- Form Excluir -->
-                                    <form th:action="@{/contas/{id}/excluir(id=${conta.id})}" 
-                                          method="post" 
-                                          onsubmit="return confirm('Tem certeza de que deseja excluir esta conta?');" 
-                                          class="inline">
-                                        <button type="submit" 
-                                                title="Excluir conta"
-                                                class="px-3 py-1.5 bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 rounded-lg font-medium text-[11px] transition-colors flex items-center gap-1">
+                                    <form th:action="@{/contas/{id}/excluir(id=${conta.id})}" method="post"
+                                        onsubmit="return confirm('Tem certeza de que deseja excluir esta conta?');"
+                                        class="inline">
+                                        <button type="submit" title="Excluir conta"
+                                            class="px-3 py-1.5 bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 rounded-lg font-medium text-[11px] transition-colors flex items-center gap-1">
                                             <i class="fa-solid fa-trash-can text-[10px]"></i>
                                             <span>Excluir</span>
                                         </button>
@@ -281,16 +296,19 @@
             </div>
 
             <!-- FOOTER COUNTER BAR -->
-            <div th:unless="${#lists.isEmpty(contas)}" 
-                 class="px-6 py-4 bg-brand-cream/50 border-t border-brand-sand flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-brand-muted">
+            <div th:unless="${#lists.isEmpty(contas)}"
+                class="px-6 py-4 bg-brand-cream/50 border-t border-brand-sand flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-brand-muted">
                 <div>
                     <span>Total de contas cadastradas: </span>
                     <strong class="text-brand-dark font-semibold" th:text="${#lists.size(contas)}">0</strong>
                 </div>
                 <div class="flex items-center gap-4 text-[11px]">
-                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-600"></span> Paga</span>
-                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-600"></span> Pendente</span>
-                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-600"></span> Vencida</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                        Paga</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-600"></span>
+                        Pendente</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-600"></span>
+                        Vencida</span>
                 </div>
             </div>
 
@@ -304,4 +322,5 @@
     </div>
 
 </body>
+
 </html>

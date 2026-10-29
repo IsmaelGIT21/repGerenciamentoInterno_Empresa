@@ -13,7 +13,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -65,14 +67,18 @@
 <body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
 
     <div class="max-w-md w-full space-y-6">
-        
+
         <!-- Header / Logo Accent -->
         <div class="text-center">
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-full border border-brand-gold bg-brand-deep mb-3 shadow-md">
+            <div
+                class="inline-flex items-center justify-center w-14 h-14 rounded-full border border-brand-gold bg-brand-deep mb-3 shadow-md">
                 <span class="font-serif text-brand-gold font-bold text-3xl">O</span>
             </div>
             <p class="text-[10px] tracking-[0.25em] text-brand-gold uppercase font-bold mb-1">
                 Olinda Hotel & Eventos
+            </p>
+            <p>
+                <a th:href="@{/}">← Voltar ao início</a>
             </p>
             <h1 class="font-serif text-3xl sm:text-4xl text-brand-dark font-semibold tracking-tight">
                 Cadastrar usuário
@@ -81,10 +87,11 @@
         </div>
 
         <!-- FLASH ERROR ALERT MESSAGE -->
-        <div th:if="${erro}" 
-             class="bg-rose-50 border border-rose-200 text-rose-800 px-5 py-4 rounded-xl shadow-sm flex items-start gap-3" 
-             role="alert">
-            <div class="w-6 h-6 rounded-full bg-rose-100 flex items-center justify-center text-rose-700 shrink-0 mt-0.5">
+        <div th:if="${erro}"
+            class="bg-rose-50 border border-rose-200 text-rose-800 px-5 py-4 rounded-xl shadow-sm flex items-start gap-3"
+            role="alert">
+            <div
+                class="w-6 h-6 rounded-full bg-rose-100 flex items-center justify-center text-rose-700 shrink-0 mt-0.5">
                 <i class="fa-solid fa-triangle-exclamation text-xs"></i>
             </div>
             <div class="text-xs font-medium leading-relaxed">
@@ -100,41 +107,35 @@
 
                     <!-- Username -->
                     <div>
-                        <label for="username" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
+                        <label for="username"
+                            class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
                             Nome de usuário <span class="text-brand-gold">*</span>
                         </label>
                         <div class="relative rounded-xl">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-gold text-sm">
+                            <span
+                                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-gold text-sm">
                                 <i class="fa-regular fa-user"></i>
                             </span>
-                            <input type="text" 
-                                   id="username" 
-                                   th:field="*{username}" 
-                                   maxlength="100" 
-                                   autocomplete="username" 
-                                   required
-                                   placeholder="Digite o nome de usuário"
-                                   class="olinda-input w-full pl-10 bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200">
+                            <input type="text" id="username" th:field="*{username}" maxlength="100"
+                                autocomplete="username" required placeholder="Digite o nome de usuário"
+                                class="olinda-input w-full pl-10 bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200">
                         </div>
                     </div>
 
                     <!-- Password -->
                     <div>
-                        <label for="password" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
+                        <label for="password"
+                            class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
                             Senha <span class="text-brand-gold">*</span>
                         </label>
                         <div class="relative rounded-xl">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-gold text-sm">
+                            <span
+                                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-gold text-sm">
                                 <i class="fa-solid fa-lock text-xs"></i>
                             </span>
-                            <input type="password" 
-                                   id="password" 
-                                   th:field="*{password}" 
-                                   minlength="8" 
-                                   autocomplete="new-password" 
-                                   required
-                                   placeholder="Mínimo 8 caracteres"
-                                   class="olinda-input w-full pl-10 bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200">
+                            <input type="password" id="password" th:field="*{password}" minlength="8"
+                                autocomplete="new-password" required placeholder="Mínimo 8 caracteres"
+                                class="olinda-input w-full pl-10 bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200">
                         </div>
                         <p class="text-[11px] text-brand-muted mt-1.5 flex items-center gap-1">
                             <i class="fa-solid fa-circle-info text-[10px] text-brand-gold"></i>
@@ -145,7 +146,7 @@
                     <!-- Submit Button -->
                     <div class="pt-2">
                         <button type="submit"
-                                class="w-full bg-brand-deep hover:bg-brand-dark text-brand-gold font-semibold py-3.5 px-6 rounded-xl text-xs uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg border border-brand-gold/30 flex items-center justify-center gap-2">
+                            class="w-full bg-brand-deep hover:bg-brand-dark text-brand-gold font-semibold py-3.5 px-6 rounded-xl text-xs uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg border border-brand-gold/30 flex items-center justify-center gap-2">
                             <i class="fa-solid fa-user-plus text-xs"></i>
                             <span>Cadastrar</span>
                         </button>
@@ -158,8 +159,8 @@
 
         <!-- Back Link Navigation -->
         <div class="text-center">
-            <a th:href="@{/locais}" 
-               class="inline-flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-brand-muted hover:text-brand-deep transition-colors py-2 px-4 rounded-lg hover:bg-brand-sand/50">
+            <a th:href="@{/locais}"
+                class="inline-flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-brand-muted hover:text-brand-deep transition-colors py-2 px-4 rounded-lg hover:bg-brand-sand/50">
                 <i class="fa-solid fa-arrow-left text-xs text-brand-gold"></i>
                 <span>Voltar para os locais</span>
             </a>
@@ -173,4 +174,5 @@
     </div>
 
 </body>
+
 </html>

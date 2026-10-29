@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/error").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/locais", true)
+                        .defaultSuccessUrl("/", true)
                         .permitAll())
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login")

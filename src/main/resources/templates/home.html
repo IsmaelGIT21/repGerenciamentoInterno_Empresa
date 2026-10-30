@@ -165,6 +165,7 @@
         /* Main Content */
         main {
             flex: 1;
+            min-width: 0;
             display: flex;
             flex-direction: column;
             gap: 2rem;
@@ -206,7 +207,8 @@
         }
 
         /* Quick Access Section */
-        .quick-access-section h2 {
+        .quick-access-section h2,
+        .upcoming-section h2 {
             font-family: var(--font-heading);
             font-size: 1.75rem;
             color: var(--color-primary);
@@ -234,7 +236,7 @@
             font-weight: 600;
             font-size: 1.05rem;
             box-shadow: var(--shadow-sm);
-            transition: all 0.25 ease;
+            transition: all 0.25s ease;
             position: relative;
         }
 
@@ -260,7 +262,7 @@
         /* Indicadores do dashboard */
         .dashboard-stats {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 1.25rem;
         }
 
@@ -294,13 +296,62 @@
             margin-top: 0.5rem;
         }
 
-        @media (max-width: 600px) {
-            .dashboard-stats {
-                grid-template-columns: 1fr;
-            }
+        /* Próximos vencimentos */
+        .upcoming-card {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            overflow-x: auto;
+        }
+
+        .upcoming-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 550px;
+        }
+
+        .upcoming-table th {
+            text-align: left;
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.9rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .upcoming-table td {
+            padding: 0.9rem;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.9rem;
+        }
+
+        .upcoming-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .upcoming-table tbody tr:hover {
+            background-color: var(--color-bg);
+        }
+
+        .empty-message {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            padding: 0.5rem;
+        }
+
+        .overdue-value {
+            color: var(--color-danger);
         }
 
         /* Responsividade */
+        @media (max-width: 1100px) {
+            .dashboard-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 900px) {
             .app-container {
                 flex-direction: column;
@@ -322,6 +373,24 @@
                 padding-left: 0;
             }
         }
+
+        @media (max-width: 600px) {
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-card {
+                padding: 1.5rem;
+            }
+
+            .welcome-card h2 {
+                font-size: 1.8rem;
+            }
+
+            .header-brand {
+                flex-wrap: wrap;
+            }
+        }
     </style>
 </head>
 
@@ -338,6 +407,7 @@
     </header>
 
     <div class="app-container">
+
         <nav aria-label="Menu principal">
             <h2>Menu principal</h2>
 
@@ -364,56 +434,176 @@
         </nav>
 
         <main>
+
+            <!-- Apresentação -->
             <section class="welcome-card">
                 <h2>Bem-vindo ao sistema</h2>
+
                 <p>
                     Utilize este painel administrativo para gerenciar com precisão os locais
-                    cadastrados e o fluxo de contas da sua empresa.
+                    cadastrados e as contas da sua empresa, acompanhando pagamentos e vencimentos.
                 </p>
             </section>
+
+            <!-- Indicadores -->
             <section class="dashboard-stats" aria-label="Resumo financeiro">
+
                 <article class="stat-card">
                     <h3>Locais cadastrados</h3>
                     <p class="stat-value" th:text="${totalLocais}">0</p>
-                    <p class="stat-description">Total de locais registrados no sistema</p>
+                    <p class="stat-description">
+                        Total de locais registrados no sistema
+                    </p>
                 </article>
 
                 <article class="stat-card">
                     <h3>Contas pendentes</h3>
                     <p class="stat-value" th:text="${contasPendentes}">0</p>
-                    <p class="stat-description">Contas aguardando pagamento</p>
+                    <p class="stat-description">
+                        Contas aguardando pagamento
+                    </p>
                 </article>
 
                 <article class="stat-card">
                     <h3>Contas pagas</h3>
                     <p class="stat-value" th:text="${contasPagas}">0</p>
-                    <p class="stat-description">Contas com pagamento registrado</p>
+                    <p class="stat-description">
+                        Contas com pagamento registrado
+                    </p>
                 </article>
 
                 <article class="stat-card">
                     <h3>Valor pendente</h3>
-                    <p class="stat-value" th:text="${#numbers.formatCurrency(valorTotalPendente)}">R$ 0,00</p>
-                    <p class="stat-description">Soma dos valores ainda pendentes</p>
+                    <p class="stat-value"
+                       th:text="${#numbers.formatCurrency(valorTotalPendente)}">
+                        R$ 0,00
+                    </p>
+                    <p class="stat-description">
+                        Soma dos valores ainda pendentes
+                    </p>
                 </article>
+
+                <article class="stat-card">
+                    <h3>Contas vencidas</h3>
+                    <p class="stat-value overdue-value"
+                       th:text="${contasVencidas}">
+                        0
+                    </p>
+                    <p class="stat-description">
+                        Contas pendentes com vencimento ultrapassado
+                    </p>
+                </article>
+
+                <article class="stat-card">
+                    <h3>Despesas do mês</h3>
+                    <p class="stat-value"
+                       th:text="${#numbers.formatCurrency(despesasDoMes)}">
+                        R$ 0,00
+                    </p>
+                    <p class="stat-description">
+                        Contas pendentes com vencimento neste mês
+                    </p>
+                </article>
+
+                <article class="stat-card">
+                    <h3>Pagamentos do mês</h3>
+                    <p class="stat-value"
+                       th:text="${#numbers.formatCurrency(pagamentosDoMes)}">
+                        R$ 0,00
+                    </p>
+                    <p class="stat-description">
+                        Valores pagos neste mês
+                    </p>
+                </article>
+
+                <article class="stat-card">
+                    <h3>Próximos vencimentos</h3>
+                    <p class="stat-value"
+                       th:text="${#lists.size(proximosVencimentos)}">
+                        0
+                    </p>
+                    <p class="stat-description">
+                        Contas com vencimento nos próximos sete dias
+                    </p>
+                </article>
+
             </section>
+
+            <!-- Tabela de próximos vencimentos -->
+            <section class="upcoming-section">
+                <h2>Próximos vencimentos</h2>
+
+                <div class="upcoming-card">
+
+                    <p class="empty-message"
+                       th:if="${#lists.isEmpty(proximosVencimentos)}">
+                        Nenhuma conta pendente com vencimento nos próximos sete dias.
+                    </p>
+
+                    <table class="upcoming-table"
+                           th:unless="${#lists.isEmpty(proximosVencimentos)}">
+
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Local</th>
+                                <th>Vencimento</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr th:each="conta : ${proximosVencimentos}">
+
+                                <td th:text="${conta.descricao}"></td>
+
+                                <td th:text="${conta.local.nome}"></td>
+
+                                <td th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}"></td>
+
+                                <td th:text="${#numbers.formatCurrency(conta.valor)}"></td>
+
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </section>
+
+            <!-- Acesso rápido -->
             <section class="quick-access-section">
                 <h2>Acesso rápido</h2>
 
                 <ul class="quick-access-grid">
+
                     <li>
-                        <a th:href="@{/locais}">Consultar locais cadastrados</a>
+                        <a th:href="@{/locais}">
+                            Consultar locais cadastrados
+                        </a>
                     </li>
+
                     <li>
-                        <a th:href="@{/contas}">Consultar contas</a>
+                        <a th:href="@{/contas}">
+                            Consultar contas
+                        </a>
                     </li>
+
                     <li>
-                        <a th:href="@{/locais/novo}">Adicionar um local</a>
+                        <a th:href="@{/locais/novo}">
+                            Adicionar um local
+                        </a>
                     </li>
+
                     <li>
-                        <a th:href="@{/contas/nova}">Registrar uma conta</a>
+                        <a th:href="@{/contas/nova}">
+                            Registrar uma conta
+                        </a>
                     </li>
+
                 </ul>
             </section>
+
         </main>
     </div>
 </body>

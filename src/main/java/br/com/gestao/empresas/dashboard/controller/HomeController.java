@@ -1,7 +1,6 @@
 package br.com.gestao.empresas.dashboard.controller;
 
-import br.com.gestao.empresas.conta.repository.ContaRepository;
-import br.com.gestao.empresas.local.repository.LocalRepository;
+import br.com.gestao.empresas.dashboard.service.DashboardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,33 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    private final ContaRepository contaRepository;
-    private final LocalRepository localRepository;
+    private final DashboardService dashboardService;
 
-    public HomeController(
-            ContaRepository contaRepository,
-            LocalRepository localRepository) {
-        this.contaRepository = contaRepository;
-        this.localRepository = localRepository;
+    public HomeController(DashboardService dashboardService) {
+        this.dashboardService = dashboardService;
     }
 
     @GetMapping("/")
     public String paginaInicial(Model model) {
-        model.addAttribute(
-                "totalLocais",
-                localRepository.count());
 
-        model.addAttribute(
-                "contasPendentes",
-                contaRepository.countByStatus("PENDENTE"));
-
-        model.addAttribute(
-                "contasPagas",
-                contaRepository.countByStatus("PAGA"));
-
-        model.addAttribute(
-                "valorTotalPendente",
-                contaRepository.somarValoresPorStatus("PENDENTE"));
+        model.addAllAttributes(
+                dashboardService.obterIndicadores());
 
         return "home";
     }

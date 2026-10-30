@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Acesso | Gestão de Empresas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --color-bg: #f9f7f2;
+            --color-surface: #ffffff;
+            --color-primary: #1e2d24;
+            --color-primary-light: #2c4034;
+            --color-accent: #c2a366;
+            --color-text: #2c322e;
+            --color-text-muted: #6e7770;
+            --color-border: #e2ded4;
+            --color-danger: #a84343;
+            --font-heading: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--color-bg);
+            font-family: var(--font-body);
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 620px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: var(--color-surface);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(30, 45, 36, 0.12);
+        }
+
+        .brand-section {
+            background: var(--color-primary);
+            color: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-section::before {
+            content: "";
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border: 1px solid rgba(194, 163, 102, 0.2);
+            border-radius: 50%;
+            right: -160px;
+            bottom: -120px;
+        }
+
+        .brand-section::after {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border: 1px solid rgba(194, 163, 102, 0.15);
+            border-radius: 50%;
+            right: -100px;
+            bottom: -60px;
+        }
+
+        .brand-name {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-subtitle {
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-content .eyebrow {
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-content h1 {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 500;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-content p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            line-height: 1.9;
+            max-width: 350px;
+        }
+
+        .brand-footer {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+        }
+
+        .form-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-header .eyebrow {
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .form-header h2 {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: var(--color-primary);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.95rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 7px;
+            background: #fff;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--color-text);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(194, 163, 102, 0.12);
+        }
+
+        .password-input {
+            padding-right: 4.5rem !important;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            color: var(--color-text-muted);
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .toggle-password:hover {
+            color: var(--color-primary);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-login:hover {
+            background: var(--color-primary-light);
+            transform: translateY(-2px);
+        }
+
+        .message {
+            padding: 0.9rem 1rem;
+            border-radius: 7px;
+            font-size: 0.82rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .error-message {
+            color: var(--color-danger);
+            background: #fdf2f2;
+            border: 1px solid #f1d6d6;
+        }
+
+        .success-message {
+            color: #286344;
+            background: #edf7f0;
+            border: 1px solid #d2e9d8;
+        }
+
+        .form-footer {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+            color: var(--color-text-muted);
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 750px) {
+            body {
+                padding: 1rem;
+            }
+
+            .login-container {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+            }
+
+            .brand-section {
+                padding: 2rem;
+                min-height: 240px;
+            }
+
+            .brand-content {
+                margin-top: 2rem;
+            }
+
+            .brand-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .brand-content p {
+                font-size: 0.85rem;
+            }
+
+            .brand-footer {
+                margin-top: 2rem;
+            }
+
+            .form-section {
+                padding: 2.5rem 2rem;
+            }
+
+            .form-header h2 {
+                font-size: 2.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <section class="brand-section">
+
+            <div>
+                <h2 class="brand-name">Gestão de Empresas</h2>
+                <p class="brand-subtitle">Olinda Hotel & Eventos</p>
+            </div>
+
+            <div class="brand-content">
+                <p class="eyebrow">Gestão e organização</p>
+
+                <h1>Controle e eficiência para sua empresa.</h1>
+
+                <p>
+                    Uma plataforma centralizada para administrar locais,
+                    acompanhar despesas e organizar informações financeiras.
+                </p>
+            </div>
+
+            <div class="brand-footer">
+                Sistema administrativo interno
+            </div>
+
+        </section>
+
+        <section class="form-section">
+
+            <div class="form-header">
+                <p class="eyebrow">Área restrita</p>
+                <h2>Bem-vindo</h2>
+                <p>Informe suas credenciais para acessar o sistema.</p>
+            </div>
+
+            <div th:if="${param.error}" class="message error-message">
+                Usuário ou senha incorretos. Verifique suas credenciais.
+            </div>
+
+            <div th:if="${param.logout}" class="message success-message">
+                Você saiu do sistema com segurança.
+            </div>
+
+            <form th:action="@{/login}" method="post">
+
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+
+                    <input type="text" id="username" name="username" placeholder="Digite seu usuário"
+                        autocomplete="username" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" class="password-input"
+                            placeholder="Digite sua senha" autocomplete="current-password" required>
+
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            Mostrar
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    Entrar no sistema
+                </button>
+
+            </form>
+
+            <div class="form-footer">
+                Olinda Hotel & Eventos · Gestão de Empresas
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const passwordInput = document.getElementById("password");
+        const toggleButton = document.getElementById("togglePassword");
+
+        toggleButton.addEventListener("click", function () {
+
+            const mostrarSenha = passwordInput.type === "password";
+
+            passwordInput.type = mostrarSenha ? "text" : "password";
+
+            toggleButton.textContent = mostrarSenha ? "Ocultar" : "Mostrar";
+        });
+    </script>
+
+</body>
+
+</html>

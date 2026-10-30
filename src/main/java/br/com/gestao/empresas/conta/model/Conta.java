@@ -10,6 +10,8 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import br.com.gestao.empresas.local.model.Local;
+import br.com.gestao.empresas.fornecedor.model.Fornecedor;
+
 @Entity
 @Table(name = "contas")
 public class Conta {
@@ -17,6 +19,10 @@ public class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "fornecedor_id")
+    private Fornecedor fornecedor;
 
     private String descricao;
 
@@ -100,4 +106,13 @@ public class Conta {
     public void setLocal(Local local) {
         this.local = local;
     }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+    
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
 }

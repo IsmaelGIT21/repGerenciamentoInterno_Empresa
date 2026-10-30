@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import br.com.gestao.empresas.local.model.Local;
 import br.com.gestao.empresas.local.repository.LocalRepository;
-
+import br.com.gestao.empresas.fornecedor.model.Fornecedor;
+import br.com.gestao.empresas.fornecedor.repository.FornecedorRepository;
 import java.time.LocalDate;
 
 @Service
@@ -16,12 +17,15 @@ public class ContaService {
 
     private final ContaRepository contaRepository;
     private final LocalRepository localRepository;
+    private final FornecedorRepository fornecedorRepository;
 
     public ContaService(
             ContaRepository contaRepository,
-            LocalRepository localRepository) {
+            LocalRepository localRepository,
+            FornecedorRepository fornecedorRepository) {
         this.contaRepository = contaRepository;
         this.localRepository = localRepository;
+        this.fornecedorRepository = fornecedorRepository;
     }
 
     public List<Conta> listarTodas() {
@@ -52,6 +56,18 @@ public class ContaService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Local não encontrado"));
+
+        if (conta.getFornecedor() != null
+                && conta.getFornecedor().getId() != null) {
+
+            Fornecedor fornecedor = fornecedorRepository
+                    .findById(conta.getFornecedor().getId())
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,
+                            "Fornecedor não encontrado"));
+
+            conta.setFornecedor(fornecedor);
+        }
 
         conta.setLocal(local);
 

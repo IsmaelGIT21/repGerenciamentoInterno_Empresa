@@ -1,0 +1,41 @@
+package br.com.gestao.empresas.fornecedor.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "fornecedores")
+public class Fornecedor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true, length = 150)
+    private String nome;
+
+    @Column(nullable = false)
+    private boolean ativo = true;
+
+    public Fornecedor() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+}

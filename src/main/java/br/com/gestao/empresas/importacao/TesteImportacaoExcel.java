@@ -6,7 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartFile;
-
+import br.com.gestao.empresas.importacao.service.ContaImportacaoService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -16,7 +16,9 @@ import java.util.List;
 public class TesteImportacaoExcel {
 
     @Bean
-    public CommandLineRunner testarParser(ContaExcelParserService parser) {
+    public CommandLineRunner testarParser(
+            ContaExcelParserService parser,
+            ContaImportacaoService importacaoService) {
 
         return args -> {
             File arquivo = new File(
@@ -68,8 +70,7 @@ public class TesteImportacaoExcel {
                 }
             };
 
-            List<ContaImportacaoDTO> contas =
-                    parser.interpretar(multipartFile);
+            List<ContaImportacaoDTO> contas = parser.interpretar(multipartFile);
 
             System.out.println("\n========== RESULTADO DA LEITURA ==========");
 
@@ -84,6 +85,34 @@ public class TesteImportacaoExcel {
             }
 
             System.out.println("\nTotal de registros: " + contas.size());
+            System.out.println("\n========== TESTE DE IMPORTAÇÃO ==========");
+
+            List<ContaImportacaoDTO> rejeitadas = importacaoService.importar(contas);
+
+            int totalImportado = contas.size() - rejeitadas.size();
+
+            System.out.println("\n========== RESULTADO DA IMPORTAÇÃO ==========");
+
+            System.out.println("Registros encontrados: " + contas.size());
+            System.out.println("Importados com sucesso: " + totalImportado);
+            System.out.println("Ignorados: " + rejeitadas.size());
+
+            if (!rejeitadas.isEmpty()) {
+
+                System.out.println("\n========== REGISTROS NÃO IMPORTADOS ==========");
+
+                for (ContaImportacaoDTO conta : rejeitadas) {
+
+                    System.out.println("\nLinha Excel: " + conta.getLinhaExcel());
+                    System.out.println("Fornecedor: " + conta.getFornecedor());
+                    System.out.println("Descrição: " + conta.getDescricao());
+                    System.out.println("Motivos:");
+
+                    for (String erro : conta.getErros()) {
+                        System.out.println("- " + erro);
+                    }
+                }
+            }
         };
     }
 }

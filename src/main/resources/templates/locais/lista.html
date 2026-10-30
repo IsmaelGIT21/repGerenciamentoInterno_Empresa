@@ -4,258 +4,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Locais cadastrados | Olinda Hotel & Eventos</title>
+    <title>Locais Cadastrados | Olinda Hotel & Eventos</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Custom Tailwind Configuration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#141D18',     /* Deep Forest / Slate Dark */
-                            deep: '#1e2d24',     /* Olinda Slate Green */
-                            gold: '#c2a366',     /* Champagne Gold Accent */
-                            goldhover: '#a8894d',
-                            cream: '#f9f7f2',    /* Warm Sand Background */
-                            card: '#ffffff',
-                            sand: '#ede8e0',
-                            text: '#222b26',
-                            muted: '#69746e',
-                            border: '#e2dbc8'
-                        }
-                    },
-                    fontFamily: {
-                        serif: ['"Cormorant Garamond"', 'serif'],
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #f9f7f2;
-            color: #222b26;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        /* Custom scrollbar for table container */
-        .table-scrollbar::-webkit-scrollbar {
-            height: 6px;
-            width: 6px;
-        }
-
-        .table-scrollbar::-webkit-scrollbar-track {
-            background: #f9f7f2;
-        }
-
-        .table-scrollbar::-webkit-scrollbar-thumb {
-            background: #c2a366;
-            border-radius: 4px;
-        }
-    </style>
 </head>
 
-<body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+<body class="bg-[#f7f5ef] text-gray-800" style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
-    <div class="max-w-7xl mx-auto space-y-6">
+    <div class="max-w-6xl mx-auto px-6 py-10">
 
-        <!-- HEADER BAR WITH BRANDING & NAVIGATION -->
-        <header
-            class="bg-brand-deep rounded-2xl p-6 sm:p-8 text-white shadow-xl border border-brand-gold/30 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-4 text-center md:text-left">
-                <div
-                    class="w-12 h-12 rounded-full border border-brand-gold bg-brand-dark/60 flex items-center justify-center shrink-0 shadow-md">
-                    <span class="font-serif text-brand-gold font-bold text-2xl">O</span>
-                </div>
-                <div>
-                    <span class="text-[10px] tracking-[0.25em] text-brand-gold uppercase font-bold block">
-                        Olinda Hotel & Eventos
-                    </span>
-                    <h1 class="font-serif text-2xl sm:text-3xl font-semibold tracking-tight text-white">
-                        Locais Cadastrados
-                    </h1>
-                </div>
+        <!-- Cabeçalho da Página -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
+                    Olinda Hotel & Eventos
+                </p>
+                <h1 class="text-4xl text-[#244638] mt-1" style="font-family: 'Cormorant Garamond', serif;">
+                    Locais Cadastrados
+                </h1>
+                <p class="text-gray-500 mt-1">
+                    Gestão das unidades, espaços e ambientes físicos do sistema.
+                </p>
             </div>
 
-            <div class="flex flex-wrap items-center justify-center gap-3">
-                <!-- Ver Contas Cadastradas -->
-                <p>
-                    <a th:href="@{/}">← Voltar ao início</a>
-                </p>
-                <a th:href="@{/contas}"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-brand-gold/40 text-brand-gold hover:bg-brand-gold/10 font-semibold text-xs uppercase tracking-wider transition-all duration-200">
-                    <i class="fa-solid fa-receipt text-xs"></i>
-                    <span>Ver contas cadastradas</span>
+            <div class="flex flex-wrap items-center gap-3">
+                <a th:href="@{/}"
+                    class="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium transition-colors text-sm shadow-sm">
+                    ← Voltar ao Dashboard
                 </a>
-                <!-- Cadastrar Novo Local -->
-                <a th:href="@{/locais/novo}"
-                    class="inline-flex items-center gap-2 bg-brand-gold hover:bg-brand-goldhover text-brand-dark font-semibold px-5 py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all duration-300 shadow-lg hover:shadow-brand-gold/20 transform hover:-translate-y-0.5">
-                    <i class="fa-solid fa-plus text-xs"></i>
-                    <span>Cadastrar novo local</span>
+                <a th:href="@{/contas}"
+                    class="px-5 py-3 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium transition-colors text-sm">
+                    Contas
                 </a>
 
-                <!-- Logout Form -->
+                <a th:href="@{/locais/novo}"
+                    class="inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold transition-colors shadow-sm text-sm">
+                    + Novo Local
+                </a>
+
+                <!-- Formulário de Logout -->
                 <form th:action="@{/logout}" method="post" class="inline">
                     <button type="submit"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-rose-900/40 text-gray-200 hover:text-white border border-white/20 font-semibold text-xs uppercase tracking-wider transition-all duration-200">
-                        <i class="fa-solid fa-right-from-bracket text-xs"></i>
-                        <span>Sair</span>
+                        class="px-4 py-3 rounded-lg border border-red-200 text-red-600 bg-white hover:bg-red-50 font-medium transition-colors text-sm">
+                        Sair
                     </button>
                 </form>
             </div>
-        </header>
-
-        <!-- FLASH MESSAGE ALERT -->
-        <div th:if="${mensagem}"
-            class="bg-emerald-50 border border-emerald-200 text-emerald-900 px-5 py-4 rounded-xl shadow-sm flex items-center justify-between gap-3 animate-fade-in"
-            role="alert">
-            <div class="flex items-center gap-3">
-                <div
-                    class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0">
-                    <i class="fa-solid fa-check text-sm"></i>
-                </div>
-                <span th:text="${mensagem}" class="text-sm font-medium">
-                    Operação realizada com sucesso!
-                </span>
-            </div>
-            <button onclick="this.parentElement.remove()"
-                class="text-emerald-700 hover:text-emerald-900 text-sm font-bold px-2">
-                &times;
-            </button>
         </div>
 
-        <!-- CONTENT CARD CONTAINER -->
-        <div class="bg-white rounded-2xl shadow-xl border border-brand-border/60 overflow-hidden">
+        <!-- Mensagens de Sucesso / Alerta -->
+        <div th:if="${mensagem}"
+            class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-lg mb-6 flex items-center justify-between">
+            <span th:text="${mensagem}">Operação realizada com sucesso!</span>
+            <button onclick="this.parentElement.remove()" class="text-emerald-800 font-bold ml-4">&times;</button>
+        </div>
 
-            <!-- Table Header Bar -->
+        <!-- Container da Tabela -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+
+            <!-- Cabeçalho da Tabela / Status -->
             <div
-                class="px-6 py-5 border-b border-brand-sand flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-brand-cream/30">
-                <div>
-                    <h2 class="font-serif text-xl font-bold text-brand-dark">Unidades & Ambientes</h2>
-                    <p class="text-xs text-brand-muted">Gestão dos locais e espaços cadastrados no sistema</p>
-                </div>
+                class="p-5 border-b border-gray-200 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <span class="text-sm font-semibold text-gray-700">Unidades & Ambientes</span>
 
-                <div th:unless="${#lists.isEmpty(locais)}"
-                    class="text-xs bg-brand-sand/60 px-3 py-1.5 rounded-lg text-brand-dark font-medium border border-brand-border">
-                    Exibindo <span class="font-bold text-brand-deep" th:text="${#lists.size(locais)}">0</span> registros
+                <div th:unless="${#lists.isEmpty(locais)}" class="text-xs text-gray-500">
+                    Exibindo <strong class="text-[#244638]" th:text="${#lists.size(locais)}">0</strong> registros
                 </div>
             </div>
 
-            <!-- EMPTY STATE CARD -->
-            <div th:if="${#lists.isEmpty(locais)}" class="p-12 text-center space-y-4">
-                <div
-                    class="w-16 h-16 rounded-full bg-brand-cream border border-brand-border mx-auto flex items-center justify-center text-brand-gold text-2xl">
-                    <i class="fa-regular fa-building"></i>
-                </div>
-                <div class="space-y-1">
-                    <h3 class="font-serif text-xl font-semibold text-brand-dark">Nenhum local cadastrado</h3>
-                    <p class="text-xs text-brand-muted max-w-sm mx-auto">
-                        Não existem locais ou unidades registradas no sistema até o momento. Clique no botão abaixo para
-                        adicionar.
-                    </p>
-                </div>
-                <div class="pt-2">
-                    <a th:href="@{/locais/novo}"
-                        class="inline-flex items-center gap-2 bg-brand-deep hover:bg-brand-dark text-brand-gold font-semibold px-6 py-3 rounded-xl text-xs uppercase tracking-widest transition-all shadow-md">
-                        <i class="fa-solid fa-plus text-xs"></i>
-                        <span>Cadastrar primeiro local</span>
-                    </a>
-                </div>
+            <!-- Estado Vazio (Sem registros) -->
+            <div th:if="${#lists.isEmpty(locais)}" class="p-12 text-center">
+                <p class="text-gray-500 mb-4">Nenhum local cadastrado até o momento.</p>
+                <a th:href="@{/locais/novo}"
+                    class="inline-flex items-center px-4 py-2 rounded-lg bg-[#244638] hover:bg-[#193629] text-white text-sm font-semibold transition-colors">
+                    Cadastrar primeiro local
+                </a>
             </div>
 
-            <!-- STYLED TABLE CONTAINER -->
-            <div th:unless="${#lists.isEmpty(locais)}" class="overflow-x-auto table-scrollbar">
-                <table class="w-full text-left border-collapse">
+            <!-- Tabela de Dados -->
+            <div th:unless="${#lists.isEmpty(locais)}" class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
                     <thead>
                         <tr
-                            class="bg-brand-deep text-white text-[11px] font-semibold uppercase tracking-wider border-b border-brand-gold/20">
-                            <th class="py-4 px-6">ID</th>
-                            <th class="py-4 px-6">Nome</th>
-                            <th class="py-4 px-6">Tipo</th>
-                            <th class="py-4 px-6">Endereço</th>
-                            <th class="py-4 px-6">Ativo</th>
-                            <th class="py-4 px-6 text-center">Ações</th>
+                            class="border-b border-gray-200 bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
+                            <th class="py-3.5 px-6">ID</th>
+                            <th class="py-3.5 px-6">Nome</th>
+                            <th class="py-3.5 px-6">Tipo</th>
+                            <th class="py-3.5 px-6">Endereço</th>
+                            <th class="py-3.5 px-6">Ativo</th>
+                            <th class="py-3.5 px-6 text-right">Ações</th>
                         </tr>
                     </thead>
-
-                    <tbody class="divide-y divide-brand-sand/70 text-xs text-brand-text">
-                        <tr th:each="local : ${locais}" class="hover:bg-brand-cream/50 transition-colors">
+                    <tbody class="divide-y divide-gray-100">
+                        <tr th:each="local : ${locais}" class="hover:bg-gray-50/80 transition-colors">
 
                             <!-- ID -->
-                            <td class="py-4 px-6 font-mono text-brand-muted font-medium" th:text="${local.id}">
+                            <td class="py-4 px-6 font-medium text-gray-400" th:text="${local.id}">
                                 1
                             </td>
 
-                            <!-- Nome com Link para Contas do Local -->
+                            <!-- Nome com link para as contas do local -->
                             <td class="py-4 px-6 font-semibold">
                                 <a th:href="@{/contas/local/{localId}(localId=${local.id})}" th:text="${local.nome}"
-                                    class="text-brand-deep hover:text-brand-gold hover:underline transition-colors flex items-center gap-1.5">
-                                    <span>Nome do Local</span>
-                                    <i
-                                        class="fa-solid fa-arrow-up-right-from-square text-[10px] text-brand-gold opacity-70"></i>
+                                    class="text-[#244638] hover:text-[#a58b50] hover:underline transition-colors">
+                                    Nome do Local
                                 </a>
                             </td>
 
                             <!-- Tipo -->
-                            <td class="py-4 px-6 text-brand-muted font-medium" th:text="${local.tipo}">
+                            <td class="py-4 px-6 text-gray-600" th:text="${local.tipo}">
                                 ESCRITORIO
                             </td>
 
                             <!-- Endereço -->
-                            <td class="py-4 px-6 text-brand-muted max-w-xs truncate" th:text="${local.endereco}">
+                            <td class="py-4 px-6 text-gray-500 max-w-xs truncate" th:text="${local.endereco}">
                                 Av. Parigot de Souza, 1200
                             </td>
 
                             <!-- Ativo Badge -->
                             <td class="py-4 px-6 whitespace-nowrap">
                                 <span th:if="${local.ativo}"
-                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
                                     Sim
                                 </span>
 
                                 <span th:unless="${local.ativo}"
-                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
                                     Não
                                 </span>
                             </td>
 
-                            <!-- Row Actions -->
-                            <td class="py-4 px-6">
-                                <div class="flex items-center justify-center gap-2 whitespace-nowrap">
+                            <!-- Ações -->
+                            <td class="py-4 px-6 text-right whitespace-nowrap">
+                                <div class="flex items-center justify-end gap-2">
 
                                     <!-- Editar -->
-                                    <a th:href="@{/locais/{id}/editar(id=${local.id})}" title="Editar local"
-                                        class="px-3 py-1.5 bg-brand-cream hover:bg-brand-sand text-brand-dark border border-brand-border rounded-lg font-medium text-[11px] transition-colors flex items-center gap-1">
-                                        <i class="fa-solid fa-pen-to-square text-[10px] text-brand-gold"></i>
-                                        <span>Editar</span>
+                                    <a th:href="@{/locais/{id}/editar(id=${local.id})}"
+                                        class="px-2.5 py-1.5 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 text-xs font-medium transition-colors"
+                                        title="Editar local">
+                                        Editar
                                     </a>
 
-                                    <!-- Excluir Form -->
+                                    <!-- Excluir -->
                                     <form th:action="@{/locais/{id}/excluir(id=${local.id})}" method="post"
-                                        style="display: inline;"
-                                        onsubmit="return confirm('Tem certeza de que deseja excluir este local?');">
-                                        <button type="submit" title="Excluir local"
-                                            class="px-3 py-1.5 bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 rounded-lg font-medium text-[11px] transition-colors flex items-center gap-1">
-                                            <i class="fa-solid fa-trash-can text-[10px]"></i>
-                                            <span>Excluir</span>
+                                        onsubmit="return confirm('Tem certeza de que deseja excluir este local?');"
+                                        class="inline">
+                                        <button type="submit"
+                                            class="px-2.5 py-1.5 rounded-md border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium transition-colors">
+                                            Excluir
                                         </button>
                                     </form>
 
@@ -267,15 +169,14 @@
                 </table>
             </div>
 
-            <!-- FOOTER COUNTER BAR -->
+            <!-- Rodapé da Tabela -->
             <div th:unless="${#lists.isEmpty(locais)}"
-                class="px-6 py-4 bg-brand-cream/50 border-t border-brand-sand flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-brand-muted">
+                class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-500">
                 <div>
-                    <span>Total de locais cadastrados: </span>
-                    <strong class="text-brand-dark font-semibold" th:text="${#lists.size(locais)}">0</strong>
+                    Total de locais: <strong class="text-gray-800" th:text="${#lists.size(locais)}">0</strong>
                 </div>
-                <div class="flex items-center gap-3 text-[11px]">
-                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                <div class="flex items-center gap-3">
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                         Ativo</span>
                     <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-gray-400"></span>
                         Inativo</span>
@@ -284,10 +185,12 @@
 
         </div>
 
-        <!-- Footer signature -->
-        <p class="text-center text-xs text-brand-muted pt-2">
-            &copy; Olinda Hotel & Eventos &bull; Painel de Controle de Locais
-        </p>
+        <!-- Link Secundário de Navegação -->
+        <div class="mt-6 flex gap-4 text-sm">
+            <a th:href="@{/fornecedores}" class="text-gray-600 hover:text-[#244638] font-medium transition-colors">
+                ← Ir para Gestão de Fornecedores
+            </a>
+        </div>
 
     </div>
 

@@ -1,259 +1,193 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title th:text="${conta.id == null ? 'Nova conta' : 'Editar conta'}">
-        Conta
+    <title th:text="${conta.id == null ? 'Nova Conta | Olinda Hotel & Eventos' : 'Editar Conta | Olinda Hotel & Eventos'}">
+        Conta | Olinda Hotel & Eventos
     </title>
-
-    <!-- Tailwind CSS CDN -->
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
+    
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Custom Tailwind Styling for Olinda Theme -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#141D18',     /* Deep Forest / Slate Green */
-                            deep: '#1e2d24',     /* Olinda Slate Green */
-                            gold: '#c2a366',     /* Champagne Gold Accent */
-                            goldhover: '#a8894d',
-                            cream: '#f9f7f2',    /* Warm Sand Light Background */
-                            card: '#ffffff',
-                            sand: '#ede8e0',
-                            text: '#222b26',
-                            muted: '#69746e',
-                            border: '#e2dbc8'
-                        }
-                    },
-                    fontFamily: {
-                        serif: ['"Cormorant Garamond"', 'serif'],
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        /* Smooth transitions & styling refinements */
-        body {
-            background-color: #f9f7f2;
-            color: #222b26;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        /* Focus glow for form controls */
-        .olinda-input:focus,
-        .olinda-select:focus,
-        .olinda-textarea:focus {
-            outline: none;
-            border-color: #c2a366;
-            box-shadow: 0 0 0 3px rgba(194, 163, 102, 0.2);
-        }
-
-        /* Transition for field visibility */
-        #campoDataPagamento {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Custom dropdown arrow for selects */
-        .olinda-select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%3c2a366' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.75rem center;
-            background-repeat: no-repeat;
-            background-size: 1.25em 1.25em;
-            padding-right: 2.5rem;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+<body class="bg-[#f7f5ef] text-gray-800" style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
-    <div class="max-w-2xl w-full">
-        
-        <!-- Header / Logo Accent -->
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full border border-brand-gold bg-brand-deep mb-3 shadow-md">
-                <span class="font-serif text-brand-gold font-bold text-2xl">O</span>
-            </div>
-            <p class="text-[10px] tracking-[0.25em] text-brand-gold uppercase font-bold mb-1">
-                Olinda Hotel & Eventos
-            </p>
-            <h1 th:text="${conta.id == null ? 'Cadastrar conta' : 'Editar conta'}" 
-                class="font-serif text-3xl sm:text-4xl text-brand-dark font-semibold tracking-tight">
-                Conta
-            </h1>
-            <div class="w-12 h-0.5 bg-brand-gold mx-auto mt-3"></div>
-        </div>
+<div class="max-w-2xl mx-auto px-6 py-10">
 
-        <!-- Form Card Container -->
-        <div class="bg-white rounded-2xl shadow-xl border border-brand-border/60 overflow-hidden">
-            <div class="p-6 sm:p-10">
-
-                <form th:action="${acaoFormulario}" th:object="${conta}" method="post" class="space-y-6">
-
-                    <!-- Descrição -->
-                    <div>
-                        <label for="descricao" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                            Descrição <span class="text-brand-gold">*</span>
-                        </label>
-                        <div class="relative rounded-xl">
-                            <input type="text" id="descricao" th:field="*{descricao}" required
-                                   placeholder="Ex: Fornecimento de Hortifrúti - Evento"
-                                   class="olinda-input w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200">
-                        </div>
-                    </div>
-
-                    <!-- Row 2: Valor & Vencimento -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        
-                        <!-- Valor -->
-                        <div>
-                            <label for="valor" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                                Valor (R$) <span class="text-brand-gold">*</span>
-                            </label>
-                            <div class="relative rounded-xl">
-                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-gold font-medium text-sm">
-                                    R$
-                                </span>
-                                <input type="number" id="valor" th:field="*{valor}" min="0.01" step="0.01" required
-                                       placeholder="0,00"
-                                       class="olinda-input w-full pl-10 bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200">
-                            </div>
-                        </div>
-
-                        <!-- Data Vencimento -->
-                        <div>
-                            <label for="dataVencimento" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                                Data de Vencimento <span class="text-brand-gold">*</span>
-                            </label>
-                            <input type="date" id="dataVencimento" th:field="*{dataVencimento}" required
-                                   class="olinda-input w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text transition-all duration-200">
-                        </div>
-
-                    </div>
-
-                    <!-- Row 3: Local & Situação -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-                        <!-- Local -->
-                        <div>
-                            <label for="local" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                                Local / Unidade <span class="text-brand-gold">*</span>
-                            </label>
-                            <select id="local" th:field="*{local.id}" required
-                                    class="olinda-select w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text transition-all duration-200">
-                                <option value="">Selecione um local</option>
-                                <option th:each="local : ${locais}"
-                                        th:value="${local.id}"
-                                        th:text="${local.nome}">
-                                </option>
-                            </select>
-                        </div>
-
-                        <!-- Status / Situação -->
-                        <div>
-                            <label for="status" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                                Situação <span class="text-brand-gold">*</span>
-                            </label>
-                            <select id="status" th:field="*{status}" required
-                                    class="olinda-select w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text transition-all duration-200">
-                                <option value="PENDENTE">Pendente</option>
-                                <option value="PAGA">Paga</option>
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <!-- Data Pagamento (Condicional por JS / Thymeleaf) -->
-                    <div id="campoDataPagamento"
-                         th:style="${conta.status == 'PAGA'} ? 'display: block' : 'display: none'"
-                         class="bg-brand-cream/80 p-4 rounded-xl border border-brand-gold/30">
-                        <label for="dataPagamento" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2 flex items-center gap-2">
-                            <i class="fa-solid fa-circle-check text-brand-gold"></i>
-                            <span>Data do Pagamento</span>
-                        </label>
-                        <input type="date" id="dataPagamento" th:field="*{dataPagamento}"
-                               class="olinda-input w-full bg-white border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text transition-all duration-200">
-                    </div>
-
-                    <!-- Observações -->
-                    <div>
-                        <label for="observacoes" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                            Observações
-                        </label>
-                        <textarea id="observacoes" th:field="*{observacoes}" rows="3"
-                                  placeholder="Anotações adicionais ou detalhes da conta..."
-                                  class="olinda-textarea w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200"></textarea>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="pt-4 flex flex-col-reverse sm:flex-row items-center justify-end gap-3 border-t border-brand-sand/60">
-                        
-                        <!-- Cancelar -->
-                        <a th:href="@{/contas}"
-                           class="w-full sm:w-auto text-center px-6 py-3 rounded-xl border border-brand-border text-brand-muted hover:text-brand-dark hover:border-brand-dark/40 font-semibold text-xs uppercase tracking-wider transition-all duration-200">
-                            Cancelar
-                        </a>
-
-                        <!-- Submit -->
-                        <button type="submit"
-                                th:text="${conta.id == null ? 'Cadastrar conta' : 'Salvar alterações'}"
-                                class="w-full sm:w-auto bg-brand-deep hover:bg-brand-dark text-brand-gold font-semibold px-8 py-3 rounded-xl text-xs uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg border border-brand-gold/30 flex items-center justify-center gap-2">
-                            Salvar
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-
-        <!-- Footer note -->
-        <p class="text-center text-xs text-brand-muted mt-6">
-            &copy; Olinda Hotel & Eventos &bull; Sistema Interno
+    <!-- Cabeçalho -->
+    <div class="mb-8">
+        <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
+            Olinda Hotel & Eventos
         </p>
 
+        <h1 class="text-4xl text-[#244638] mt-2"
+            style="font-family: 'Cormorant Garamond', serif;"
+            th:text="${conta.id == null} ? 'Nova conta' : 'Editar conta'">
+        </h1>
+
+        <p class="text-gray-500 mt-1">
+            Preencha os detalhes da conta a pagar ou receber.
+        </p>
     </div>
 
-    <!-- Script idêntico mantendo a lógica de exibição do pagamento -->
-    <script>
-        const statusConta = document.getElementById('status');
-        const campoDataPagamento = document.getElementById('campoDataPagamento');
-        const dataPagamento = document.getElementById('dataPagamento');
+    <!-- Mensagem de Erro (se houver) -->
+    <div th:if="${erro}"
+         class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-5"
+         th:text="${erro}">
+    </div>
 
-        function atualizarCampoDataPagamento() {
-            const contaPaga = statusConta.value === 'PAGA';
+    <!-- Formulário -->
+    <form th:action="${acaoFormulario}"
+          th:object="${conta}"
+          method="post"
+          class="bg-white rounded-xl shadow-sm border border-gray-200 p-7 space-y-6">
 
-            campoDataPagamento.style.display = contaPaga ? 'block' : 'none';
+        <!-- Descrição -->
+        <div>
+            <label for="descricao" class="block font-semibold text-gray-700 mb-2">
+                Descrição <span class="text-[#a58b50]">*</span>
+            </label>
+            <input type="text"
+                   id="descricao"
+                   th:field="*{descricao}"
+                   required
+                   placeholder="Ex.: Fornecimento de Hortifrúti - Evento"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
+        </div>
 
-            if (!contaPaga) {
-                dataPagamento.value = '';
-            }
+        <!-- Linha 2: Valor e Vencimento -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Valor -->
+            <div>
+                <label for="valor" class="block font-semibold text-gray-700 mb-2">
+                    Valor (R$) <span class="text-[#a58b50]">*</span>
+                </label>
+                <div class="relative rounded-lg">
+                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 font-medium">
+                        R$
+                    </span>
+                    <input type="number"
+                           id="valor"
+                           th:field="*{valor}"
+                           min="0.01"
+                           step="0.01"
+                           required
+                           placeholder="0,00"
+                           class="w-full border border-gray-300 rounded-lg pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
+                </div>
+            </div>
+
+            <!-- Vencimento -->
+            <div>
+                <label for="dataVencimento" class="block font-semibold text-gray-700 mb-2">
+                    Data de Vencimento <span class="text-[#a58b50]">*</span>
+                </label>
+                <input type="date"
+                       id="dataVencimento"
+                       th:field="*{dataVencimento}"
+                       required
+                       class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#244638]">
+            </div>
+        </div>
+
+        <!-- Linha 3: Local e Situação -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Local / Unidade -->
+            <div>
+                <label for="local" class="block font-semibold text-gray-700 mb-2">
+                    Local / Unidade <span class="text-[#a58b50]">*</span>
+                </label>
+                <select id="local"
+                        th:field="*{local.id}"
+                        required
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#244638]">
+                    <option value="">Selecione um local</option>
+                    <option th:each="local : ${locais}"
+                            th:value="${local.id}"
+                            th:text="${local.nome}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Situação -->
+            <div>
+                <label for="status" class="block font-semibold text-gray-700 mb-2">
+                    Situação <span class="text-[#a58b50]">*</span>
+                </label>
+                <select id="status"
+                        th:field="*{status}"
+                        required
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#244638]">
+                    <option value="PENDENTE">Pendente</option>
+                    <option value="PAGA">Paga</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Data do Pagamento (Condicional via JavaScript) -->
+        <div id="campoDataPagamento"
+             th:style="${conta.status == 'PAGA'} ? 'display: block' : 'display: none'"
+             class="p-4 bg-[#f7f5ef] border border-gray-200 rounded-lg">
+            <label for="dataPagamento" class="block font-semibold text-gray-700 mb-2">
+                Data do Pagamento
+            </label>
+            <input type="date"
+                   id="dataPagamento"
+                   th:field="*{dataPagamento}"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#244638]">
+        </div>
+
+        <!-- Observações -->
+        <div>
+            <label for="observacoes" class="block font-semibold text-gray-700 mb-2">
+                Observações
+            </label>
+            <textarea id="observacoes"
+                      th:field="*{observacoes}"
+                      rows="3"
+                      placeholder="Anotações adicionais ou detalhes da conta..."
+                      class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]"></textarea>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+            <a href="/contas"
+               class="px-5 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                    class="px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold transition-colors">
+                Salvar conta
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+<!-- Script nativo mantido sem dependências de ícones ou estilos extras -->
+<script>
+    const statusConta = document.getElementById('status');
+    const campoDataPagamento = document.getElementById('campoDataPagamento');
+    const dataPagamento = document.getElementById('dataPagamento');
+
+    function atualizarCampoDataPagamento() {
+        const contaPaga = statusConta.value === 'PAGA';
+        campoDataPagamento.style.display = contaPaga ? 'block' : 'none';
+
+        if (!contaPaga) {
+            dataPagamento.value = '';
         }
+    }
 
-        statusConta.addEventListener('change', atualizarCampoDataPagamento);
-
-        atualizarCampoDataPagamento();
-    </script>
+    statusConta.addEventListener('change', atualizarCampoDataPagamento);
+    atualizarCampoDataPagamento();
+</script>
 
 </body>
 </html>

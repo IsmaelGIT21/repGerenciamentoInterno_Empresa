@@ -4,608 +4,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel inicial | Gestão de Empresas - Olinda Hotel & Eventos</title>
+    <title>Painel Geral | Olinda Hotel & Eventos</title>
 
-    <!-- Tipografia Elegante -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-
-    <style>
-        :root {
-            --color-bg: #f9f7f2;
-            --color-surface: #ffffff;
-            --color-primary: #1e2d24;
-            --color-primary-light: #2c4034;
-            --color-accent: #c2a366;
-            --color-accent-hover: #ab8d52;
-            --color-text: #2c322e;
-            --color-text-muted: #6e7770;
-            --color-border: #e2ded4;
-            --color-danger: #a84343;
-            --color-danger-bg: #fdf2f2;
-            --font-heading: 'Cormorant Garamond', Georgia, serif;
-            --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
-            --shadow-sm: 0 2px 8px rgba(30, 45, 36, 0.04);
-            --shadow-md: 0 8px 24px rgba(30, 45, 36, 0.08);
-            --radius-sm: 6px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: var(--font-body);
-            background-color: var(--color-bg);
-            color: var(--color-text);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Navbar Header */
-        header {
-            background-color: var(--color-primary);
-            color: #ffffff;
-            padding: 1.25rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-brand {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .header-brand h1 {
-            font-family: var(--font-heading);
-            font-size: 1.75rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: #ffffff;
-        }
-
-        .header-brand p {
-            font-size: 0.85rem;
-            color: var(--color-accent);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
-            padding-left: 1rem;
-        }
-
-        .btn-logout {
-            background-color: transparent;
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 0.5rem 1.25rem;
-            border-radius: var(--radius-sm);
-            font-family: var(--font-body);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-logout:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: #ffffff;
-            color: #ffffff;
-        }
-
-        /* Layout Container */
-        .app-container {
-            display: flex;
-            flex: 1;
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 2rem;
-            gap: 2rem;
-        }
-
-        /* Navigation Sidebar */
-        nav {
-            width: 280px;
-            background-color: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 1.5rem;
-            height: fit-content;
-            box-shadow: var(--shadow-sm);
-        }
-
-        nav h2 {
-            font-family: var(--font-heading);
-            font-size: 1.25rem;
-            color: var(--color-primary);
-            padding-bottom: 0.75rem;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid var(--color-border);
-            letter-spacing: 0.5px;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
-        }
-
-        nav a {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            color: var(--color-text);
-            text-decoration: none;
-            border-radius: var(--radius-sm);
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        nav a:hover {
-            background-color: var(--color-bg);
-            color: var(--color-primary);
-            transform: translateX(3px);
-        }
-
-        /* Main Content */
-        main {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .welcome-card {
-            background-color: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 2.5rem;
-            box-shadow: var(--shadow-sm);
-            background-image: linear-gradient(to right, rgba(249, 247, 242, 0.5), transparent);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .welcome-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background-color: var(--color-accent);
-        }
-
-        .welcome-card h2 {
-            font-family: var(--font-heading);
-            font-size: 2.25rem;
-            color: var(--color-primary);
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-        }
-
-        .welcome-card p {
-            color: var(--color-text-muted);
-            font-size: 1.05rem;
-            max-width: 650px;
-        }
-
-        /* Quick Access Section */
-        .quick-access-section h2,
-        .upcoming-section h2 {
-            font-family: var(--font-heading);
-            font-size: 1.75rem;
-            color: var(--color-primary);
-            margin-bottom: 1.25rem;
-        }
-
-        .quick-access-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.25rem;
-            list-style: none;
-        }
-
-        .quick-access-grid a {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background-color: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 1.5rem;
-            min-height: 130px;
-            text-decoration: none;
-            color: var(--color-primary);
-            font-weight: 600;
-            font-size: 1.05rem;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.25s ease;
-            position: relative;
-        }
-
-        .quick-access-grid a:hover {
-            border-color: var(--color-accent);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-            background-color: #ffffff;
-        }
-
-        .quick-access-grid a::after {
-            content: '→';
-            align-self: flex-end;
-            font-size: 1.25rem;
-            color: var(--color-accent);
-            transition: transform 0.2s ease;
-        }
-
-        .quick-access-grid a:hover::after {
-            transform: translateX(4px);
-        }
-
-        /* Indicadores do dashboard */
-        .dashboard-stats {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 1.25rem;
-        }
-
-        .stat-card {
-            background-color: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            border-top: 3px solid var(--color-accent);
-        }
-
-        .stat-card h3 {
-            color: var(--color-text-muted);
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-        }
-
-        .stat-value {
-            color: var(--color-primary);
-            font-size: 1.8rem;
-            font-weight: 700;
-            overflow-wrap: anywhere;
-        }
-
-        .stat-description {
-            color: var(--color-text-muted);
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-        }
-
-        /* Próximos vencimentos */
-        .upcoming-card {
-            background-color: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            overflow-x: auto;
-        }
-
-        .upcoming-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 550px;
-        }
-
-        .upcoming-table th {
-            text-align: left;
-            color: var(--color-text-muted);
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 0.9rem;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .upcoming-table td {
-            padding: 0.9rem;
-            border-bottom: 1px solid var(--color-border);
-            font-size: 0.9rem;
-        }
-
-        .upcoming-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .upcoming-table tbody tr:hover {
-            background-color: var(--color-bg);
-        }
-
-        .empty-message {
-            color: var(--color-text-muted);
-            font-size: 0.9rem;
-            padding: 0.5rem;
-        }
-
-        .overdue-value {
-            color: var(--color-danger);
-        }
-
-        /* Responsividade */
-        @media (max-width: 1100px) {
-            .dashboard-stats {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        @media (max-width: 900px) {
-            .app-container {
-                flex-direction: column;
-                padding: 1rem;
-            }
-
-            nav {
-                width: 100%;
-            }
-
-            header {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-
-            .header-brand p {
-                border-left: none;
-                padding-left: 0;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .dashboard-stats {
-                grid-template-columns: 1fr;
-            }
-
-            .welcome-card {
-                padding: 1.5rem;
-            }
-
-            .welcome-card h2 {
-                font-size: 1.8rem;
-            }
-
-            .header-brand {
-                flex-wrap: wrap;
-            }
-        }
-    </style>
 </head>
 
-<body>
-    <header>
-        <div class="header-brand">
-            <h1>Gestão de Empresas</h1>
-            <p>Painel de controle</p>
-        </div>
+<body class="bg-[#f7f5ef] text-gray-800 min-h-screen flex flex-col"
+    style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
-        <form th:action="@{/logout}" method="post">
-            <button type="submit" class="btn-logout">Sair do sistema</button>
-        </form>
+    <!-- BARRA SUPERIOR DE NAVEGAÇÃO / HEADER -->
+    <header class="bg-[#244638] text-white sticky top-0 z-50 border-b border-[#a58b50]/30 shadow-md">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+
+            <!-- Logo & Nome do Hotel -->
+            <div class="flex items-center gap-3">
+                <a th:href="@{/}" class="flex items-center gap-3 group">
+                    <div
+                        class="w-10 h-10 rounded-full border border-[#a58b50] bg-[#193629] flex items-center justify-center shrink-0 shadow-sm group-hover:border-white transition-colors">
+                        <span
+                            class="font-serif text-[#a58b50] font-bold text-xl group-hover:text-white transition-colors"
+                            style="font-family: 'Cormorant Garamond', serif;">O</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] tracking-[0.2em] text-[#a58b50] uppercase font-bold block">
+                            Olinda Hotel & Eventos
+                        </span>
+                        <h1 class="text-xl font-semibold tracking-tight text-white"
+                            style="font-family: 'Cormorant Garamond', serif;">
+                            Gestão de Empresas
+                        </h1>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Perfil e Logout -->
+            <div class="flex items-center gap-4 text-xs">
+                <div class="text-right hidden sm:block">
+                    <p class="font-semibold text-white"
+                        th:text="${#authentication != null ? #authentication.name : 'Administrador'}">Usuário Ativo</p>
+                    <p class="text-gray-300">Sistema Interno</p>
+                </div>
+
+                <form th:action="@{/logout}" method="post" class="inline">
+                    <button type="submit"
+                        class="px-4 py-2 rounded-lg border border-red-200/40 text-red-200 bg-red-950/20 hover:bg-red-900/40 hover:text-white font-medium transition-colors text-xs">
+                        Sair
+                    </button>
+                </form>
+            </div>
+        </div>
     </header>
 
-    <div class="app-container">
+    <!-- CONTAINER PRINCIPAL (LAYOUT COM SIDEBAR) -->
+    <div class="max-w-7xl mx-auto w-full px-6 py-8 flex flex-col lg:flex-row gap-8 flex-1">
 
-        <nav aria-label="Menu principal">
-            <h2>Menu principal</h2>
+        <!-- MENU LATERAL / SIDEBAR -->
+        <aside class="w-full lg:w-64 shrink-0">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 sticky top-24 space-y-6">
 
-            <ul>
-                <li>
-                    <a th:href="@{/}">Início</a>
-                </li>
-                <li>
-                    <a th:href="@{/locais}">Locais cadastrados</a>
-                </li>
-                <li>
-                    <a th:href="@{/contas}">Contas cadastradas</a>
-                </li>
-                <li>
-                    <a th:href="@{/contas/nova}">Cadastrar conta</a>
-                </li>
-                <li>
-                    <a th:href="@{/locais/novo}">Cadastrar local</a>
-                </li>
-                <li>
-                    <a th:href="@{/usuarios/novo}">Cadastrar usuário</a>
-                </li>
-            </ul>
-        </nav>
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-[#a58b50] mb-3">Navegação Principal</p>
+                    <nav class="space-y-1">
+                        <a th:href="@{/}"
+                            class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#244638] text-white font-semibold text-sm transition-colors">
+                            <span>Início / Dashboard</span>
+                        </a>
 
-        <main>
+                        <a th:href="@{/contas}"
+                            class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors">
+                            <span>Contas Cadastradas</span>
+                        </a>
 
-            <!-- Apresentação -->
-            <section class="welcome-card">
-                <h2>Bem-vindo ao sistema</h2>
+                        <a th:href="@{/fornecedores}"
+                            class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors">
+                            <span>Gestão Fornecedores</span>
+                        </a>
 
-                <p>
-                    Utilize este painel administrativo para gerenciar com precisão os locais
-                    cadastrados e as contas da sua empresa, acompanhando pagamentos e vencimentos.
-                </p>
-            </section>
+                        <a th:href="@{/locais}"
+                            class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors">
+                            <span>Locais e Ambientes</span>
+                        </a>
+                    </nav>
+                </div>
 
-            <!-- Indicadores -->
-            <section class="dashboard-stats" aria-label="Resumo financeiro">
-
-                <article class="stat-card">
-                    <h3>Locais cadastrados</h3>
-                    <p class="stat-value" th:text="${totalLocais}">0</p>
-                    <p class="stat-description">
-                        Total de locais registrados no sistema
+                <div class="pt-4 border-t border-gray-100">
+                    <p class="text-xs font-bold uppercase tracking-wider text-[#a58b50] mb-3">Ações Rápida (Cadastros)
                     </p>
-                </article>
+                    <nav class="space-y-1">
+                        <a th:href="@{/contas/nova}"
+                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:text-[#244638] hover:bg-emerald-50 text-xs font-medium transition-colors">
+                            <span class="text-[#a58b50] font-bold">+</span>
+                            <span>Nova Conta a Pagar</span>
+                        </a>
 
-                <article class="stat-card">
-                    <h3>Contas pendentes</h3>
-                    <p class="stat-value" th:text="${contasPendentes}">0</p>
-                    <p class="stat-description">
-                        Contas aguardando pagamento
+                        <a th:href="@{/fornecedores/novo}"
+                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:text-[#244638] hover:bg-emerald-50 text-xs font-medium transition-colors">
+                            <span class="text-[#a58b50] font-bold">+</span>
+                            <span>Novo Fornecedor</span>
+                        </a>
+
+                        <a th:href="@{/locais/novo}"
+                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:text-[#244638] hover:bg-emerald-50 text-xs font-medium transition-colors">
+                            <span class="text-[#a58b50] font-bold">+</span>
+                            <span>Novo Local / Unidade</span>
+                        </a>
+
+                        <a th:href="@{/usuarios/novo}"
+                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:text-[#244638] hover:bg-emerald-50 text-xs font-medium transition-colors">
+                            <span class="text-[#a58b50] font-bold">+</span>
+                            <span>Novo Usuário</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- Resumo rápido de status -->
+                <div class="pt-4 border-t border-gray-100 bg-gray-50 -mx-5 -mb-5 p-5 rounded-b-xl text-xs space-y-2">
+                    <p class="font-semibold text-gray-700">Status do Servidor</p>
+                    <div class="flex items-center justify-between text-gray-500">
+                        <span>Ambiente:</span>
+                        <span class="font-medium text-emerald-700">Produção</span>
+                    </div>
+                    <div class="flex items-center justify-between text-gray-500">
+                        <span>Database:</span>
+                        <span class="font-medium text-gray-700">Conectado</span>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- ÁREA PRINCIPAL DE CONTEÚDO DA PÁGINA -->
+        <main class="flex-1 space-y-8 min-w-0">
+
+            <!-- CARTÃO DE BOAS-VINDAS COM AÇÕES DE ATALHO -->
+            <div
+                class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-gray-200 relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div class="space-y-2 max-w-2xl">
+                    <p class="text-xs uppercase tracking-widest text-[#a58b50] font-bold">Visão Geral do Hotel</p>
+                    <h2 class="text-3xl text-[#244638] font-bold" style="font-family: 'Cormorant Garamond', serif;">
+                        Painel de Controle Financeiro
+                    </h2>
+                    <p class="text-sm text-gray-500">
+                        Acompanhe em tempo real o fluxo de contas, fornecedores cadastrados e os vencimentos urgentes da
+                        unidade.
                     </p>
-                </article>
+                </div>
 
-                <article class="stat-card">
-                    <h3>Contas pagas</h3>
-                    <p class="stat-value" th:text="${contasPagas}">0</p>
-                    <p class="stat-description">
-                        Contas com pagamento registrado
-                    </p>
-                </article>
+                <div class="flex flex-wrap gap-3 shrink-0">
+                    <a th:href="@{/contas/nova}"
+                        class="px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm">
+                        + Lançar Conta
+                    </a>
+                    <a th:href="@{/contas}"
+                        class="px-5 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 text-xs font-semibold uppercase tracking-wider transition-colors bg-white">
+                        Relatórios
+                    </a>
+                </div>
+            </div>
 
-                <article class="stat-card">
-                    <h3>Valor pendente</h3>
-                    <p class="stat-value"
-                       th:text="${#numbers.formatCurrency(valorTotalPendente)}">
-                        R$ 0,00
-                    </p>
-                    <p class="stat-description">
-                        Soma dos valores ainda pendentes
-                    </p>
-                </article>
+            <!-- INDICADORES / CARDS DE MÉTRICAS (GRID DE 8 CARDS) -->
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">Resumo e Indicadores do Mês</p>
 
-                <article class="stat-card">
-                    <h3>Contas vencidas</h3>
-                    <p class="stat-value overdue-value"
-                       th:text="${contasVencidas}">
-                        0
-                    </p>
-                    <p class="stat-description">
-                        Contas pendentes com vencimento ultrapassado
-                    </p>
-                </article>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-                <article class="stat-card">
-                    <h3>Despesas do mês</h3>
-                    <p class="stat-value"
-                       th:text="${#numbers.formatCurrency(despesasDoMes)}">
-                        R$ 0,00
-                    </p>
-                    <p class="stat-description">
-                        Contas pendentes com vencimento neste mês
-                    </p>
-                </article>
+                    <!-- Locais -->
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-medium text-gray-500 uppercase">Unidades & Locais</span>
+                        <div class="my-2">
+                            <span class="text-3xl font-bold text-[#244638]" th:text="${totalLocais}">0</span>
+                        </div>
+                        <a th:href="@{/locais}"
+                            class="text-xs text-[#a58b50] hover:underline font-semibold flex items-center justify-between">
+                            <span>Ver todos</span>
+                            <span>→</span>
+                        </a>
+                    </div>
 
-                <article class="stat-card">
-                    <h3>Pagamentos do mês</h3>
-                    <p class="stat-value"
-                       th:text="${#numbers.formatCurrency(pagamentosDoMes)}">
-                        R$ 0,00
-                    </p>
-                    <p class="stat-description">
-                        Valores pagos neste mês
-                    </p>
-                </article>
+                    <!-- Contas Pendentes -->
+                    <div
+                        class="bg-white p-5 rounded-xl border border-amber-200 bg-amber-50/20 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-medium text-amber-800 uppercase">Contas Pendentes</span>
+                        <div class="my-2">
+                            <span class="text-3xl font-bold text-amber-700" th:text="${contasPendentes}">0</span>
+                        </div>
+                        <a th:href="@{/contas}"
+                            class="text-xs text-amber-800 hover:underline font-semibold flex items-center justify-between">
+                            <span>Ver pendências</span>
+                            <span>→</span>
+                        </a>
+                    </div>
 
-                <article class="stat-card">
-                    <h3>Próximos vencimentos</h3>
-                    <p class="stat-value"
-                       th:text="${#lists.size(proximosVencimentos)}">
-                        0
-                    </p>
-                    <p class="stat-description">
-                        Contas com vencimento nos próximos sete dias
-                    </p>
-                </article>
+                    <!-- Contas Pagas -->
+                    <div
+                        class="bg-white p-5 rounded-xl border border-emerald-200 bg-emerald-50/20 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-medium text-emerald-800 uppercase">Contas Quitadas</span>
+                        <div class="my-2">
+                            <span class="text-3xl font-bold text-emerald-700" th:text="${contasPagas}">0</span>
+                        </div>
+                        <span class="text-xs text-emerald-700 font-medium">Pagamentos confirmados</span>
+                    </div>
 
-            </section>
+                    <!-- Valor Pendente Total -->
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-medium text-gray-500 uppercase">Total A Pagar</span>
+                        <div class="my-2">
+                            <span class="text-2xl font-bold text-gray-800"
+                                th:text="${#numbers.formatCurrency(valorTotalPendente)}">R$ 0,00</span>
+                        </div>
+                        <span class="text-xs text-gray-400">Soma acumulada</span>
+                    </div>
 
-            <!-- Tabela de próximos vencimentos -->
-            <section class="upcoming-section">
-                <h2>Próximos vencimentos</h2>
+                    <!-- Contas Vencidas -->
+                    <div
+                        class="bg-white p-5 rounded-xl border border-rose-200 bg-rose-50/30 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-bold text-rose-800 uppercase">Atrasadas / Vencidas</span>
+                        <div class="my-2">
+                            <span class="text-3xl font-bold text-rose-600" th:text="${contasVencidas}">0</span>
+                        </div>
+                        <span class="text-xs text-rose-700 font-medium">Requer atenção urgente</span>
+                    </div>
 
-                <div class="upcoming-card">
+                    <!-- Despesas do Mês -->
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-medium text-gray-500 uppercase">Despesas do Mês</span>
+                        <div class="my-2">
+                            <span class="text-2xl font-bold text-gray-800"
+                                th:text="${#numbers.formatCurrency(despesasDoMes)}">R$ 0,00</span>
+                        </div>
+                        <span class="text-xs text-gray-400">Previsão do mês atual</span>
+                    </div>
 
-                    <p class="empty-message"
-                       th:if="${#lists.isEmpty(proximosVencimentos)}">
-                        Nenhuma conta pendente com vencimento nos próximos sete dias.
-                    </p>
+                    <!-- Pagamentos do Mês -->
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-medium text-gray-500 uppercase">Pago Neste Mês</span>
+                        <div class="my-2">
+                            <span class="text-2xl font-bold text-emerald-700"
+                                th:text="${#numbers.formatCurrency(pagamentosDoMes)}">R$ 0,00</span>
+                        </div>
+                        <span class="text-xs text-emerald-600 font-medium">Baixas efetuadas</span>
+                    </div>
 
-                    <table class="upcoming-table"
-                           th:unless="${#lists.isEmpty(proximosVencimentos)}">
-
-                        <thead>
-                            <tr>
-                                <th>Descrição</th>
-                                <th>Local</th>
-                                <th>Vencimento</th>
-                                <th>Valor</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr th:each="conta : ${proximosVencimentos}">
-
-                                <td th:text="${conta.descricao}"></td>
-
-                                <td th:text="${conta.local.nome}"></td>
-
-                                <td th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}"></td>
-
-                                <td th:text="${#numbers.formatCurrency(conta.valor)}"></td>
-
-                            </tr>
-                        </tbody>
-
-                    </table>
+                    <!-- Próximos Vencimentos (7 dias) -->
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                        <span class="text-xs font-medium text-gray-500 uppercase">Vencendo em 7 Dias</span>
+                        <div class="my-2">
+                            <span class="text-3xl font-bold text-[#244638]"
+                                th:text="${#lists.size(proximosVencimentos)}">0</span>
+                        </div>
+                        <span class="text-xs text-gray-500">Próxima semana</span>
+                    </div>
 
                 </div>
-            </section>
+            </div>
 
-            <!-- Acesso rápido -->
-            <section class="quick-access-section">
-                <h2>Acesso rápido</h2>
+            <!-- SEÇÃO DE TABELA: PRÓXIMOS VENCIMENTOS DA SEMANA -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div
+                    class="p-5 border-b border-gray-200 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-base">Próximos Vencimentos (7 dias)</h3>
+                        <p class="text-xs text-gray-500">Contas com vencimento iminente que requerem liberação</p>
+                    </div>
 
-                <ul class="quick-access-grid">
+                    <a th:href="@{/contas}" class="text-xs text-[#244638] font-semibold hover:underline">
+                        Ver todas as contas →
+                    </a>
+                </div>
 
-                    <li>
-                        <a th:href="@{/locais}">
-                            Consultar locais cadastrados
-                        </a>
-                    </li>
+                <!-- Estado Vazio -->
+                <div th:if="${#lists.isEmpty(proximosVencimentos)}" class="p-8 text-center text-gray-500 text-sm">
+                    Nenhuma conta com vencimento previsto para os próximos 7 dias.
+                </div>
 
-                    <li>
-                        <a th:href="@{/contas}">
-                            Consultar contas
-                        </a>
-                    </li>
+                <!-- Tabela com os Vencimentos Próximos -->
+                <div th:unless="${#lists.isEmpty(proximosVencimentos)}" class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr
+                                class="border-b border-gray-200 bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
+                                <th class="py-3 px-6">Descrição</th>
+                                <th class="py-3 px-6">Local / Unidade</th>
+                                <th class="py-3 px-6">Vencimento</th>
+                                <th class="py-3 px-6">Valor</th>
+                                <th class="py-3 px-6 text-right">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr th:each="conta : ${proximosVencimentos}" class="hover:bg-gray-50/80 transition-colors">
+                                <td class="py-3.5 px-6 font-semibold text-gray-800" th:text="${conta.descricao}">Energia
+                                    Elétrica</td>
+                                <td class="py-3.5 px-6 text-gray-600" th:text="${conta.local.nome}">Hotel Central</td>
+                                <td class="py-3.5 px-6 text-amber-800 font-medium"
+                                    th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}">05/11/2026</td>
+                                <td class="py-3.5 px-6 font-bold text-gray-800"
+                                    th:text="${#numbers.formatCurrency(conta.valor)}">R$ 1.250,00</td>
+                                <td class="py-3.5 px-6 text-right">
+                                    <form th:action="@{/contas/{id}/pagar(id=${conta.id})}" method="post"
+                                        class="inline">
+                                        <button type="submit"
+                                            class="px-2.5 py-1 rounded bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold transition-colors">
+                                            Pagar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                    <li>
-                        <a th:href="@{/locais/novo}">
-                            Adicionar um local
-                        </a>
-                    </li>
+            <!-- ACESSO RÁPIDO / ATALHOS EM GRID -->
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">Atalhos e Mapeamento do Sistema
+                </p>
 
-                    <li>
-                        <a th:href="@{/contas/nova}">
-                            Registrar uma conta
-                        </a>
-                    </li>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-                </ul>
-            </section>
+                    <a th:href="@{/contas}"
+                        class="p-5 bg-white rounded-xl border border-gray-200 hover:border-[#a58b50] hover:shadow-md transition-all group">
+                        <span class="text-[#a58b50] font-bold text-lg block mb-1">01.</span>
+                        <h4 class="font-bold text-gray-800 group-hover:text-[#244638]">Gestão de Contas</h4>
+                        <p class="text-xs text-gray-500 mt-1">Listar, filtrar e dar baixa em parcelas e pagamentos.</p>
+                    </a>
+
+                    <a th:href="@{/fornecedores}"
+                        class="p-5 bg-white rounded-xl border border-gray-200 hover:border-[#a58b50] hover:shadow-md transition-all group">
+                        <span class="text-[#a58b50] font-bold text-lg block mb-1">02.</span>
+                        <h4 class="font-bold text-gray-800 group-hover:text-[#244638]">Gestão de Fornecedores</h4>
+                        <p class="text-xs text-gray-500 mt-1">Consultar parceiros, status ativo/inativo e contatos.</p>
+                    </a>
+
+                    <a th:href="@{/locais}"
+                        class="p-5 bg-white rounded-xl border border-gray-200 hover:border-[#a58b50] hover:shadow-md transition-all group">
+                        <span class="text-[#a58b50] font-bold text-lg block mb-1">03.</span>
+                        <h4 class="font-bold text-gray-800 group-hover:text-[#244638]">Gestão de Locais</h4>
+                        <p class="text-xs text-gray-500 mt-1">Unidades físicas, escritórios, salões e eventos.</p>
+                    </a>
+
+                    <a th:href="@{/contas/nova}"
+                        class="p-5 bg-white rounded-xl border border-gray-200 hover:border-[#a58b50] hover:shadow-md transition-all group">
+                        <span class="text-[#a58b50] font-bold text-lg block mb-1">04.</span>
+                        <h4 class="font-bold text-gray-800 group-hover:text-[#244638]">Novo Lançamento</h4>
+                        <p class="text-xs text-gray-500 mt-1">Cadastrar novas despesas e agendar vencimentos.</p>
+                    </a>
+
+                </div>
+            </div>
 
         </main>
     </div>
+
+    <!-- RODAPÉ DA APLICAÇÃO -->
+    <footer class="bg-white border-t border-gray-200 mt-12 py-6 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <p>&copy; Olinda Hotel & Eventos &bull; Sistema de Gestão Financeira Interna</p>
+            <p class="text-gray-400">Versão 2.4.0</p>
+        </div>
+    </footer>
+
 </body>
 
 </html>

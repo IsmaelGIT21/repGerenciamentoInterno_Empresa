@@ -4,173 +4,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title th:text="${local.id == null ? 'Cadastrar local' : 'Editar local'}">
-        Local
+    <title
+        th:text="${local.id == null ? 'Novo Local | Olinda Hotel & Eventos' : 'Editar Local | Olinda Hotel & Eventos'}">
+        Local | Olinda Hotel & Eventos
     </title>
 
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Custom Tailwind Styling for Olinda Theme -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#142018',     /* Deep Slate Green Dark */
-                            deep: '#1E2D24',     /* Olinda Slate Green */
-                            gold: '#C2A366',     /* Champagne Gold Accent */
-                            goldhover: '#9E814D',
-                            cream: '#F9F7F2',    /* Soft Off-White / Sand Background */
-                            card: '#ffffff',
-                            sand: '#EDE8E0',
-                            text: '#222B26',
-                            muted: '#69746E',
-                            border: '#E2DBC8'
-                        }
-                    },
-                    fontFamily: {
-                        serif: ['"Cormorant Garamond"', 'serif'],
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #F9F7F2;
-            color: #222B26;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        /* Focus glow for form controls */
-        .olinda-input:focus,
-        .olinda-select:focus {
-            outline: none;
-            border-color: #C2A366;
-            box-shadow: 0 0 0 3px rgba(194, 163, 102, 0.2);
-        }
-
-        /* Custom dropdown arrow for selects */
-        .olinda-select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%3cC2A366' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.75rem center;
-            background-repeat: no-repeat;
-            background-size: 1.25em 1.25em;
-            padding-right: 2.5rem;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 
-<body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+<body class="bg-[#f7f5ef] text-gray-800" style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
-    <div class="max-w-2xl w-full">
-        
-        <!-- Header / Logo Accent -->
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full border border-brand-gold bg-brand-deep mb-3 shadow-md">
-                <span class="font-serif text-brand-gold font-bold text-2xl">O</span>
-            </div>
-            <p class="text-[10px] tracking-[0.25em] text-brand-gold uppercase font-bold mb-1">
+    <div class="max-w-2xl mx-auto px-6 py-10">
+
+        <!-- Cabeçalho da Página -->
+        <div class="mb-8">
+            <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
                 Olinda Hotel & Eventos
             </p>
-            <h1 th:text="${local.id == null ? 'Cadastrar local' : 'Editar local'}" 
-                class="font-serif text-3xl sm:text-4xl text-brand-dark font-semibold tracking-tight">
-                Local
+
+            <h1 class="text-4xl text-[#244638] mt-2" style="font-family: 'Cormorant Garamond', serif;"
+                th:text="${local.id == null} ? 'Novo local' : 'Editar local'">
             </h1>
-            <div class="w-12 h-0.5 bg-brand-gold mx-auto mt-3"></div>
+
+            <p class="text-gray-500 mt-1">
+                Informe os dados da unidade ou espaço físico.
+            </p>
         </div>
 
-        <!-- Form Card Container -->
-        <div class="bg-white rounded-2xl shadow-xl border border-brand-border/60 overflow-hidden">
-            <div class="p-6 sm:p-10">
+        <!-- Mensagem de Erro (se houver) -->
+        <div th:if="${erro}" class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-5"
+            th:text="${erro}">
+        </div>
 
-                <form th:action="${acaoFormulario}" th:object="${local}" method="post" class="space-y-6">
+        <!-- Formulário -->
+        <form th:action="${acaoFormulario}" th:object="${local}" method="post"
+            class="bg-white rounded-xl shadow-sm border border-gray-200 p-7 space-y-6">
 
-                    <!-- Nome do Local -->
-                    <div>
-                        <label for="nome" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                            Nome do local <span class="text-brand-gold">*</span>
-                        </label>
-                        <div class="relative rounded-xl">
-                            <input type="text" id="nome" th:field="*{nome}" required
-                                   placeholder="Ex: Salão Nobre, Escritório Central..."
-                                   class="olinda-input w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200">
-                        </div>
-                    </div>
-
-                    <!-- Tipo de Local -->
-                    <div>
-                        <label for="tipo" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                            Tipo de local <span class="text-brand-gold">*</span>
-                        </label>
-                        <select id="tipo" th:field="*{tipo}" required
-                                class="olinda-select w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text transition-all duration-200">
-                            <option value="">Selecione</option>
-                            <option value="ESCRITORIO">Escritório</option>
-                            <option value="CASA">Casa</option>
-                            <option value="CHACARA">Chácara</option>
-                            <option value="APARTAMENTO">Apartamento</option>
-                            <option value="OUTRO">Outro</option>
-                        </select>
-                    </div>
-
-                    <!-- Endereço -->
-                    <div>
-                        <label for="endereco" class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                            Endereço
-                        </label>
-                        <div class="relative rounded-xl">
-                            <input type="text" id="endereco" th:field="*{endereco}"
-                                   placeholder="Ex: Av. Parigot de Souza, 1200 - Toledo, PR"
-                                   class="olinda-input w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200">
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="pt-4 flex flex-col-reverse sm:flex-row items-center justify-end gap-3 border-t border-brand-sand/60">
-                        
-                        <!-- Cancelar -->
-                        <a th:href="@{/locais}"
-                           class="w-full sm:w-auto text-center px-6 py-3 rounded-xl border border-brand-border text-brand-muted hover:text-brand-dark hover:border-brand-dark/40 font-semibold text-xs uppercase tracking-wider transition-all duration-200">
-                            Cancelar
-                        </a>
-
-                        <!-- Submit -->
-                        <button type="submit"
-                                th:text="${local.id == null ? 'Cadastrar local' : 'Salvar alterações'}"
-                                class="w-full sm:w-auto bg-brand-deep hover:bg-brand-dark text-brand-gold font-semibold px-8 py-3 rounded-xl text-xs uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg border border-brand-gold/30 flex items-center justify-center gap-2">
-                            Salvar
-                        </button>
-
-                    </div>
-
-                </form>
-
+            <!-- Nome do Local -->
+            <div>
+                <label for="nome" class="block font-semibold text-gray-700 mb-2">
+                    Nome do local <span class="text-[#a58b50]">*</span>
+                </label>
+                <input type="text" id="nome" th:field="*{nome}" required
+                    placeholder="Ex.: Salão Nobre, Escritório Central..."
+                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
             </div>
-        </div>
 
-        <!-- Footer note -->
-        <p class="text-center text-xs text-brand-muted mt-6">
-            &copy; Olinda Hotel & Eventos &bull; Sistema Interno
-        </p>
+            <!-- Tipo de Local -->
+            <div>
+                <label for="tipo" class="block font-semibold text-gray-700 mb-2">
+                    Tipo de local <span class="text-[#a58b50]">*</span>
+                </label>
+                <select id="tipo" th:field="*{tipo}" required
+                    class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#244638]">
+                    <option value="">Selecione um tipo</option>
+                    <option value="ESCRITORIO">Escritório</option>
+                    <option value="CASA">Casa</option>
+                    <option value="CHACARA">Chácara</option>
+                    <option value="APARTAMENTO">Apartamento</option>
+                    <option value="OUTRO">Outro</option>
+                </select>
+            </div>
+
+            <!-- Endereço -->
+            <div>
+                <label for="endereco" class="block font-semibold text-gray-700 mb-2">
+                    Endereço
+                </label>
+                <input type="text" id="endereco" th:field="*{endereco}"
+                    placeholder="Ex.: Av. Parigot de Souza, 1200 - Toledo, PR"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <a th:href="@{/locais}"
+                    class="px-5 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors">
+                    Cancelar
+                </a>
+
+                <button type="submit"
+                    class="px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold transition-colors">
+                    Salvar local
+                </button>
+            </div>
+
+        </form>
 
     </div>
 
 </body>
+
 </html>

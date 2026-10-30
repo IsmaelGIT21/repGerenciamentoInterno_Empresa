@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fornecedores | Olinda Hotel & Eventos</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="bg-[#f7f5ef] text-gray-800" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+
+    <div class="max-w-6xl mx-auto px-6 py-10">
+
+        <!-- Cabeçalho da Página -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
+                    Olinda Hotel & Eventos
+                </p>
+                <h1 class="text-4xl text-[#244638] mt-1" style="font-family: 'Cormorant Garamond', serif;">
+                    Gestão de Fornecedores
+                </h1>
+                <p class="text-gray-500 mt-1">
+                    Gerencie os parceiros e fornecedores responsáveis pela emissão das contas.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <a th:href="@{/}"
+                    class="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium transition-colors text-sm shadow-sm">
+                    ← Voltar ao Dashboard
+                </a>
+
+                <a th:href="@{/fornecedores/novo}"
+                    class="inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold transition-colors shadow-sm text-sm">
+                    + Novo Fornecedor
+                </a>
+            </div>
+        </div>
+
+        <!-- Mensagem de Sucesso -->
+        <div th:if="${mensagem}"
+            class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-lg mb-6 flex items-center justify-between">
+            <span th:text="${mensagem}">Operação realizada com sucesso!</span>
+            <button onclick="this.parentElement.remove()" class="text-emerald-800 font-bold ml-4">&times;</button>
+        </div>
+
+        <!-- Mensagem de Erro -->
+        <div th:if="${erro}"
+            class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-6 flex items-center justify-between">
+            <span th:text="${erro}">Erro ao processar requisição.</span>
+            <button onclick="this.parentElement.remove()" class="text-red-800 font-bold ml-4">&times;</button>
+        </div>
+
+        <!-- Container da Tabela -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+
+            <!-- Barra de Status Superior -->
+            <div
+                class="p-5 border-b border-gray-200 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <span class="text-sm font-semibold text-gray-700">Fornecedores Cadastrados</span>
+
+                <div th:unless="${#lists.isEmpty(fornecedores)}" class="text-xs text-gray-500">
+                    Exibindo <strong class="text-[#244638]" th:text="${#lists.size(fornecedores)}">0</strong> registros
+                </div>
+            </div>
+
+            <!-- Estado Vazio (Sem registros) -->
+            <div th:if="${#lists.isEmpty(fornecedores)}" class="p-12 text-center">
+                <p class="text-gray-500 mb-4">Nenhum fornecedor cadastrado até o momento.</p>
+                <a th:href="@{/fornecedores/novo}"
+                    class="inline-flex items-center px-4 py-2 rounded-lg bg-[#244638] hover:bg-[#193629] text-white text-sm font-semibold transition-colors">
+                    Cadastrar primeiro fornecedor
+                </a>
+            </div>
+
+            <!-- Tabela de Dados -->
+            <div th:unless="${#lists.isEmpty(fornecedores)}" class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr
+                            class="border-b border-gray-200 bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
+                            <th class="py-3.5 px-6">ID</th>
+                            <th class="py-3.5 px-6">Nome / Razão Social</th>
+                            <th class="py-3.5 px-6">Status</th>
+                            <th class="py-3.5 px-6 text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr th:each="fornecedor : ${fornecedores}" class="hover:bg-gray-50/80 transition-colors">
+
+                            <!-- ID -->
+                            <td class="py-4 px-6 font-medium text-gray-400" th:text="${fornecedor.id}">
+                                1
+                            </td>
+
+                            <!-- Nome -->
+                            <td class="py-4 px-6 font-semibold text-gray-800" th:text="${fornecedor.nome}">
+                                COPEL
+                            </td>
+
+                            <!-- Status Badge -->
+                            <td class="py-4 px-6 whitespace-nowrap">
+                                <span th:if="${fornecedor.ativo}"
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                                    Ativo
+                                </span>
+
+                                <span th:unless="${fornecedor.ativo}"
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-100 text-rose-800">
+                                    Inativo
+                                </span>
+                            </td>
+
+                            <!-- Ações -->
+                            <td class="py-4 px-6 text-right whitespace-nowrap">
+                                <div class="flex items-center justify-end gap-2">
+
+                                    <!-- Botão Editar -->
+                                    <a th:href="@{/fornecedores/{id}/editar(id=${fornecedor.id})}"
+                                        class="px-2.5 py-1.5 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 text-xs font-medium transition-colors"
+                                        title="Editar fornecedor">
+                                        Editar
+                                    </a>
+
+                                    <!-- Formulário de Ativação / Desativação -->
+                                    <form th:action="@{/fornecedores/{id}/status(id=${fornecedor.id})}" method="post"
+                                        class="inline">
+                                        <button type="submit" th:text="${fornecedor.ativo} ? 'Desativar' : 'Ativar'"
+                                            th:class="${fornecedor.ativo} 
+                                                ? 'px-2.5 py-1.5 rounded-md border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium transition-colors' 
+                                                : 'px-2.5 py-1.5 rounded-md border border-emerald-200 text-emerald-700 hover:bg-emerald-50 text-xs font-medium transition-colors'">
+                                            Ativar / Desativar
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Rodapé da Tabela -->
+            <div th:unless="${#lists.isEmpty(fornecedores)}"
+                class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-500">
+                <div>
+                    Total de fornecedores: <strong class="text-gray-800"
+                        th:text="${#lists.size(fornecedores)}">0</strong>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Ativo</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                        Inativo</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Link Secundário de Navegação -->
+        <div class="mt-6 flex gap-4 text-sm">
+            <a th:href="@{/locais}" class="text-gray-600 hover:text-[#244638] font-medium transition-colors">
+                ← Ir para Gestão de Locais
+            </a>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

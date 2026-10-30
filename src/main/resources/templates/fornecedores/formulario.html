@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Fornecedor | Olinda Hotel & Eventos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-[#f7f5ef] text-gray-800" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+
+<div class="max-w-2xl mx-auto px-6 py-10">
+
+    <div class="mb-8">
+        <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
+            Olinda Hotel & Eventos
+        </p>
+
+        <h1 class="text-4xl text-[#244638] mt-2"
+            style="font-family: 'Cormorant Garamond', serif;"
+            th:text="${fornecedor.id == null} ? 'Novo fornecedor' : 'Editar fornecedor'">
+        </h1>
+
+        <p class="text-gray-500 mt-1">
+            Informe o nome do fornecedor.
+        </p>
+    </div>
+
+    <div th:if="${erro}"
+         class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-5"
+         th:text="${erro}">
+    </div>
+
+    <form th:action="${acaoFormulario}"
+          th:object="${fornecedor}"
+          method="post"
+          class="bg-white rounded-xl shadow-sm border border-gray-200 p-7">
+
+        <div class="mb-6">
+            <label for="nome" class="block font-semibold text-gray-700 mb-2">
+                Nome do fornecedor
+            </label>
+
+            <input type="text"
+                   id="nome"
+                   th:field="*{nome}"
+                   maxlength="150"
+                   required
+                   placeholder="Ex.: COPEL, SANEPAR, Claro..."
+                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
+        </div>
+
+        <div class="flex justify-end gap-3">
+
+            <a href="/fornecedores"
+               class="px-5 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                    class="px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold">
+                Salvar fornecedor
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

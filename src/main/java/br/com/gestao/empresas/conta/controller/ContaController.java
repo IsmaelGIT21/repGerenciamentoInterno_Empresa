@@ -1,10 +1,9 @@
+package br.com.gestao.empresas.conta.controller;
 
-package br.com.gestao.empresas.controller;
-
-import br.com.gestao.empresas.model.Conta;
-import br.com.gestao.empresas.model.Local;
-import br.com.gestao.empresas.repository.LocalRepository;
-import br.com.gestao.empresas.service.ContaService;
+import br.com.gestao.empresas.conta.model.Conta;
+import br.com.gestao.empresas.local.model.Local;
+import br.com.gestao.empresas.local.repository.LocalRepository;
+import br.com.gestao.empresas.conta.service.ContaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

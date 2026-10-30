@@ -1,7 +1,7 @@
-package br.com.gestao.empresas.service;
+package br.com.gestao.empresas.usuario.service;
 
-import br.com.gestao.empresas.model.Usuario;
-import br.com.gestao.empresas.repository.UsuarioRepository;
+import br.com.gestao.empresas.usuario.model.Usuario;
+import br.com.gestao.empresas.usuario.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

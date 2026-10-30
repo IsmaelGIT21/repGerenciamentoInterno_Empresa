@@ -1,4 +1,4 @@
-package br.com.gestao.empresas.model;
+package br.com.gestao.empresas.conta.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+import br.com.gestao.empresas.local.model.Local;
 @Entity
 @Table(name = "contas")
 public class Conta {

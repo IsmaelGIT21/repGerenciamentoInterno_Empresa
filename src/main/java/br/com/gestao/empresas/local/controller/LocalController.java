@@ -1,6 +1,6 @@
-package br.com.gestao.empresas.controller;
+package br.com.gestao.empresas.local.controller;
 
-import br.com.gestao.empresas.model.Local;
+import br.com.gestao.empresas.local.model.Local;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import br.com.gestao.empresas.service.LocalService;
+import br.com.gestao.empresas.local.service.LocalService;
 
 @Controller
 @RequestMapping("/locais")

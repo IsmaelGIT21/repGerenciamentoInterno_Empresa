@@ -1,5 +1,4 @@
-
-package br.com.gestao.empresas.model;
+package br.com.gestao.empresas.local.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,8 +1,7 @@
+package br.com.gestao.empresas.dashboard.controller;
 
-package br.com.gestao.empresas.controller;
-
-import br.com.gestao.empresas.repository.ContaRepository;
-import br.com.gestao.empresas.repository.LocalRepository;
+import br.com.gestao.empresas.conta.repository.ContaRepository;
+import br.com.gestao.empresas.local.repository.LocalRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

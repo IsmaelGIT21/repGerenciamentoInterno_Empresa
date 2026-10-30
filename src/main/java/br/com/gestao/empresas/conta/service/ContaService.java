@@ -1,13 +1,13 @@
-package br.com.gestao.empresas.service;
+package br.com.gestao.empresas.conta.service;
 
-import br.com.gestao.empresas.model.Conta;
-import br.com.gestao.empresas.repository.ContaRepository;
+import br.com.gestao.empresas.conta.model.Conta;
+import br.com.gestao.empresas.conta.repository.ContaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import br.com.gestao.empresas.model.Local;
-import br.com.gestao.empresas.repository.LocalRepository;
+import br.com.gestao.empresas.local.model.Local;
+import br.com.gestao.empresas.local.repository.LocalRepository;
 
 import java.time.LocalDate;
 

@@ -1,5 +1,4 @@
-
-package br.com.gestao.empresas.model;
+package br.com.gestao.empresas.usuario.model;
 
 import jakarta.persistence.*;
 

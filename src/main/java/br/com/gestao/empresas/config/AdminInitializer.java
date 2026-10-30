@@ -1,7 +1,7 @@
 package br.com.gestao.empresas.config;
 
-import br.com.gestao.empresas.model.Usuario;
-import br.com.gestao.empresas.repository.UsuarioRepository;
+import br.com.gestao.empresas.usuario.model.Usuario;
+import br.com.gestao.empresas.usuario.repository.UsuarioRepository;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

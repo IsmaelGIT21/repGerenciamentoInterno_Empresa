@@ -1,6 +1,6 @@
 package br.com.gestao.empresas.config;
 
-import br.com.gestao.empresas.service.UsuarioDetailsService;
+import br.com.gestao.empresas.usuario.service.UsuarioDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

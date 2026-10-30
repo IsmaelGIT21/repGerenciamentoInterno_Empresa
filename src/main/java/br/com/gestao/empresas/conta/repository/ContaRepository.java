@@ -1,6 +1,6 @@
-package br.com.gestao.empresas.repository;
+package br.com.gestao.empresas.conta.repository;
 
-import br.com.gestao.empresas.model.Conta;
+import br.com.gestao.empresas.conta.model.Conta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -10,42 +10,59 @@ import java.util.List;
 
 public interface ContaRepository extends JpaRepository<Conta, Long> {
 
-    List<Conta> findByLocalId(Long localId);
+        List<Conta> findByLocalId(Long localId);
 
-    long countByStatus(String status);
+        long countByStatus(String status);
 
-    @Query("SELECT COALESCE(SUM(c.valor), 0) FROM Conta c WHERE c.status = :status")
-    BigDecimal somarValoresPorStatus(@Param("status") String status);
+        @Query("SELECT COALESCE(SUM(c.valor), 0) FROM Conta c WHERE c.status = :status")
+        BigDecimal somarValoresPorStatus(@Param("status") String status);
 
-	long countByStatusAndDataVencimentoBefore(
-        String status,
-        LocalDate data);
+        long countByStatusAndDataVencimentoBefore(
+                        String status,
+                        LocalDate data);
 
-@Query("""
-        SELECT COALESCE(SUM(c.valor), 0)
-        FROM Conta c
-        WHERE c.status = :status
-        AND c.dataVencimento BETWEEN :inicio AND :fim
-        """)
-BigDecimal somarPorStatusEPeriodoVencimento(
-        @Param("status") String status,
-        @Param("inicio") LocalDate inicio,
-        @Param("fim") LocalDate fim);
+        @Query("""
+                        SELECT COALESCE(SUM(c.valor), 0)
+                        FROM Conta c
+                        WHERE c.status = :status
+                        AND c.dataVencimento BETWEEN :inicio AND :fim
+                        """)
+        BigDecimal somarPorStatusEPeriodoVencimento(
+                        @Param("status") String status,
+                        @Param("inicio") LocalDate inicio,
+                        @Param("fim") LocalDate fim);
 
-@Query("""
-        SELECT COALESCE(SUM(c.valor), 0)
-        FROM Conta c
-        WHERE c.status = :status
-        AND c.dataPagamento BETWEEN :inicio AND :fim
-        """)
-BigDecimal somarPorStatusEPeriodoPagamento(
-        @Param("status") String status,
-        @Param("inicio") LocalDate inicio,
-        @Param("fim") LocalDate fim);
+        @Query("""
+                        SELECT COALESCE(SUM(c.valor), 0)
+                        FROM Conta c
+                        WHERE c.status = :status
+                        AND c.dataPagamento BETWEEN :inicio AND :fim
+                        """)
+        BigDecimal somarPorStatusEPeriodoPagamento(
+                        @Param("status") String status,
+                        @Param("inicio") LocalDate inicio,
+                        @Param("fim") LocalDate fim);
 
-List<Conta> findByStatusAndDataVencimentoBetweenOrderByDataVencimentoAsc(
-        String status,
-        LocalDate inicio,
-        LocalDate fim);
+        List<Conta> findByStatusAndDataVencimentoBetweenOrderByDataVencimentoAsc(
+                        String status,
+                        LocalDate inicio,
+                        LocalDate fim);
 
+        @Query("""
+                        SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END
+                        FROM Conta c
+                        JOIN c.fornecedor f
+                        JOIN c.local l
+                        WHERE LOWER(f.nome) = LOWER(:fornecedor)
+                        AND LOWER(c.descricao) = LOWER(:descricao)
+                        AND LOWER(l.nome) = LOWER(:nomeLocal)
+                        AND c.dataVencimento = :dataVencimento
+                        AND c.valor = :valor
+                        """)
+        boolean existePossivelDuplicidade(
+                        @Param("fornecedor") String fornecedor,
+                        @Param("descricao") String descricao,
+                        @Param("nomeLocal") String nomeLocal,
+                        @Param("dataVencimento") LocalDate dataVencimento,
+                        @Param("valor") BigDecimal valor);
 }

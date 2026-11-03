@@ -13,7 +13,10 @@ public class ContaImportacaoDTO {
     private String nomeLocal;
     private LocalDate dataVencimento;
     private BigDecimal valor;
+
     private List<String> erros = new ArrayList<>();
+
+    private boolean possivelDuplicidade;
 
     public int getLinhaExcel() {
         return linhaExcel;
@@ -73,5 +76,13 @@ public class ContaImportacaoDTO {
 
     public boolean isValido() {
         return erros.isEmpty();
+    }
+
+    public boolean isPossivelDuplicidade() {
+        return possivelDuplicidade;
+    }
+
+    public void setPossivelDuplicidade(boolean possivelDuplicidade) {
+        this.possivelDuplicidade = possivelDuplicidade;
     }
 }

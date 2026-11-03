@@ -67,6 +67,9 @@ public class ContaService {
                             "Fornecedor não encontrado"));
 
             conta.setFornecedor(fornecedor);
+
+        } else {
+            conta.setFornecedor(null);
         }
 
         conta.setLocal(local);
@@ -102,6 +105,22 @@ public class ContaService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Local não encontrado"));
+
+        // Atualiza o fornecedor
+        if (dadosFormulario.getFornecedor() != null
+                && dadosFormulario.getFornecedor().getId() != null) {
+
+            Fornecedor fornecedor = fornecedorRepository
+                    .findById(dadosFormulario.getFornecedor().getId())
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,
+                            "Fornecedor não encontrado"));
+
+            conta.setFornecedor(fornecedor);
+
+        } else {
+            conta.setFornecedor(null);
+        }
 
         conta.setDescricao(dadosFormulario.getDescricao());
         conta.setValor(dadosFormulario.getValor());

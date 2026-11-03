@@ -11,21 +11,40 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.gestao.empresas.local.service.LocalService;
+import br.com.gestao.empresas.conta.repository.ContaRepository;
 
 @Controller
 @RequestMapping("/locais")
 public class LocalController {
         private final LocalService localService;
+        private final ContaRepository contaRepository;
 
         public LocalController(
-                        LocalService localService) {
+                        LocalService localService,
+                        ContaRepository contaRepository) {
                 this.localService = localService;
+                this.contaRepository = contaRepository;
         }
 
         @GetMapping
         public String listar(Model model) {
                 model.addAttribute("locais", localService.listarTodos());
                 return "locais/lista";
+        }
+
+        @GetMapping("/{id}")
+        public String detalhes(
+                        @PathVariable Long id,
+                        Model model) {
+
+                Local local = localService.buscarPorId(id);
+
+                model.addAttribute("local", local);
+                model.addAttribute(
+                                "contas",
+                                contaRepository.findByLocalId(id));
+
+                return "locais/detalhes";
         }
 
         @GetMapping("/novo")

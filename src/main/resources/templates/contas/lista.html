@@ -4,12 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão de Contas | Olinda Hotel & Eventos</title>
+    <title>Gestão Financeira | Olinda Hotel & Eventos</title>
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
@@ -25,11 +23,18 @@
                 <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
                     Olinda Hotel & Eventos
                 </p>
+
                 <h1 class="text-4xl text-[#244638] mt-1" style="font-family: 'Cormorant Garamond', serif;">
                     Gestão Financeira
                 </h1>
+
                 <p class="text-gray-500 mt-1">
                     Acompanhamento e controle de vencimentos e pagamentos.
+                </p>
+
+                <!-- Nome do local, quando estiver consultando um local específico -->
+                <p th:if="${local != null}" class="mt-2 text-[#244638] font-semibold">
+                    Local: <span th:text="${local.nome}">Nome do local</span>
                 </p>
             </div>
 
@@ -38,6 +43,7 @@
                     class="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium transition-colors text-sm shadow-sm">
                     ← Voltar ao Dashboard
                 </a>
+
                 <a th:href="@{/locais}"
                     class="px-5 py-3 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium transition-colors text-sm">
                     Locais
@@ -47,166 +53,368 @@
                     class="inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold transition-colors shadow-sm text-sm">
                     + Nova Conta
                 </a>
+
+                <a th:if="${local != null}" th:href="@{/apolices/nova}"
+                    class="inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[#a58b50] hover:bg-[#8d7541] text-white font-semibold transition-colors shadow-sm text-sm">
+                    + Nova Apólice
+                </a>
             </div>
         </div>
 
         <!-- Mensagens de Sucesso / Alerta -->
         <div th:if="${mensagem}"
             class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-lg mb-6 flex items-center justify-between">
+
             <span th:text="${mensagem}">Operação realizada com sucesso!</span>
-            <button onclick="this.parentElement.remove()" class="text-emerald-800 font-bold ml-4">&times;</button>
+
+            <button onclick="this.parentElement.remove()" class="text-emerald-800 font-bold ml-4">
+                &times;
+            </button>
         </div>
 
-        <!-- Container da Tabela -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <!-- ================================================== -->
+        <!-- SEÇÃO DE CONTAS -->
+        <!-- ================================================== -->
 
-            <!-- Cabeçalho da Tabela / Status -->
-            <div
-                class="p-5 border-b border-gray-200 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                <span class="text-sm font-semibold text-gray-700">Contas Cadastradas</span>
+        <div class="mb-10">
 
-                <div th:unless="${#lists.isEmpty(contas)}" class="text-xs text-gray-500">
-                    Exibindo <strong class="text-[#244638]" th:text="${#lists.size(contas)}">0</strong> registros
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                <h2 class="text-2xl text-[#244638]" style="font-family: 'Cormorant Garamond', serif;">
+                    Contas
+                </h2>
+
+                <span class="text-xs text-gray-500">
+                    Total:
+                    <strong class="text-[#244638]" th:text="${#lists.size(contas)}">0</strong>
+                    registros
+                </span>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+
+                <!-- Estado Vazio -->
+                <div th:if="${#lists.isEmpty(contas)}" class="p-12 text-center">
+                    <p class="text-gray-500 mb-4">
+                        Nenhuma conta cadastrada para este local.
+                    </p>
+
+                    <a th:href="@{/contas/nova}"
+                        class="inline-flex items-center px-4 py-2 rounded-lg bg-[#244638] hover:bg-[#193629] text-white text-sm font-semibold transition-colors">
+                        Cadastrar primeira conta
+                    </a>
                 </div>
-            </div>
 
-            <!-- Estado Vazio (Sem registros) -->
-            <div th:if="${#lists.isEmpty(contas)}" class="p-12 text-center">
-                <p class="text-gray-500 mb-4">Nenhuma conta cadastrada até o momento.</p>
-                <a th:href="@{/contas/nova}"
-                    class="inline-flex items-center px-4 py-2 rounded-lg bg-[#244638] hover:bg-[#193629] text-white text-sm font-semibold transition-colors">
-                    Cadastrar primeira conta
-                </a>
-            </div>
+                <!-- Tabela de Contas -->
+                <div th:unless="${#lists.isEmpty(contas)}" class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
 
-            <!-- Tabela de Dados -->
-            <div th:unless="${#lists.isEmpty(contas)}" class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-sm">
-                    <thead>
-                        <tr
-                            class="border-b border-gray-200 bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
-                            <th class="py-3.5 px-6">ID</th>
-                            <th class="py-3.5 px-6">Descrição</th>
-                            <th class="py-3.5 px-6">Valor</th>
-                            <th class="py-3.5 px-6">Vencimento</th>
-                            <th class="py-3.5 px-6">Local</th>
-                            <th class="py-3.5 px-6">Situação</th>
-                            <th class="py-3.5 px-6">Data Pagto.</th>
-                            <th class="py-3.5 px-6 text-right">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr th:each="conta : ${contas}" class="hover:bg-gray-50/80 transition-colors">
+                        <thead>
+                            <tr
+                                class="border-b border-gray-200 bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
+                                <th class="py-3.5 px-6">ID</th>
+                                <th class="py-3.5 px-6">Descrição</th>
+                                <th class="py-3.5 px-6">Valor</th>
+                                <th class="py-3.5 px-6">Vencimento</th>
+                                <th class="py-3.5 px-6">Local</th>
+                                <th class="py-3.5 px-6">Situação</th>
+                                <th class="py-3.5 px-6">Data Pagto.</th>
+                                <th class="py-3.5 px-6 text-right">Ações</th>
+                            </tr>
+                        </thead>
 
-                            <!-- ID -->
-                            <td class="py-4 px-6 font-medium text-gray-400" th:text="${conta.id}">
-                                1
-                            </td>
+                        <tbody class="divide-y divide-gray-100">
 
-                            <!-- Descrição -->
-                            <td class="py-4 px-6 font-semibold text-gray-800" th:text="${conta.descricao}">
-                                Fornecedor Alimentício
-                            </td>
+                            <tr th:each="conta : ${contas}" class="hover:bg-gray-50/80 transition-colors">
 
-                            <!-- Valor Formatado -->
-                            <td class="py-4 px-6 font-semibold text-gray-800 whitespace-nowrap">
-                                R$&nbsp;<span
-                                    th:text="${#numbers.formatDecimal(conta.valor, 1, 'POINT', 2, 'COMMA')}">0,00</span>
-                            </td>
+                                <!-- ID -->
+                                <td class="py-4 px-6 font-medium text-gray-400" th:text="${conta.id}">
+                                    1
+                                </td>
 
-                            <!-- Vencimento -->
-                            <td class="py-4 px-6 text-gray-600 whitespace-nowrap"
-                                th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}">
-                                01/10/2026
-                            </td>
+                                <!-- Descrição -->
+                                <td class="py-4 px-6 font-semibold text-gray-800" th:text="${conta.descricao}">
+                                    Fornecedor Alimentício
+                                </td>
 
-                            <!-- Local -->
-                            <td class="py-4 px-6 text-gray-600" th:text="${conta.local.nome}">
-                                Restaurante Principal
-                            </td>
+                                <!-- Valor -->
+                                <td class="py-4 px-6 font-semibold text-gray-800 whitespace-nowrap">
+                                    R$&nbsp;<span
+                                        th:text="${#numbers.formatDecimal(conta.valor, 1, 'POINT', 2, 'COMMA')}">
+                                        0,00
+                                    </span>
+                                </td>
 
-                            <!-- Badges de Situação -->
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <!-- Badge Paga -->
-                                <span th:if="${conta.status == 'PAGA'}"
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                                    Paga
-                                </span>
+                                <!-- Vencimento -->
+                                <td class="py-4 px-6 text-gray-600 whitespace-nowrap"
+                                    th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}">
+                                    01/10/2026
+                                </td>
 
-                                <!-- Badge Vencida -->
-                                <span
-                                    th:if="${conta.status != 'PAGA' and conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-100 text-rose-800">
-                                    Vencida
-                                </span>
+                                <!-- Local -->
+                                <td class="py-4 px-6 text-gray-600" th:text="${conta.local.nome}">
+                                    Restaurante Principal
+                                </td>
 
-                                <!-- Badge Pendente -->
-                                <span
-                                    th:if="${conta.status != 'PAGA' and !conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                                    Pendente
-                                </span>
-                            </td>
+                                <!-- Situação -->
+                                <td class="py-4 px-6 whitespace-nowrap">
 
-                            <!-- Data do Pagamento -->
-                            <td class="py-4 px-6 text-gray-500 whitespace-nowrap"
-                                th:text="${conta.dataPagamento != null ? #temporals.format(conta.dataPagamento, 'dd/MM/yyyy') : '-'}">
-                                -
-                            </td>
+                                    <span th:if="${conta.status == 'PAGA'}"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                                        Paga
+                                    </span>
 
-                            <!-- Ações da Linha -->
-                            <td class="py-4 px-6 text-right whitespace-nowrap">
-                                <div class="flex items-center justify-end gap-2">
+                                    <span
+                                        th:if="${conta.status != 'PAGA' and conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-100 text-rose-800">
+                                        Vencida
+                                    </span>
 
-                                    <!-- Marcar como Paga -->
-                                    <form th:if="${conta.status != 'PAGA'}"
-                                        th:action="@{/contas/{id}/pagar(id=${conta.id})}" method="post" class="inline">
-                                        <button type="submit"
-                                            class="px-2.5 py-1.5 rounded-md bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-medium transition-colors">
-                                            Pagar
-                                        </button>
-                                    </form>
+                                    <span
+                                        th:if="${conta.status != 'PAGA' and !conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                        Pendente
+                                    </span>
 
-                                    <!-- Botão Editar -->
-                                    <a th:href="@{/contas/{id}/editar(id=${conta.id})}"
-                                        class="px-2.5 py-1.5 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 text-xs font-medium transition-colors">
-                                        Editar
-                                    </a>
+                                </td>
 
-                                    <!-- Excluir -->
-                                    <form th:action="@{/contas/{id}/excluir(id=${conta.id})}" method="post"
-                                        onsubmit="return confirm('Tem certeza de que deseja excluir esta conta?');"
-                                        class="inline">
-                                        <button type="submit"
-                                            class="px-2.5 py-1.5 rounded-md border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium transition-colors">
-                                            Excluir
-                                        </button>
-                                    </form>
+                                <!-- Data Pagamento -->
+                                <td class="py-4 px-6 text-gray-500 whitespace-nowrap"
+                                    th:text="${conta.dataPagamento != null ? #temporals.format(conta.dataPagamento, 'dd/MM/yyyy') : '-'}">
+                                    -
+                                </td>
 
-                                </div>
-                            </td>
+                                <!-- Ações -->
+                                <td class="py-4 px-6 text-right whitespace-nowrap">
+                                    <div class="flex items-center justify-end gap-2">
 
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                        <form th:if="${conta.status != 'PAGA'}"
+                                            th:action="@{/contas/{id}/pagar(id=${conta.id})}" method="post"
+                                            class="inline">
 
-            <!-- Rodapé da Tabela -->
-            <div th:unless="${#lists.isEmpty(contas)}"
-                class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-500">
-                <div>
-                    Total de contas: <strong class="text-gray-800" th:text="${#lists.size(contas)}">0</strong>
+                                            <button type="submit"
+                                                class="px-2.5 py-1.5 rounded-md bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-medium transition-colors">
+                                                Pagar
+                                            </button>
+                                        </form>
+
+                                        <a th:href="@{/contas/{id}/editar(id=${conta.id})}"
+                                            class="px-2.5 py-1.5 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 text-xs font-medium transition-colors">
+                                            Editar
+                                        </a>
+
+                                        <form th:action="@{/contas/{id}/excluir(id=${conta.id})}" method="post"
+                                            onsubmit="return confirm('Tem certeza de que deseja excluir esta conta?');"
+                                            class="inline">
+
+                                            <button type="submit"
+                                                class="px-2.5 py-1.5 rounded-md border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium transition-colors">
+                                                Excluir
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
                 </div>
-                <div class="flex items-center gap-3">
-                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        Paga</span>
-                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                        Pendente</span>
-                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-500"></span>
-                        Vencida</span>
+
+                <!-- Rodapé das Contas -->
+                <div th:unless="${#lists.isEmpty(contas)}"
+                    class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-500">
+
+                    <div>
+                        Total de contas:
+                        <strong class="text-gray-800" th:text="${#lists.size(contas)}">0</strong>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <span class="flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            Paga
+                        </span>
+
+                        <span class="flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            Pendente
+                        </span>
+
+                        <span class="flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                            Vencida
+                        </span>
+                    </div>
                 </div>
+
+            </div>
+        </div>
+
+        <!-- ================================================== -->
+        <!-- SEÇÃO DE APÓLICES -->
+        <!-- Aparece somente quando um local específico é aberto -->
+        <!-- ================================================== -->
+
+        <div th:if="${local != null}" class="mb-10">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+
+                <h2 class="text-2xl text-[#244638]" style="font-family: 'Cormorant Garamond', serif;">
+                    Apólices de Seguro
+                </h2>
+
+                <span class="text-xs text-gray-500">
+                    Total:
+                    <strong class="text-[#244638]" th:text="${#lists.size(apolices)}">0</strong>
+                    registros
+                </span>
             </div>
 
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+
+                <!-- Estado Vazio -->
+                <div th:if="${#lists.isEmpty(apolices)}" class="p-12 text-center">
+
+                    <p class="text-gray-500 mb-4">
+                        Nenhuma apólice cadastrada para este local.
+                    </p>
+
+                    <a th:href="@{/apolices/nova}"
+                        class="inline-flex items-center px-4 py-2 rounded-lg bg-[#244638] hover:bg-[#193629] text-white text-sm font-semibold transition-colors">
+                        Cadastrar primeira apólice
+                    </a>
+                </div>
+
+                <!-- Tabela de Apólices -->
+                <div th:unless="${#lists.isEmpty(apolices)}" class="overflow-x-auto">
+
+                    <table class="w-full text-left border-collapse text-sm">
+
+                        <thead>
+                            <tr
+                                class="border-b border-gray-200 bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
+                                <th class="py-3.5 px-6">ID</th>
+                                <th class="py-3.5 px-6">Descrição</th>
+                                <th class="py-3.5 px-6">Nº Apólice</th>
+                                <th class="py-3.5 px-6">Seguradora</th>
+                                <th class="py-3.5 px-6">Corretor</th>
+                                <th class="py-3.5 px-6">Vencimento</th>
+                                <th class="py-3.5 px-6">Prêmio</th>
+                                <th class="py-3.5 px-6">Situação</th>
+                                <th class="py-3.5 px-6 text-right">Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="divide-y divide-gray-100">
+
+                            <tr th:each="apolice : ${apolices}" class="hover:bg-gray-50/80 transition-colors">
+
+                                <!-- ID -->
+                                <td class="py-4 px-6 font-medium text-gray-400" th:text="${apolice.id}">
+                                    1
+                                </td>
+
+                                <!-- Descrição -->
+                                <td class="py-4 px-6 font-semibold text-gray-800" th:text="${apolice.descricao}">
+                                    Seguro do veículo
+                                </td>
+
+                                <!-- Número da Apólice -->
+                                <td class="py-4 px-6 text-gray-600"
+                                    th:text="${apolice.numeroApolice != null ? apolice.numeroApolice : '-'}">
+                                    123456
+                                </td>
+
+                                <!-- Seguradora -->
+                                <td class="py-4 px-6 text-gray-600"
+                                    th:text="${apolice.seguradora != null ? apolice.seguradora : '-'}">
+                                    Seguradora
+                                </td>
+
+                                <!-- Corretor -->
+                                <td class="py-4 px-6 text-gray-600"
+                                    th:text="${apolice.corretor != null ? apolice.corretor : '-'}">
+                                    Corretor
+                                </td>
+
+                                <!-- Vencimento -->
+                                <td class="py-4 px-6 text-gray-600 whitespace-nowrap"
+                                    th:text="${apolice.dataVencimento != null ? #temporals.format(apolice.dataVencimento, 'dd/MM/yyyy') : '-'}">
+                                    01/10/2026
+                                </td>
+
+                                <!-- Valor do Prêmio -->
+                                <td class="py-4 px-6 font-semibold text-gray-800 whitespace-nowrap">
+                                    <span th:if="${apolice.valorPremio != null}">
+                                        R$&nbsp;<span
+                                            th:text="${#numbers.formatDecimal(apolice.valorPremio, 1, 'POINT', 2, 'COMMA')}">
+                                            0,00
+                                        </span>
+                                    </span>
+
+                                    <span th:unless="${apolice.valorPremio != null}">-</span>
+                                </td>
+
+                                <!-- Situação -->
+                                <td class="py-4 px-6 whitespace-nowrap">
+
+                                    <span th:if="${apolice.dataVencimento == null}"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                                        Sem vencimento
+                                    </span>
+
+                                    <span
+                                        th:if="${apolice.dataVencimento != null and apolice.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-100 text-rose-800">
+                                        Vencida
+                                    </span>
+
+                                    <span
+                                        th:if="${apolice.dataVencimento != null and !apolice.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                                        Vigente
+                                    </span>
+
+                                </td>
+
+                                <!-- Ações -->
+                                <td class="py-4 px-6 text-right whitespace-nowrap">
+                                    <div class="flex items-center justify-end gap-2">
+
+                                        <a th:href="@{/apolices/{id}/editar(id=${apolice.id})}"
+                                            class="px-2.5 py-1.5 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 text-xs font-medium transition-colors">
+                                            Editar
+                                        </a>
+
+                                        <form th:action="@{/apolices/{id}/excluir(id=${apolice.id})}" method="post"
+                                            onsubmit="return confirm('Tem certeza de que deseja excluir esta apólice?');"
+                                            class="inline">
+
+                                            <button type="submit"
+                                                class="px-2.5 py-1.5 rounded-md border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium transition-colors">
+                                                Excluir
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Rodapé das Apólices -->
+                <div th:unless="${#lists.isEmpty(apolices)}"
+                    class="px-6 py-4 bg-gray-50 border-t border-gray-200 text-xs text-gray-500">
+
+                    Total de apólices:
+                    <strong class="text-gray-800" th:text="${#lists.size(apolices)}">0</strong>
+                </div>
+
+            </div>
         </div>
 
     </div>

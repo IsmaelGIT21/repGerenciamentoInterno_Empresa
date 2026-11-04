@@ -4,174 +4,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Cadastrar usuário | Olinda Hotel & Eventos</title>
+    <title>Cadastrar Usuário | Olinda Hotel & Eventos</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Custom Tailwind Configuration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#141D18',     /* Deep Forest / Slate Dark */
-                            deep: '#1e2d24',     /* Olinda Slate Green */
-                            gold: '#c2a366',     /* Champagne Gold Accent */
-                            goldhover: '#a8894d',
-                            cream: '#f9f7f2',    /* Warm Sand Light Background */
-                            card: '#ffffff',
-                            sand: '#ede8e0',
-                            text: '#222b26',
-                            muted: '#69746e',
-                            border: '#e2dbc8'
-                        }
-                    },
-                    fontFamily: {
-                        serif: ['"Cormorant Garamond"', 'serif'],
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #f9f7f2;
-            color: #222b26;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        /* Focus glow for form controls */
-        .olinda-input:focus {
-            outline: none;
-            border-color: #c2a366;
-            box-shadow: 0 0 0 3px rgba(194, 163, 102, 0.2);
-        }
-    </style>
+    <script th:src="@{/js/usuarios-formulario.js}"></script>
 </head>
 
-<body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+<body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
 
-    <div class="max-w-md w-full space-y-6">
+    <!-- BARRA SUPERIOR DE NAVEGAÇÃO / HEADER -->
+    <header
+        class="bg-brand-900 text-white sticky top-0 z-50 border-b border-gold-500/30 shadow-lg backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center gap-4">
 
-        <!-- Header / Logo Accent -->
-        <div class="text-center">
-            <div
-                class="inline-flex items-center justify-center w-14 h-14 rounded-full border border-brand-gold bg-brand-deep mb-3 shadow-md">
-                <span class="font-serif text-brand-gold font-bold text-3xl">O</span>
-            </div>
-            <p class="text-[10px] tracking-[0.25em] text-brand-gold uppercase font-bold mb-1">
-                Olinda Hotel & Eventos
-            </p>
-            <p>
-                <a th:href="@{/}">← Voltar ao início</a>
-            </p>
-            <h1 class="font-serif text-3xl sm:text-4xl text-brand-dark font-semibold tracking-tight">
-                Cadastrar usuário
-            </h1>
-            <div class="w-12 h-0.5 bg-brand-gold mx-auto mt-3"></div>
-        </div>
-
-        <!-- FLASH ERROR ALERT MESSAGE -->
-        <div th:if="${erro}"
-            class="bg-rose-50 border border-rose-200 text-rose-800 px-5 py-4 rounded-xl shadow-sm flex items-start gap-3"
-            role="alert">
-            <div
-                class="w-6 h-6 rounded-full bg-rose-100 flex items-center justify-center text-rose-700 shrink-0 mt-0.5">
-                <i class="fa-solid fa-triangle-exclamation text-xs"></i>
-            </div>
-            <div class="text-xs font-medium leading-relaxed">
-                <p th:text="${erro}"></p>
-            </div>
-        </div>
-
-        <!-- Form Card Container -->
-        <div class="bg-white rounded-2xl shadow-xl border border-brand-border/60 overflow-hidden">
-            <div class="p-6 sm:p-8">
-
-                <form th:action="@{/usuarios}" th:object="${usuario}" method="post" class="space-y-5">
-
-                    <!-- Username -->
+            <!-- Logo & Nome do Hotel -->
+            <div class="flex items-center gap-3">
+                <a th:href="@{/}" class="flex items-center gap-3 group">
+                    <div
+                        class="w-10 h-10 rounded-xl border border-gold-500/50 bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
+                        <span
+                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">O</span>
+                    </div>
                     <div>
-                        <label for="username"
-                            class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                            Nome de usuário <span class="text-brand-gold">*</span>
-                        </label>
-                        <div class="relative rounded-xl">
-                            <span
-                                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-gold text-sm">
-                                <i class="fa-regular fa-user"></i>
-                            </span>
-                            <input type="text" id="username" th:field="*{username}" maxlength="100"
-                                autocomplete="username" required placeholder="Digite o nome de usuário"
-                                class="olinda-input w-full pl-10 bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200">
-                        </div>
+                        <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-bold block">
+                            Olinda Hotel & Eventos
+                        </span>
+                        <h1
+                            class="text-lg sm:text-xl font-bold tracking-tight text-white font-['Cormorant_Garamond'] leading-none">
+                            Gestão Empresarial
+                        </h1>
                     </div>
+                </a>
+            </div>
 
-                    <!-- Password -->
-                    <div>
-                        <label for="password"
-                            class="block text-xs font-semibold uppercase tracking-wider text-brand-deep mb-2">
-                            Senha <span class="text-brand-gold">*</span>
-                        </label>
-                        <div class="relative rounded-xl">
-                            <span
-                                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-gold text-sm">
-                                <i class="fa-solid fa-lock text-xs"></i>
-                            </span>
-                            <input type="password" id="password" th:field="*{password}" minlength="8"
-                                autocomplete="new-password" required placeholder="Mínimo 8 caracteres"
-                                class="olinda-input w-full pl-10 bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text placeholder-gray-400 transition-all duration-200">
-                        </div>
-                        <p class="text-[11px] text-brand-muted mt-1.5 flex items-center gap-1">
-                            <i class="fa-solid fa-circle-info text-[10px] text-brand-gold"></i>
-                            A senha deve conter no mínimo 8 caracteres.
-                        </p>
-                    </div>
+            <!-- Perfil, Logout e Botão Mobile -->
+            <div class="flex items-center gap-3 sm:gap-6 text-xs">
+                <div class="text-right hidden sm:block border-r border-white/10 pr-6">
+                    <p class="font-semibold text-white flex items-center gap-2 justify-end"
+                        th:text="${#authentication != null ? #authentication.name : 'Administrador'}">
+                        <i class="fa-solid fa-circle-user text-gold-400 text-sm"></i> Administrador
+                    </p>
+                    <p class="text-emerald-200/70 text-[11px]">Sistema Interno</p>
+                </div>
 
-                    <!-- Submit Button -->
-                    <div class="pt-2">
-                        <button type="submit"
-                            class="w-full bg-brand-deep hover:bg-brand-dark text-brand-gold font-semibold py-3.5 px-6 rounded-xl text-xs uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg border border-brand-gold/30 flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-user-plus text-xs"></i>
-                            <span>Cadastrar</span>
-                        </button>
-                    </div>
-
+                <form th:action="@{/logout}" method="post" class="inline">
+                    <button type="submit"
+                        class="px-3.5 py-2 rounded-lg border border-red-500/30 text-red-200 bg-red-950/40 hover:bg-red-600 hover:text-white font-semibold transition-all text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="hidden sm:inline">Sair</span>
+                    </button>
                 </form>
 
+                <!-- Botão Menu Mobile -->
+                <button id="mobile-menu-btn"
+                    class="lg:hidden p-2 rounded-lg bg-brand-800 text-white hover:bg-brand-700 transition-colors">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
             </div>
         </div>
+    </header>
 
-        <!-- Back Link Navigation -->
-        <div class="text-center">
-            <a th:href="@{/locais}"
-                class="inline-flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-brand-muted hover:text-brand-deep transition-colors py-2 px-4 rounded-lg hover:bg-brand-sand/50">
-                <i class="fa-solid fa-arrow-left text-xs text-brand-gold"></i>
-                <span>Voltar para os locais</span>
+    <!-- ÁREA PRINCIPAL CENTRALIZADA (FORMATO DEMAIS FORMULÁRIOS) -->
+    <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 flex-1 space-y-8">
+
+        <!-- CABEÇALHO DA PÁGINA -->
+        <div
+            class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <span class="text-[11px] font-bold text-gold-600 uppercase tracking-widest block mb-1">
+                    <i class="fa-solid fa-user-shield mr-1"></i> Controle de Acesso
+                </span>
+                <h1 class="text-2xl sm:text-3xl font-bold text-brand-900 font-['Cormorant_Garamond']">
+                    Cadastrar Usuário
+                </h1>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1">
+                    Crie novas credenciais de acesso para a equipe de gestão do hotel.
+                </p>
+            </div>
+            <a th:href="@{/}"
+                class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold transition-all flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Voltar ao Dashboard</span>
             </a>
         </div>
 
-        <!-- Footer note -->
-        <p class="text-center text-xs text-brand-muted">
-            &copy; Olinda Hotel & Eventos &bull; Painel de Acesso
-        </p>
+        <!-- MENSAGEM DE ERRO (SE HOUVER) -->
+        <div th:if="${erro}"
+            class="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl text-xs font-medium flex items-center gap-3">
+            <i class="fa-solid fa-circle-exclamation text-rose-600 text-base"></i>
+            <span th:text="${erro}"></span>
+        </div>
 
-    </div>
+        <!-- FORMULÁRIO PRINCIPAL -->
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+
+            <form th:action="@{/usuarios}" th:object="${usuario}" method="post" class="space-y-8">
+
+                <!-- DADOS DE ACESSO -->
+                <div>
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-key text-gold-500"></i>
+                        Credenciais do Sistema
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                        <!-- Nome de Usuário -->
+                        <div>
+                            <label for="username"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Nome de Usuário (Login) <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative rounded-xl">
+                                <span
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gold-500 text-sm">
+                                    <i class="fa-regular fa-user"></i>
+                                </span>
+                                <input type="text" id="username" th:field="*{username}" maxlength="100"
+                                    autocomplete="username" required placeholder="Ex.: joao.silva"
+                                    class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            </div>
+                        </div>
+
+                        <!-- Senha -->
+                        <div>
+                            <label for="password"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Senha de Acesso <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative rounded-xl">
+                                <span
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gold-500 text-sm">
+                                    <i class="fa-solid fa-lock text-xs"></i>
+                                </span>
+                                <input type="password" id="password" th:field="*{password}" minlength="8"
+                                    autocomplete="new-password" required placeholder="Sua senha secreta"
+                                    class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            </div>
+                            <p class="text-[11px] text-gray-400 mt-1.5 flex items-center gap-1">
+                                <i class="fa-solid fa-circle-info text-gold-500"></i> A senha deve conter no mínimo 8
+                                caracteres.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- BOTÕES DE AÇÃO -->
+                <div class="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                    <a th:href="@{/}"
+                        class="px-5 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold uppercase tracking-wider transition-all">
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                        class="px-6 py-3 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Cadastrar Usuário</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ DA APLICAÇÃO -->
+    <footer class="bg-white border-t border-gray-100 mt-12 py-6 text-xs text-gray-500">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-['Cormorant_Garamond'] text-gold-600 font-bold text-base">Olinda Hotel &
+                    Eventos</span>
+                <span>&bull; Sistema de Gestão Financeira</span>
+            </div>
+            <p class="text-gray-400">Versão 2.4.0</p>
+        </div>
+    </footer>
 
 </body>
 

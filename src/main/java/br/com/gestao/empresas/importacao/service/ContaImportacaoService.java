@@ -50,6 +50,10 @@ public class ContaImportacaoService {
                 rejeitadas.add(dto);
                 continue;
             }
+            // Ignora possíveis duplicidades.
+            if (dto.isPossivelDuplicidade()) {
+                continue;
+            }
 
             // Verifica se o local está cadastrado.
             Local local = localRepository

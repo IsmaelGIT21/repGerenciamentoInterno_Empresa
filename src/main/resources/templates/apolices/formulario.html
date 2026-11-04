@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -11,295 +10,332 @@
         Apólice | Olinda Hotel & Eventos
     </title>
 
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
+    <script th:src="@{/js/apolices-formulario.js}"></script>
 </head>
 
-<body class="bg-[#f7f5ef] text-gray-800" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+<body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
 
-    <div class="max-w-3xl mx-auto px-6 py-10">
+    <!-- BARRA SUPERIOR DE NAVEGAÇÃO / HEADER -->
+    <header
+        class="bg-brand-900 text-white sticky top-0 z-50 border-b border-gold-500/30 shadow-lg backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center gap-4">
 
-        <div class="mb-8">
-
-            <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
-                Olinda Hotel & Eventos
-            </p>
-
-            <h1 class="text-4xl text-[#244638] mt-2" style="font-family: 'Cormorant Garamond', serif;"
-                th:text="${apolice.id == null} ? 'Nova apólice' : 'Editar apólice'">
-            </h1>
-
-            <p class="text-gray-500 mt-1">
-                Preencha as informações do seguro e do item segurado.
-            </p>
-
-        </div>
-
-        <div th:if="${erro}" class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-5"
-            th:text="${erro}">
-        </div>
-
-        <form th:action="${acaoFormulario}" th:object="${apolice}" method="post"
-            class="bg-white rounded-xl shadow-sm border border-gray-200 p-7 space-y-7">
-
-            <!-- IDENTIFICAÇÃO -->
-            <div>
-
-                <h2 class="text-lg font-semibold text-[#244638] mb-4">
-                    Identificação do item segurado
-                </h2>
-
-                <div class="mb-5">
-
-                    <label for="descricao" class="block font-semibold text-gray-700 mb-2">
-                        Descrição <span class="text-[#a58b50]">*</span>
-                    </label>
-
-                    <input type="text" id="descricao" th:field="*{descricao}" required maxlength="255"
-                        placeholder="Ex.: Veículo, imóvel, equipamento..."
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    <div>
-
-                        <label for="anoModelo" class="block font-semibold text-gray-700 mb-2">
-                            Ano / Modelo
-                        </label>
-
-                        <input type="text" id="anoModelo" th:field="*{anoModelo}" maxlength="50"
-                            placeholder="Ex.: 2022/2023"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
+            <!-- Logo & Nome do Hotel -->
+            <div class="flex items-center gap-3">
+                <a th:href="@{/}" class="flex items-center gap-3 group">
+                    <div
+                        class="w-10 h-10 rounded-xl border border-gold-500/50 bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
+                        <span
+                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">O</span>
                     </div>
-
                     <div>
-
-                        <label for="identificador" class="block font-semibold text-gray-700 mb-2">
-                            Placa / Identificador
-                        </label>
-
-                        <input type="text" id="identificador" th:field="*{identificador}" maxlength="100"
-                            placeholder="Ex.: ABC1D23"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
+                        <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-bold block">
+                            Olinda Hotel & Eventos
+                        </span>
+                        <h1
+                            class="text-lg sm:text-xl font-bold tracking-tight text-white font-['Cormorant_Garamond'] leading-none">
+                            Gestão Empresarial
+                        </h1>
                     </div>
-
-                </div>
-
-            </div>
-
-            <!-- DADOS DO SEGURO -->
-            <div class="pt-5 border-t border-gray-100">
-
-                <h2 class="text-lg font-semibold text-[#244638] mb-4">
-                    Dados do seguro
-                </h2>
-
-                <div class="mb-5">
-
-                    <label for="numeroApolice" class="block font-semibold text-gray-700 mb-2">
-                        Número da Apólice / Proposta
-                    </label>
-
-                    <input type="text" id="numeroApolice" th:field="*{numeroApolice}" maxlength="100"
-                        placeholder="Número da apólice ou proposta"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    <div>
-
-                        <label for="seguradora" class="block font-semibold text-gray-700 mb-2">
-                            Seguradora
-                        </label>
-
-                        <input type="text" id="seguradora" th:field="*{seguradora}" maxlength="150"
-                            placeholder="Nome da seguradora"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                    </div>
-
-                    <div>
-
-                        <label for="corretor" class="block font-semibold text-gray-700 mb-2">
-                            Corretor
-                        </label>
-
-                        <input type="text" id="corretor" th:field="*{corretor}" maxlength="150"
-                            placeholder="Nome do corretor"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- VIGÊNCIA -->
-            <div class="pt-5 border-t border-gray-100">
-
-                <h2 class="text-lg font-semibold text-[#244638] mb-4">
-                    Vigência do seguro
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    <div>
-
-                        <label for="dataInicio" class="block font-semibold text-gray-700 mb-2">
-                            Data de Início
-                        </label>
-
-                        <input type="date" id="dataInicio" name="dataInicio"
-                            th:value="${apolice.dataInicio != null ? #temporals.format(apolice.dataInicio, 'yyyy-MM-dd') : ''}"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                    </div>
-
-                    <div>
-
-                        <label for="dataVencimento" class="block font-semibold text-gray-700 mb-2">
-                            Data de Vencimento
-                        </label>
-
-                        <input type="date" id="dataVencimento" name="dataVencimento"
-                            th:value="${apolice.dataVencimento != null ? #temporals.format(apolice.dataVencimento, 'yyyy-MM-dd') : ''}"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- VALORES -->
-            <div class="pt-5 border-t border-gray-100">
-
-                <h2 class="text-lg font-semibold text-[#244638] mb-4">
-                    Valores e condições
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    <div>
-
-                        <label for="valorPremio" class="block font-semibold text-gray-700 mb-2">
-                            Valor do Prêmio (R$)
-                        </label>
-
-                        <input type="number" id="valorPremio" th:field="*{valorPremio}" min="0" step="0.01"
-                            placeholder="0.00"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                    </div>
-
-                    <div>
-
-                        <label for="valorFranquia" class="block font-semibold text-gray-700 mb-2">
-                            Valor da Franquia (R$)
-                        </label>
-
-                        <input type="number" id="valorFranquia" th:field="*{valorFranquia}" min="0" step="0.01"
-                            placeholder="0.00"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                    </div>
-
-                    <div>
-
-                        <label for="lmi" class="block font-semibold text-gray-700 mb-2">
-                            LMI (R$)
-                        </label>
-
-                        <input type="number" id="lmi" th:field="*{lmi}" min="0" step="0.01" placeholder="0.00"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                    </div>
-
-                    <div>
-
-                        <label for="comissao" class="block font-semibold text-gray-700 mb-2">
-                            Comissão (R$)
-                        </label>
-
-                        <input type="number" id="comissao" th:field="*{comissao}" min="0" step="0.01" placeholder="0.00"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                    </div>
-
-                </div>
-
-                <div class="mt-5">
-
-                    <label for="parcelas" class="block font-semibold text-gray-700 mb-2">
-                        Quantidade de Parcelas
-                    </label>
-
-                    <input type="number" id="parcelas" th:field="*{parcelas}" min="1" step="1" placeholder="Ex.: 12"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                </div>
-
-            </div>
-
-            <!-- LOCAL -->
-            <div class="pt-5 border-t border-gray-100">
-
-                <h2 class="text-lg font-semibold text-[#244638] mb-4">
-                    Vinculação ao local
-                </h2>
-
-                <label for="local" class="block font-semibold text-gray-700 mb-2">
-                    Local / Unidade <span class="text-[#a58b50]">*</span>
-                </label>
-
-                <select id="local" th:field="*{local.id}" required
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                    <option value="">
-                        Selecione um local
-                    </option>
-
-                    <option th:each="local : ${locais}" th:value="${local.id}" th:text="${local.nome}">
-                    </option>
-
-                </select>
-
-                <p class="text-xs text-gray-500 mt-2">
-                    Toda apólice deve estar vinculada a um local cadastrado.
-                </p>
-
-            </div>
-
-            <!-- BOTÕES -->
-            <div class="flex justify-end gap-3 pt-5 border-t border-gray-100">
-
-                <a th:href="@{/apolices}"
-                    class="px-5 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors">
-                    Cancelar
                 </a>
-
-                <button type="submit"
-                    class="px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold transition-colors">
-
-                    Salvar apólice
-
-                </button>
-
             </div>
 
-        </form>
+            <!-- Perfil e Logout -->
+            <div class="flex items-center gap-3 sm:gap-6 text-xs">
+                <div class="text-right hidden sm:block border-r border-white/10 pr-6">
+                    <p class="font-semibold text-white flex items-center gap-2 justify-end"
+                        th:text="${#authentication != null ? #authentication.name : 'Administrador'}">
+                        <i class="fa-solid fa-circle-user text-gold-400 text-sm"></i> Administrador
+                    </p>
+                    <p class="text-emerald-200/70 text-[11px]">Sistema Interno</p>
+                </div>
 
-    </div>
+                <form th:action="@{/logout}" method="post" class="inline">
+                    <button type="submit"
+                        class="px-3.5 py-2 rounded-lg border border-red-500/30 text-red-200 bg-red-950/40 hover:bg-red-600 hover:text-white font-semibold transition-all text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="hidden sm:inline">Sair</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <!-- ÁREA PRINCIPAL CENTRALIZADA (MESMO FORMATO DA PÁGINA DE IMPORTAÇÃO) -->
+    <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 flex-1 space-y-8">
+
+        <!-- CABEÇALHO -->
+        <div
+            class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <span class="text-[11px] font-bold text-gold-600 uppercase tracking-widest block mb-1">
+                    <i class="fa-solid fa-shield-halved mr-1"></i> Gestão de Apólices
+                </span>
+                <h1 class="text-2xl sm:text-3xl font-bold text-brand-900 font-['Cormorant_Garamond']"
+                    th:text="${apolice.id == null} ? 'Nova Apólice' : 'Editar Apólice'">
+                    Nova Apólice
+                </h1>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1">
+                    Preencha as informações do seguro e do item segurado.
+                </p>
+            </div>
+            <a th:href="@{/apolices}"
+                class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold transition-all flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Voltar para Lista</span>
+            </a>
+        </div>
+
+        <!-- MENSAGEM DE ERRO -->
+        <div th:if="${erro}"
+            class="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl text-xs font-medium flex items-center gap-3">
+            <i class="fa-solid fa-circle-exclamation text-rose-600 text-base"></i>
+            <span th:text="${erro}"></span>
+        </div>
+
+        <!-- FORMULÁRIO PRINCIPAL -->
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+
+            <form th:action="${acaoFormulario}" th:object="${apolice}" method="post" class="space-y-8">
+
+                <!-- IDENTIFICAÇÃO DO ITEM SEGURADO -->
+                <div>
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-car text-gold-500"></i>
+                        Identificação do Item Segurado
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="descricao"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Descrição <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" id="descricao" th:field="*{descricao}" required maxlength="255"
+                                placeholder="Ex.: Veículo, imóvel, equipamento..."
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="anoModelo"
+                                    class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                    Ano / Modelo
+                                </label>
+                                <input type="text" id="anoModelo" th:field="*{anoModelo}" maxlength="50"
+                                    placeholder="Ex.: 2022/2023"
+                                    class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            </div>
+
+                            <div>
+                                <label for="identificador"
+                                    class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                    Placa / Identificador
+                                </label>
+                                <input type="text" id="identificador" th:field="*{identificador}" maxlength="100"
+                                    placeholder="Ex.: ABC1D23"
+                                    class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DADOS DO SEGURO -->
+                <div class="pt-6 border-t border-gray-100">
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-file-contract text-gold-500"></i>
+                        Dados do Seguro
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="numeroApolice"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Número da Apólice / Proposta
+                            </label>
+                            <input type="text" id="numeroApolice" th:field="*{numeroApolice}" maxlength="100"
+                                placeholder="Número da apólice ou proposta"
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="seguradora"
+                                    class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                    Seguradora
+                                </label>
+                                <input type="text" id="seguradora" th:field="*{seguradora}" maxlength="150"
+                                    placeholder="Nome da seguradora"
+                                    class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            </div>
+
+                            <div>
+                                <label for="corretor"
+                                    class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                    Corretor
+                                </label>
+                                <input type="text" id="corretor" th:field="*{corretor}" maxlength="150"
+                                    placeholder="Nome do corretor"
+                                    class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIGÊNCIA -->
+                <div class="pt-6 border-t border-gray-100">
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-days text-gold-500"></i>
+                        Vigência do Seguro
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="dataInicio"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Data de Início
+                            </label>
+                            <input type="date" id="dataInicio" name="dataInicio"
+                                th:value="${apolice.dataInicio != null ? #temporals.format(apolice.dataInicio, 'yyyy-MM-dd') : ''}"
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+
+                        <div>
+                            <label for="dataVencimento"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Data de Vencimento
+                            </label>
+                            <input type="date" id="dataVencimento" name="dataVencimento"
+                                th:value="${apolice.dataVencimento != null ? #temporals.format(apolice.dataVencimento, 'yyyy-MM-dd') : ''}"
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VALORES E CONDIÇÕES -->
+                <div class="pt-6 border-t border-gray-100">
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-coins text-gold-500"></i>
+                        Valores e Condições
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="valorPremio"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Valor do Prêmio (R$)
+                            </label>
+                            <input type="number" id="valorPremio" th:field="*{valorPremio}" min="0" step="0.01"
+                                placeholder="0.00"
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+
+                        <div>
+                            <label for="valorFranquia"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Valor da Franquia (R$)
+                            </label>
+                            <input type="number" id="valorFranquia" th:field="*{valorFranquia}" min="0" step="0.01"
+                                placeholder="0.00"
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+
+                        <div>
+                            <label for="lmi"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                LMI (R$)
+                            </label>
+                            <input type="number" id="lmi" th:field="*{lmi}" min="0" step="0.01" placeholder="0.00"
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+
+                        <div>
+                            <label for="comissao"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Comissão (R$)
+                            </label>
+                            <input type="number" id="comissao" th:field="*{comissao}" min="0" step="0.01"
+                                placeholder="0.00"
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label for="valorParcela"
+                            class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                            Valor de Cada Parcela (R$)
+                        </label>
+                        <input type="number" id="valorParcela" th:field="*{valorParcela}" min="0" step="0.01"
+                            placeholder="Ex.: 450.00"
+                            class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                    </div>
+                </div>
+
+                <!-- VINCULAÇÃO AO LOCAL -->
+                <div class="pt-6 border-t border-gray-100">
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot text-gold-500"></i>
+                        Vinculação ao Local
+                    </h2>
+
+                    <div>
+                        <label for="local" class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                            Local / Unidade
+                        </label>
+                        <select id="local" th:field="*{local.id}"
+                            class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 bg-gray-50/50 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none">
+                            <option value="">Sem vínculo com local</option>
+                            <option th:each="local : ${locais}" th:value="${local.id}" th:text="${local.nome}">
+                            </option>
+                        </select>
+                        <p class="text-[11px] text-gray-400 mt-1.5 flex items-center gap-1">
+                            <i class="fa-solid fa-circle-info"></i> A associação com um local é opcional.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- BOTÕES -->
+                <div class="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                    <a th:href="@{/apolices}"
+                        class="px-5 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold uppercase tracking-wider transition-all">
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                        class="px-6 py-3 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Salvar Apólice</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ DA APLICAÇÃO -->
+    <footer class="bg-white border-t border-gray-100 mt-12 py-6 text-xs text-gray-500">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-['Cormorant_Garamond'] text-gold-600 font-bold text-base">Olinda Hotel &
+                    Eventos</span>
+                <span>&bull; Sistema de Gestão Financeira</span>
+            </div>
+            <p class="text-gray-400">Versão 2.4.0</p>
+        </div>
+    </footer>
 
 </body>
 

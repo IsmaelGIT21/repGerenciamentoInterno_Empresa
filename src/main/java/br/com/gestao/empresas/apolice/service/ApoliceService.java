@@ -42,16 +42,14 @@ public class ApoliceService {
 
     public Apolice cadastrar(Apolice apolice) {
 
-        if (apolice.getLocal() == null || apolice.getLocal().getId() == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "É obrigatório informar um local para a apólice");
-        }
+        Local local = null;
 
-        Local local = localRepository.findById(apolice.getLocal().getId())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Local não encontrado"));
+        if (apolice.getLocal() != null && apolice.getLocal().getId() != null) {
+            local = localRepository.findById(apolice.getLocal().getId())
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,
+                            "Local não encontrado"));
+        }
 
         apolice.setLocal(local);
 
@@ -62,18 +60,16 @@ public class ApoliceService {
 
         Apolice apolice = buscarPorId(id);
 
-        if (dadosFormulario.getLocal() == null
-                || dadosFormulario.getLocal().getId() == null) {
+        Local local = null;
 
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "É obrigatório informar um local para a apólice");
+        if (dadosFormulario.getLocal() != null
+                && dadosFormulario.getLocal().getId() != null) {
+
+            local = localRepository.findById(dadosFormulario.getLocal().getId())
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,
+                            "Local não encontrado"));
         }
-
-        Local local = localRepository.findById(dadosFormulario.getLocal().getId())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Local não encontrado"));
 
         apolice.setDescricao(dadosFormulario.getDescricao());
         apolice.setAnoModelo(dadosFormulario.getAnoModelo());
@@ -87,6 +83,7 @@ public class ApoliceService {
         apolice.setValorFranquia(dadosFormulario.getValorFranquia());
         apolice.setLmi(dadosFormulario.getLmi());
         apolice.setParcelas(dadosFormulario.getParcelas());
+        apolice.setValorParcela(dadosFormulario.getValorParcela());
         apolice.setComissao(dadosFormulario.getComissao());
         apolice.setLocal(local);
 

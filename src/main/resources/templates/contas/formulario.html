@@ -12,177 +12,270 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
+
+    <script th:src="@{/js/contas-formulario.js}"></script>
 </head>
 
-<body class="bg-[#f7f5ef] text-gray-800" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+<body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
 
-    <div class="max-w-2xl mx-auto px-6 py-10">
+    <!-- BARRA SUPERIOR DE NAVEGAÇÃO / HEADER -->
+    <header
+        class="bg-brand-900 text-white sticky top-0 z-50 border-b border-gold-500/30 shadow-lg backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center gap-4">
 
-        <!-- Cabeçalho -->
-        <div class="mb-8">
-            <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
-                Olinda Hotel & Eventos
-            </p>
-
-            <h1 class="text-4xl text-[#244638] mt-2" style="font-family: 'Cormorant Garamond', serif;"
-                th:text="${conta.id == null} ? 'Nova conta' : 'Editar conta'">
-            </h1>
-
-            <p class="text-gray-500 mt-1">
-                Preencha os detalhes da conta a pagar ou receber.
-            </p>
-        </div>
-
-        <!-- Mensagem de Erro (se houver) -->
-        <div th:if="${erro}" class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-5"
-            th:text="${erro}">
-        </div>
-
-        <!-- Formulário -->
-        <form th:action="${acaoFormulario}" th:object="${conta}" method="post"
-            class="bg-white rounded-xl shadow-sm border border-gray-200 p-7 space-y-6">
-
-            <!-- Descrição -->
-            <div>
-                <label for="descricao" class="block font-semibold text-gray-700 mb-2">
-                    Descrição <span class="text-[#a58b50]">*</span>
-                </label>
-                <input type="text" id="descricao" th:field="*{descricao}" required
-                    placeholder="Ex.: Fornecimento de Hortifrúti - Evento"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-            </div>
-            <!-- Fornecedor -->
-            <div>
-                <label for="fornecedor" class="block font-semibold text-gray-700 mb-2">
-                    Fornecedor
-                </label>
-
-                <select id="fornecedor" th:field="*{fornecedor.id}"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#244638]">
-
-                    <option value="">Nenhum fornecedor selecionado</option>
-
-                    <option th:each="fornecedor : ${fornecedores}" th:value="${fornecedor.id}"
-                        th:text="${fornecedor.nome}">
-                    </option>
-                </select>
-            </div>
-
-            <!-- Linha 2: Valor e Vencimento -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Valor -->
-                <div>
-                    <label for="valor" class="block font-semibold text-gray-700 mb-2">
-                        Valor (R$) <span class="text-[#a58b50]">*</span>
-                    </label>
-                    <div class="relative rounded-lg">
+            <!-- Logo & Nome do Hotel -->
+            <div class="flex items-center gap-3">
+                <a th:href="@{/}" class="flex items-center gap-3 group">
+                    <div
+                        class="w-10 h-10 rounded-xl border border-gold-500/50 bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
                         <span
-                            class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 font-medium">
-                            R$
+                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">O</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-bold block">
+                            Olinda Hotel & Eventos
                         </span>
-                        <input type="number" id="valor" th:field="*{valor}" min="0.01" step="0.01" required
-                            placeholder="0,00"
-                            class="w-full border border-gray-300 rounded-lg pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
+                        <h1
+                            class="text-lg sm:text-xl font-bold tracking-tight text-white font-['Cormorant_Garamond'] leading-none">
+                            Gestão Empresarial
+                        </h1>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Perfil e Logout -->
+            <div class="flex items-center gap-3 sm:gap-6 text-xs">
+                <div class="text-right hidden sm:block border-r border-white/10 pr-6">
+                    <p class="font-semibold text-white flex items-center gap-2 justify-end"
+                        th:text="${#authentication != null ? #authentication.name : 'Administrador'}">
+                        <i class="fa-solid fa-circle-user text-gold-400 text-sm"></i> Administrador
+                    </p>
+                    <p class="text-emerald-200/70 text-[11px]">Sistema Interno</p>
+                </div>
+
+                <form th:action="@{/logout}" method="post" class="inline">
+                    <button type="submit"
+                        class="px-3.5 py-2 rounded-lg border border-red-500/30 text-red-200 bg-red-950/40 hover:bg-red-600 hover:text-white font-semibold transition-all text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="hidden sm:inline">Sair</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <!-- ÁREA PRINCIPAL CENTRALIZADA (FORMATO IMPORTAÇÃO) -->
+    <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 flex-1 space-y-8">
+
+        <!-- CABEÇALHO DA PÁGINA -->
+        <div
+            class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <span class="text-[11px] font-bold text-gold-600 uppercase tracking-widest block mb-1">
+                    <i class="fa-solid fa-file-invoice-dollar mr-1"></i> Módulo Financeiro
+                </span>
+                <h1 class="text-2xl sm:text-3xl font-bold text-brand-900 font-['Cormorant_Garamond']"
+                    th:text="${conta.id == null} ? 'Nova Conta' : 'Editar Conta'">
+                    Nova Conta
+                </h1>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1">
+                    Preencha os detalhes e condições da conta a pagar ou receber.
+                </p>
+            </div>
+            <a th:href="@{/contas}"
+                class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold transition-all flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Voltar para Lista</span>
+            </a>
+        </div>
+
+        <!-- MENSAGEM DE ERRO (SE HOUVER) -->
+        <div th:if="${erro}"
+            class="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl text-xs font-medium flex items-center gap-3">
+            <i class="fa-solid fa-circle-exclamation text-rose-600 text-base"></i>
+            <span th:text="${erro}"></span>
+        </div>
+
+        <!-- FORMULÁRIO PRINCIPAL -->
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+
+            <form th:action="${acaoFormulario}" th:object="${conta}" method="post" class="space-y-8">
+
+                <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
+                <div>
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-gold-500"></i>
+                        Informações Principais
+                    </h2>
+
+                    <div class="space-y-4">
+                        <!-- Descrição -->
+                        <div>
+                            <label for="descricao"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Descrição da Conta <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" id="descricao" th:field="*{descricao}" required
+                                placeholder="Ex.: Fornecimento de Hortifrúti - Evento Corporativo"
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+
+                        <!-- Fornecedor -->
+                        <div>
+                            <label for="fornecedor"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Fornecedor / Credor
+                            </label>
+                            <select id="fornecedor" th:field="*{fornecedor.id}"
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 bg-gray-50/50 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none">
+                                <option value="">Nenhum fornecedor selecionado</option>
+                                <option th:each="fornecedor : ${fornecedores}" th:value="${fornecedor.id}"
+                                    th:text="${fornecedor.nome}">
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Vencimento -->
-                <div>
-                    <label for="dataVencimento" class="block font-semibold text-gray-700 mb-2">
-                        Data de Vencimento <span class="text-[#a58b50]">*</span>
-                    </label>
-                    <input type="date" id="dataVencimento" th:field="*{dataVencimento}" required
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#244638]">
+                <!-- SEÇÃO 2: VALOR E DATAS -->
+                <div class="pt-6 border-t border-gray-100">
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-coins text-gold-500"></i>
+                        Valores e Prazos
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Valor -->
+                        <div>
+                            <label for="valor"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Valor da Conta (R$) <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative rounded-xl">
+                                <span
+                                    class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 font-bold text-sm">
+                                    R$
+                                </span>
+                                <input type="number" id="valor" th:field="*{valor}" min="0.01" step="0.01" required
+                                    placeholder="0,00"
+                                    class="w-full border border-gray-200 rounded-xl pl-11 pr-4 py-3 text-sm font-semibold text-gray-900 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            </div>
+                        </div>
+
+                        <!-- Vencimento -->
+                        <div>
+                            <label for="dataVencimento"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Data de Vencimento <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="date" id="dataVencimento" th:field="*{dataVencimento}" required
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Linha 3: Local e Situação -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Local / Unidade -->
-                <div>
-                    <label for="local" class="block font-semibold text-gray-700 mb-2">
-                        Local / Unidade <span class="text-[#a58b50]">*</span>
-                    </label>
-                    <select id="local" th:field="*{local.id}" required
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#244638]">
-                        <option value="">Selecione um local</option>
-                        <option th:each="local : ${locais}" th:value="${local.id}" th:text="${local.nome}">
-                        </option>
-                    </select>
+                <!-- SEÇÃO 3: CLASSICAÇÃO E STATUS -->
+                <div class="pt-6 border-t border-gray-100">
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-building-user text-gold-500"></i>
+                        Classificação e Situação
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Local / Unidade -->
+                        <div>
+                            <label for="local"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Local / Unidade <span class="text-rose-500">*</span>
+                            </label>
+                            <select id="local" th:field="*{local.id}" required
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 bg-gray-50/50 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none">
+                                <option value="">Selecione um local</option>
+                                <option th:each="local : ${locais}" th:value="${local.id}" th:text="${local.nome}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Situação -->
+                        <div>
+                            <label for="status"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Situação <span class="text-rose-500">*</span>
+                            </label>
+                            <select id="status" th:field="*{status}" required
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 font-bold bg-gray-50/50 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none">
+                                <option value="PENDENTE">Pendente</option>
+                                <option value="PAGA">Paga</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Data do Pagamento (Condicional via JavaScript) -->
+                    <div id="campoDataPagamento"
+                        th:style="${conta.status == 'PAGA'} ? 'display: block' : 'display: none'"
+                        class="mt-4 p-4 bg-emerald-50/50 border border-emerald-200/80 rounded-xl space-y-2">
+                        <label for="dataPagamento"
+                            class="block text-xs font-bold uppercase tracking-wider text-emerald-900 flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-check text-emerald-600"></i>
+                            Data Efetiva do Pagamento
+                        </label>
+                        <input type="date" id="dataPagamento" th:field="*{dataPagamento}"
+                            class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 bg-white focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none">
+                    </div>
                 </div>
 
-                <!-- Situação -->
-                <div>
-                    <label for="status" class="block font-semibold text-gray-700 mb-2">
-                        Situação <span class="text-[#a58b50]">*</span>
-                    </label>
-                    <select id="status" th:field="*{status}" required
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#244638]">
-                        <option value="PENDENTE">Pendente</option>
-                        <option value="PAGA">Paga</option>
-                    </select>
+                <!-- SEÇÃO 4: OBSERVAÇÕES -->
+                <div class="pt-6 border-t border-gray-100">
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-comment-dots text-gold-500"></i>
+                        Observações Adicionais
+                    </h2>
+
+                    <div>
+                        <textarea id="observacoes" th:field="*{observacoes}" rows="3"
+                            placeholder="Anotações adicionais, número da nota fiscal ou detalhes do pagamento..."
+                            class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50"></textarea>
+                    </div>
                 </div>
+
+                <!-- BOTÕES DE AÇÃO -->
+                <div class="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                    <a th:href="@{/contas}"
+                        class="px-5 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold uppercase tracking-wider transition-all">
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                        class="px-6 py-3 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Salvar Conta</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ DA APLICAÇÃO -->
+    <footer class="bg-white border-t border-gray-100 mt-12 py-6 text-xs text-gray-500">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-['Cormorant_Garamond'] text-gold-600 font-bold text-base">Olinda Hotel &
+                    Eventos</span>
+                <span>&bull; Sistema de Gestão Financeira</span>
             </div>
-
-            <!-- Data do Pagamento (Condicional via JavaScript) -->
-            <div id="campoDataPagamento" th:style="${conta.status == 'PAGA'} ? 'display: block' : 'display: none'"
-                class="p-4 bg-[#f7f5ef] border border-gray-200 rounded-lg">
-                <label for="dataPagamento" class="block font-semibold text-gray-700 mb-2">
-                    Data do Pagamento
-                </label>
-                <input type="date" id="dataPagamento" th:field="*{dataPagamento}"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#244638]">
-            </div>
-
-            <!-- Observações -->
-            <div>
-                <label for="observacoes" class="block font-semibold text-gray-700 mb-2">
-                    Observações
-                </label>
-                <textarea id="observacoes" th:field="*{observacoes}" rows="3"
-                    placeholder="Anotações adicionais ou detalhes da conta..."
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]"></textarea>
-            </div>
-
-            <!-- Botões de Ação -->
-            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                <a href="/contas"
-                    class="px-5 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors">
-                    Cancelar
-                </a>
-
-                <button type="submit"
-                    class="px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold transition-colors">
-                    Salvar conta
-                </button>
-            </div>
-
-        </form>
-
-    </div>
-
-    <!-- Script nativo mantido sem dependências de ícones ou estilos extras -->
-    <script>
-        const statusConta = document.getElementById('status');
-        const campoDataPagamento = document.getElementById('campoDataPagamento');
-        const dataPagamento = document.getElementById('dataPagamento');
-
-        function atualizarCampoDataPagamento() {
-            const contaPaga = statusConta.value === 'PAGA';
-            campoDataPagamento.style.display = contaPaga ? 'block' : 'none';
-
-            if (!contaPaga) {
-                dataPagamento.value = '';
-            }
-        }
-
-        statusConta.addEventListener('change', atualizarCampoDataPagamento);
-        atualizarCampoDataPagamento();
-    </script>
+            <p class="text-gray-400">Versão 2.4.0</p>
+        </div>
+    </footer>
 
 </body>
 

@@ -1,7 +1,7 @@
 package br.com.gestao.empresas.usuario.controller;
 
 import br.com.gestao.empresas.usuario.model.Usuario;
-import br.com.gestao.empresas.usuario.model.UsuarioCadastroForm;
+import br.com.gestao.empresas.usuario.dto.UsuarioCadastroForm;
 import br.com.gestao.empresas.usuario.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;

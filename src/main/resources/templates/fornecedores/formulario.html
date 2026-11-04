@@ -1,73 +1,163 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Fornecedor | Olinda Hotel & Eventos</title>
+    <title
+        th:text="${fornecedor.id == null ? 'Novo Fornecedor | Olinda Hotel & Eventos' : 'Editar Fornecedor | Olinda Hotel & Eventos'}">
+        Fornecedor | Olinda Hotel & Eventos
+    </title>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script th:src="@{/js/fornecedores-formulario.js}"></script>
 </head>
 
-<body class="bg-[#f7f5ef] text-gray-800" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+<body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
 
-<div class="max-w-2xl mx-auto px-6 py-10">
+    <!-- BARRA SUPERIOR DE NAVEGAÇÃO / HEADER -->
+    <header
+        class="bg-brand-900 text-white sticky top-0 z-50 border-b border-gold-500/30 shadow-lg backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center gap-4">
 
-    <div class="mb-8">
-        <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
-            Olinda Hotel & Eventos
-        </p>
+            <!-- Logo & Nome do Hotel -->
+            <div class="flex items-center gap-3">
+                <a th:href="@{/}" class="flex items-center gap-3 group">
+                    <div
+                        class="w-10 h-10 rounded-xl border border-gold-500/50 bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
+                        <span
+                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">O</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-bold block">
+                            Olinda Hotel & Eventos
+                        </span>
+                        <h1
+                            class="text-lg sm:text-xl font-bold tracking-tight text-white font-['Cormorant_Garamond'] leading-none">
+                            Gestão Empresarial
+                        </h1>
+                    </div>
+                </a>
+            </div>
 
-        <h1 class="text-4xl text-[#244638] mt-2"
-            style="font-family: 'Cormorant Garamond', serif;"
-            th:text="${fornecedor.id == null} ? 'Novo fornecedor' : 'Editar fornecedor'">
-        </h1>
+            <!-- Perfil e Logout -->
+            <div class="flex items-center gap-3 sm:gap-6 text-xs">
+                <div class="text-right hidden sm:block border-r border-white/10 pr-6">
+                    <p class="font-semibold text-white flex items-center gap-2 justify-end"
+                        th:text="${#authentication != null ? #authentication.name : 'Administrador'}">
+                        <i class="fa-solid fa-circle-user text-gold-400 text-sm"></i> Administrador
+                    </p>
+                    <p class="text-emerald-200/70 text-[11px]">Sistema Interno</p>
+                </div>
 
-        <p class="text-gray-500 mt-1">
-            Informe o nome do fornecedor.
-        </p>
-    </div>
-
-    <div th:if="${erro}"
-         class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-5"
-         th:text="${erro}">
-    </div>
-
-    <form th:action="${acaoFormulario}"
-          th:object="${fornecedor}"
-          method="post"
-          class="bg-white rounded-xl shadow-sm border border-gray-200 p-7">
-
-        <div class="mb-6">
-            <label for="nome" class="block font-semibold text-gray-700 mb-2">
-                Nome do fornecedor
-            </label>
-
-            <input type="text"
-                   id="nome"
-                   th:field="*{nome}"
-                   maxlength="150"
-                   required
-                   placeholder="Ex.: COPEL, SANEPAR, Claro..."
-                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
+                <form th:action="@{/logout}" method="post" class="inline">
+                    <button type="submit"
+                        class="px-3.5 py-2 rounded-lg border border-red-500/30 text-red-200 bg-red-950/40 hover:bg-red-600 hover:text-white font-semibold transition-all text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="hidden sm:inline">Sair</span>
+                    </button>
+                </form>
+            </div>
         </div>
+    </header>
 
-        <div class="flex justify-end gap-3">
+    <!-- ÁREA PRINCIPAL CENTRALIZADA (FORMATO IMPORTAÇÃO) -->
+    <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 flex-1 space-y-8">
 
-            <a href="/fornecedores"
-               class="px-5 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50">
-                Cancelar
+        <!-- CABEÇALHO DA PÁGINA -->
+        <div
+            class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <span class="text-[11px] font-bold text-gold-600 uppercase tracking-widest block mb-1">
+                    <i class="fa-solid fa-truck-field mr-1"></i> Módulo de Parceiros
+                </span>
+                <h1 class="text-2xl sm:text-3xl font-bold text-brand-900 font-['Cormorant_Garamond']"
+                    th:text="${fornecedor.id == null} ? 'Novo Fornecedor' : 'Editar Fornecedor'">
+                    Novo Fornecedor
+                </h1>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1">
+                    Informe os dados cadastrais do parceiro para faturamento de despesas.
+                </p>
+            </div>
+            <a th:href="@{/fornecedores}"
+                class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold transition-all flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Voltar para Lista</span>
             </a>
-
-            <button type="submit"
-                    class="px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold">
-                Salvar fornecedor
-            </button>
-
         </div>
 
-    </form>
+        <!-- MENSAGEM DE ERRO (SE HOUVER) -->
+        <div th:if="${erro}"
+            class="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl text-xs font-medium flex items-center gap-3">
+            <i class="fa-solid fa-circle-exclamation text-rose-600 text-base"></i>
+            <span th:text="${erro}"></span>
+        </div>
 
-</div>
+        <!-- FORMULÁRIO PRINCIPAL -->
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+
+            <form th:action="${acaoFormulario}" th:object="${fornecedor}" method="post" class="space-y-8">
+
+                <!-- IDENTIFICAÇÃO DO FORNECEDOR -->
+                <div>
+                    <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-handshake text-gold-500"></i>
+                        Informações Cadastrais
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="nome"
+                                class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                                Nome / Razão Social <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" id="nome" th:field="*{nome}" maxlength="150" required
+                                placeholder="Ex.: COPEL, SANEPAR, Claro, Hortifrúti Real..."
+                                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTÕES DE AÇÃO -->
+                <div class="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                    <a th:href="@{/fornecedores}"
+                        class="px-5 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold uppercase tracking-wider transition-all">
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                        class="px-6 py-3 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Salvar Fornecedor</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+    <footer class="bg-white border-t border-gray-100 mt-12 py-6 text-xs text-gray-500">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-['Cormorant_Garamond'] text-gold-600 font-bold text-base">Olinda Hotel &
+                    Eventos</span>
+                <span>&bull; Sistema de Gestão Financeira</span>
+            </div>
+            <p class="text-gray-400">Versão 2.4.0</p>
+        </div>
+    </footer>
 
 </body>
+
 </html>

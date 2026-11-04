@@ -61,7 +61,6 @@ public class ApoliceController {
     public String formulario(Model model) {
 
         Apolice apolice = new Apolice();
-        apolice.setLocal(new Local());
 
         model.addAttribute("apolice", apolice);
         model.addAttribute("locais", localRepository.findAll());

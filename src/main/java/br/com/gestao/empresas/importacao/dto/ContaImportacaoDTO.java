@@ -13,7 +13,6 @@ public class ContaImportacaoDTO {
     private String nomeLocal;
     private LocalDate dataVencimento;
     private BigDecimal valor;
-
     private List<String> erros = new ArrayList<>();
 
     private boolean possivelDuplicidade;

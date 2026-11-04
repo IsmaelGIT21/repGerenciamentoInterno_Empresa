@@ -9,133 +9,190 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
+
+    <script th:src="@{/js/home.js}"></script>
 </head>
 
-<body class="bg-[#f7f5ef] text-gray-800 min-h-screen flex flex-col"
-    style="font-family: 'Plus Jakarta Sans', sans-serif;">
+<body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
 
     <!-- BARRA SUPERIOR DE NAVEGAÇÃO / HEADER -->
-    <header class="bg-[#244638] text-white sticky top-0 z-50 border-b border-[#a58b50]/30 shadow-md">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <header
+        class="bg-brand-900 text-white sticky top-0 z-50 border-b border-gold-500/30 shadow-lg backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center gap-4">
 
             <!-- Logo & Nome do Hotel -->
             <div class="flex items-center gap-3">
                 <a th:href="@{/}" class="flex items-center gap-3 group">
                     <div
-                        class="w-10 h-10 rounded-full border border-[#a58b50] bg-[#193629] flex items-center justify-center shrink-0 shadow-sm group-hover:border-white transition-colors">
+                        class="w-10 h-10 rounded-xl border border-gold-500/50 bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
                         <span
-                            class="font-serif text-[#a58b50] font-bold text-xl group-hover:text-white transition-colors"
-                            style="font-family: 'Cormorant Garamond', serif;">O</span>
+                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">O</span>
                     </div>
                     <div>
-                        <span class="text-[10px] tracking-[0.2em] text-[#a58b50] uppercase font-bold block">
+                        <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-bold block">
                             Olinda Hotel & Eventos
                         </span>
-                        <h1 class="text-xl font-semibold tracking-tight text-white"
-                            style="font-family: 'Cormorant Garamond', serif;">
-                            Gestão de Empresas
+                        <h1
+                            class="text-lg sm:text-xl font-bold tracking-tight text-white font-['Cormorant_Garamond'] leading-none">
+                            Gestão Empresarial
                         </h1>
                     </div>
                 </a>
             </div>
 
-            <!-- Perfil e Logout -->
-            <div class="flex items-center gap-4 text-xs">
-                <div class="text-right hidden sm:block">
-                    <p class="font-semibold text-white"
-                        th:text="${#authentication != null ? #authentication.name : 'Administrador'}">Usuário Ativo</p>
-                    <p class="text-gray-300">Sistema Interno</p>
+            <!-- Perfil, Logout e Botão Mobile -->
+            <div class="flex items-center gap-3 sm:gap-6 text-xs">
+                <div class="text-right hidden sm:block border-r border-white/10 pr-6">
+                    <p class="font-semibold text-white flex items-center gap-2 justify-end"
+                        th:text="${#authentication != null ? #authentication.name : 'Administrador'}">
+                        <i class="fa-solid fa-circle-user text-gold-400 text-sm"></i> Administrador
+                    </p>
+                    <p class="text-emerald-200/70 text-[11px]">Sistema Interno</p>
                 </div>
 
                 <form th:action="@{/logout}" method="post" class="inline">
                     <button type="submit"
-                        class="px-4 py-2 rounded-lg border border-red-200/40 text-red-200 bg-red-950/20 hover:bg-red-900/40 hover:text-white font-medium transition-colors text-xs">
-                        Sair
+                        class="px-3.5 py-2 rounded-lg border border-red-500/30 text-red-200 bg-red-950/40 hover:bg-red-600 hover:text-white font-semibold transition-all text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="hidden sm:inline">Sair</span>
                     </button>
                 </form>
+
+                <!-- Botão Menu Mobile -->
+                <button id="mobile-menu-btn"
+                    class="lg:hidden p-2 rounded-lg bg-brand-800 text-white hover:bg-brand-700 transition-colors">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
             </div>
         </div>
     </header>
 
     <!-- CONTAINER PRINCIPAL (LAYOUT COM SIDEBAR) -->
-    <div class="max-w-7xl mx-auto w-full px-6 py-8 flex flex-col lg:flex-row gap-8 flex-1">
+    <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 flex flex-col lg:flex-row gap-8 flex-1">
 
         <!-- MENU LATERAL / SIDEBAR -->
-        <aside class="w-full lg:w-64 shrink-0">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 sticky top-24 space-y-6">
+        <aside id="sidebar" class="w-full lg:w-64 shrink-0 hidden lg:block transition-all duration-300">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sticky top-24 space-y-6">
 
+                <!-- NAVEGAÇÃO PRINCIPAL -->
                 <div>
-                    <p class="text-xs font-bold uppercase tracking-wider text-[#a58b50] mb-3">Navegação Principal</p>
-                    <nav class="space-y-1">
+                    <p
+                        class="text-[11px] font-bold uppercase tracking-wider text-gold-600 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-compass"></i> Módulos Principais
+                    </p>
+                    <nav class="space-y-1.5">
                         <a th:href="@{/}"
-                            class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#244638] text-white font-semibold text-sm transition-colors">
-                            <span>Início / Dashboard</span>
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-brand-900 text-white font-semibold text-sm shadow-sm transition-all">
+                            <i class="fa-solid fa-chart-pie text-gold-400 w-5"></i>
+                            <span>Dashboard</span>
                         </a>
 
                         <a th:href="@{/contas}"
-                            class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors">
-                            <span>Contas Cadastradas</span>
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-brand-900 font-medium text-sm transition-all group">
+                            <i class="fa-solid fa-file-invoice-dollar text-gray-400 group-hover:text-brand-900 w-5"></i>
+                            <span>Contas a Pagar</span>
+                        </a>
+
+                        <a th:href="@{/apolices}"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-brand-900 font-medium text-sm transition-all group">
+                            <i class="fa-solid fa-shield-halved text-gray-400 group-hover:text-brand-900 w-5"></i>
+                            <span>Apólices e Seguros</span>
                         </a>
 
                         <a th:href="@{/fornecedores}"
-                            class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors">
-                            <span>Gestão Fornecedores</span>
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-brand-900 font-medium text-sm transition-all group">
+                            <i class="fa-solid fa-truck-field text-gray-400 group-hover:text-brand-900 w-5"></i>
+                            <span>Fornecedores</span>
                         </a>
 
                         <a th:href="@{/locais}"
-                            class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors">
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-brand-900 font-medium text-sm transition-all group">
+                            <i class="fa-solid fa-building-user text-gray-400 group-hover:text-brand-900 w-5"></i>
                             <span>Locais e Ambientes</span>
                         </a>
+
                         <a th:href="@{/importacao}"
-                            class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors">
-                            <span>Importação de Dados</span>
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-brand-900 font-medium text-sm transition-all group">
+                            <i class="fa-solid fa-file-excel text-gray-400 group-hover:text-brand-900 w-5"></i>
+                            <span>Importar Planilhas</span>
                         </a>
                     </nav>
                 </div>
 
+                <!-- AÇÕES RÁPIDAS (CADASTROS) -->
                 <div class="pt-4 border-t border-gray-100">
-                    <p class="text-xs font-bold uppercase tracking-wider text-[#a58b50] mb-3">Ações Rápida (Cadastros)
+                    <p
+                        class="text-[11px] font-bold uppercase tracking-wider text-gold-600 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle"></i> Novos Lançamentos
                     </p>
                     <nav class="space-y-1">
                         <a th:href="@{/contas/nova}"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:text-[#244638] hover:bg-emerald-50 text-xs font-medium transition-colors">
-                            <span class="text-[#a58b50] font-bold">+</span>
-                            <span>Nova Conta a Pagar</span>
+                            class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-600 hover:text-brand-900 hover:bg-emerald-50/60 text-xs font-medium transition-all group">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-plus text-gold-500 text-[10px]"></i>
+                                Nova Conta
+                            </span>
+                            <i
+                                class="fa-solid fa-chevron-right text-[10px] text-gray-300 group-hover:text-brand-900"></i>
                         </a>
 
                         <a th:href="@{/fornecedores/novo}"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:text-[#244638] hover:bg-emerald-50 text-xs font-medium transition-colors">
-                            <span class="text-[#a58b50] font-bold">+</span>
-                            <span>Novo Fornecedor</span>
+                            class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-600 hover:text-brand-900 hover:bg-emerald-50/60 text-xs font-medium transition-all group">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-plus text-gold-500 text-[10px]"></i>
+                                Novo Fornecedor
+                            </span>
+                            <i
+                                class="fa-solid fa-chevron-right text-[10px] text-gray-300 group-hover:text-brand-900"></i>
                         </a>
 
                         <a th:href="@{/locais/novo}"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:text-[#244638] hover:bg-emerald-50 text-xs font-medium transition-colors">
-                            <span class="text-[#a58b50] font-bold">+</span>
-                            <span>Novo Local / Unidade</span>
+                            class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-600 hover:text-brand-900 hover:bg-emerald-50/60 text-xs font-medium transition-all group">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-plus text-gold-500 text-[10px]"></i>
+                                Novo Local
+                            </span>
+                            <i
+                                class="fa-solid fa-chevron-right text-[10px] text-gray-300 group-hover:text-brand-900"></i>
                         </a>
 
                         <a th:href="@{/usuarios/novo}"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:text-[#244638] hover:bg-emerald-50 text-xs font-medium transition-colors">
-                            <span class="text-[#a58b50] font-bold">+</span>
-                            <span>Novo Usuário</span>
+                            class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-600 hover:text-brand-900 hover:bg-emerald-50/60 text-xs font-medium transition-all group">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-user-plus text-gold-500 text-[10px]"></i>
+                                Novo Usuário
+                            </span>
+                            <i
+                                class="fa-solid fa-chevron-right text-[10px] text-gray-300 group-hover:text-brand-900"></i>
                         </a>
                     </nav>
                 </div>
 
-                <!-- Resumo rápido de status -->
-                <div class="pt-4 border-t border-gray-100 bg-gray-50 -mx-5 -mb-5 p-5 rounded-b-xl text-xs space-y-2">
-                    <p class="font-semibold text-gray-700">Status do Servidor</p>
+                <!-- RESUMO DE STATUS DO SERVIDOR -->
+                <div
+                    class="pt-4 border-t border-gray-100 bg-gray-50/80 -mx-5 -mb-5 p-5 rounded-b-2xl text-xs space-y-2">
+                    <p class="font-bold text-gray-700 flex items-center justify-between">
+                        <span>Status da Aplicação</span>
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                    </p>
                     <div class="flex items-center justify-between text-gray-500">
                         <span>Ambiente:</span>
-                        <span class="font-medium text-emerald-700">Produção</span>
+                        <span
+                            class="font-medium text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded text-[10px]">Produção</span>
                     </div>
                     <div class="flex items-center justify-between text-gray-500">
-                        <span>Database:</span>
+                        <span>Banco de Dados:</span>
                         <span class="font-medium text-gray-700">Conectado</span>
                     </div>
                 </div>
@@ -148,173 +205,264 @@
 
             <!-- CARTÃO DE BOAS-VINDAS COM AÇÕES DE ATALHO -->
             <div
-                class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-gray-200 relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div class="space-y-2 max-w-2xl">
-                    <p class="text-xs uppercase tracking-widest text-[#a58b50] font-bold">Visão Geral do Hotel</p>
-                    <h2 class="text-3xl text-[#244638] font-bold" style="font-family: 'Cormorant Garamond', serif;">
-                        Painel de Controle Financeiro
+                class="bg-gradient-to-br from-brand-900 via-brand-800 to-[#142d22] rounded-2xl p-6 sm:p-8 shadow-xl text-white relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border border-brand-800">
+
+                <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-hotel text-[220px]"></i>
+                </div>
+
+                <div class="space-y-2 max-w-2xl relative z-10">
+                    <p class="text-xs uppercase tracking-widest text-gold-400 font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-crown text-[10px]"></i> Visão Geral Financeira
+                    </p>
+                    <h2 class="text-2xl sm:text-3xl font-bold font-['Cormorant_Garamond'] tracking-wide">
+                        Painel de Controle da Operação
                     </h2>
-                    <p class="text-sm text-gray-500">
-                        Acompanhe em tempo real o fluxo de contas, fornecedores cadastrados e os vencimentos urgentes da
-                        unidade.
+                    <p class="text-sm text-emerald-100/80 leading-relaxed">
+                        Acompanhe em tempo real o fluxo de contas, controle fornecedores, consulte apólices de seguro e
+                        gerencie pendências urgentes.
                     </p>
                 </div>
 
-                <div class="flex flex-wrap gap-3 shrink-0">
+                <div class="flex flex-wrap gap-3 shrink-0 relative z-10 w-full sm:w-auto">
                     <a th:href="@{/contas/nova}"
-                        class="px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm">
-                        + Lançar Conta
+                        class="flex-1 sm:flex-initial text-center px-5 py-3 rounded-xl bg-gold-500 hover:bg-gold-400 text-brand-900 text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Lançar Conta
                     </a>
                     <a th:href="@{/contas}"
-                        class="px-5 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 text-xs font-semibold uppercase tracking-wider transition-colors bg-white">
-                        Relatórios
+                        class="flex-1 sm:flex-initial text-center px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-wider transition-all border border-white/20 backdrop-blur-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-list-check"></i> Ver Relatórios
                     </a>
                 </div>
             </div>
 
-            <!-- INDICADORES / CARDS DE MÉTRICAS (GRID DE 8 CARDS) -->
+            <!-- INDICADORES / CARDS DE MÉTRICAS -->
             <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">Resumo e Indicadores do Mês</p>
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-gold-500"></i> Resumo e Indicadores do Mês
+                </p>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
                     <!-- Locais -->
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
-                        <span class="text-xs font-medium text-gray-500 uppercase">Unidades & Locais</span>
-                        <div class="my-2">
-                            <span class="text-3xl font-bold text-[#244638]" th:text="${totalLocais}">0</span>
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Unidades &
+                                Locais</span>
+                            <div
+                                class="w-8 h-8 rounded-lg bg-emerald-50 text-brand-900 flex items-center justify-center">
+                                <i class="fa-solid fa-building"></i>
+                            </div>
+                        </div>
+                        <div class="my-3">
+                            <span class="text-3xl font-bold text-brand-900" th:text="${totalLocais}">0</span>
                         </div>
                         <a th:href="@{/locais}"
-                            class="text-xs text-[#a58b50] hover:underline font-semibold flex items-center justify-between">
-                            <span>Ver todos</span>
-                            <span>→</span>
+                            class="text-xs text-gold-600 group-hover:text-brand-900 font-semibold flex items-center justify-between transition-colors">
+                            <span>Gerenciar unidades</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
                         </a>
                     </div>
 
                     <!-- Contas Pendentes -->
                     <div
-                        class="bg-white p-5 rounded-xl border border-amber-200 bg-amber-50/20 shadow-sm flex flex-col justify-between">
-                        <span class="text-xs font-medium text-amber-800 uppercase">Contas Pendentes</span>
-                        <div class="my-2">
+                        class="bg-white p-5 rounded-2xl border border-amber-200/80 bg-amber-50/20 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">Contas
+                                Pendentes</span>
+                            <div
+                                class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="my-3">
                             <span class="text-3xl font-bold text-amber-700" th:text="${contasPendentes}">0</span>
                         </div>
                         <a th:href="@{/contas}"
-                            class="text-xs text-amber-800 hover:underline font-semibold flex items-center justify-between">
+                            class="text-xs text-amber-800 font-semibold flex items-center justify-between group-hover:underline">
                             <span>Ver pendências</span>
-                            <span>→</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
                         </a>
                     </div>
 
                     <!-- Contas Pagas -->
                     <div
-                        class="bg-white p-5 rounded-xl border border-emerald-200 bg-emerald-50/20 shadow-sm flex flex-col justify-between">
-                        <span class="text-xs font-medium text-emerald-800 uppercase">Contas Quitadas</span>
-                        <div class="my-2">
+                        class="bg-white p-5 rounded-2xl border border-emerald-200/80 bg-emerald-50/20 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Contas
+                                Quitadas</span>
+                            <div
+                                class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                        </div>
+                        <div class="my-3">
                             <span class="text-3xl font-bold text-emerald-700" th:text="${contasPagas}">0</span>
                         </div>
-                        <span class="text-xs text-emerald-700 font-medium">Pagamentos confirmados</span>
+                        <span class="text-xs text-emerald-700 font-medium">Pagamentos efetuados</span>
                     </div>
 
-                    <!-- Valor Pendente Total -->
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
-                        <span class="text-xs font-medium text-gray-500 uppercase">Total A Pagar</span>
-                        <div class="my-2">
-                            <span class="text-2xl font-bold text-gray-800"
-                                th:text="${#numbers.formatCurrency(valorTotalPendente)}">R$ 0,00</span>
+                    <!-- Total A Pagar -->
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total A Pagar</span>
+                            <div class="w-8 h-8 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center">
+                                <i class="fa-solid fa-wallet"></i>
+                            </div>
                         </div>
-                        <span class="text-xs text-gray-400">Soma acumulada</span>
+                        <div class="my-3">
+                            <span class="text-2xl font-bold text-gray-800"
+                                th:text="${valorTotalPendente != null ? 'R$ ' + #numbers.formatDecimal(valorTotalPendente, 1, 'POINT', 2, 'COMMA') : 'R$ 0,00'}">R$
+                                0,00</span>
+                        </div>
+                        <span class="text-xs text-gray-400">Soma acumulada em aberto</span>
                     </div>
 
                     <!-- Contas Vencidas -->
                     <div
-                        class="bg-white p-5 rounded-xl border border-rose-200 bg-rose-50/30 shadow-sm flex flex-col justify-between">
-                        <span class="text-xs font-bold text-rose-800 uppercase">Atrasadas / Vencidas</span>
-                        <div class="my-2">
+                        class="bg-white p-5 rounded-2xl border border-rose-200 bg-rose-50/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-rose-800 uppercase tracking-wider">Vencidas /
+                                Atraso</span>
+                            <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                        </div>
+                        <div class="my-3">
                             <span class="text-3xl font-bold text-rose-600" th:text="${contasVencidas}">0</span>
                         </div>
-                        <span class="text-xs text-rose-700 font-medium">Requer atenção urgente</span>
+                        <span class="text-xs text-rose-700 font-bold">Atenção imediata necessária</span>
                     </div>
 
                     <!-- Despesas do Mês -->
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
-                        <span class="text-xs font-medium text-gray-500 uppercase">Despesas do Mês</span>
-                        <div class="my-2">
-                            <span class="text-2xl font-bold text-gray-800"
-                                th:text="${#numbers.formatCurrency(despesasDoMes)}">R$ 0,00</span>
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Despesas do
+                                Mês</span>
+                            <div class="w-8 h-8 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </div>
                         </div>
-                        <span class="text-xs text-gray-400">Previsão do mês atual</span>
+                        <div class="my-3">
+                            <span class="text-2xl font-bold text-gray-800"
+                                th:text="${despesasDoMes != null ? 'R$ ' + #numbers.formatDecimal(despesasDoMes, 1, 'POINT', 2, 'COMMA') : 'R$ 0,00'}">R$
+                                0,00</span>
+                        </div>
+                        <span class="text-xs text-gray-400">Previsão total do mês atual</span>
                     </div>
 
                     <!-- Pagamentos do Mês -->
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
-                        <span class="text-xs font-medium text-gray-500 uppercase">Pago Neste Mês</span>
-                        <div class="my-2">
-                            <span class="text-2xl font-bold text-emerald-700"
-                                th:text="${#numbers.formatCurrency(pagamentosDoMes)}">R$ 0,00</span>
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Pago no Mês</span>
+                            <div
+                                class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                                <i class="fa-solid fa-hand-holding-dollar"></i>
+                            </div>
                         </div>
-                        <span class="text-xs text-emerald-600 font-medium">Baixas efetuadas</span>
+                        <div class="my-3">
+                            <span class="text-2xl font-bold text-emerald-700"
+                                th:text="${pagamentosDoMes != null ? 'R$ ' + #numbers.formatDecimal(pagamentosDoMes, 1, 'POINT', 2, 'COMMA') : 'R$ 0,00'}">R$
+                                0,00</span>
+                        </div>
+                        <span class="text-xs text-emerald-600 font-medium">Baixas do mês corrente</span>
                     </div>
 
                     <!-- Próximos Vencimentos (7 dias) -->
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
-                        <span class="text-xs font-medium text-gray-500 uppercase">Vencendo em 7 Dias</span>
-                        <div class="my-2">
-                            <span class="text-3xl font-bold text-[#244638]"
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Vence em 7
+                                Dias</span>
+                            <div class="w-8 h-8 rounded-lg bg-brand-50 text-brand-900 flex items-center justify-center">
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+                        </div>
+                        <div class="my-3">
+                            <span class="text-3xl font-bold text-brand-900"
                                 th:text="${#lists.size(proximosVencimentos)}">0</span>
                         </div>
-                        <span class="text-xs text-gray-500">Próxima semana</span>
+                        <span class="text-xs text-gray-400">Atenção para a próxima semana</span>
                     </div>
 
                 </div>
             </div>
 
-            <!-- SEÇÃO DE TABELA: PRÓXIMOS VENCIMENTOS DA SEMANA -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <!-- TABELA: PRÓXIMOS VENCIMENTOS DA SEMANA (MÁXIMO 5 REGISTROS) -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div
-                    class="p-5 border-b border-gray-200 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    class="p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div>
-                        <h3 class="font-bold text-gray-800 text-base">Próximos Vencimentos (7 dias)</h3>
-                        <p class="text-xs text-gray-500">Contas com vencimento iminente que requerem liberação</p>
+                        <h3 class="font-bold text-gray-800 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-check text-gold-500"></i>
+                            Próximos Vencimentos (Até 5 Registros)
+                        </h3>
+                        <p class="text-xs text-gray-500">Contas a pagar com vencimento iminente na semana</p>
                     </div>
 
-                    <a th:href="@{/contas}" class="text-xs text-[#244638] font-semibold hover:underline">
-                        Ver todas as contas →
+                    <a th:href="@{/contas}"
+                        class="text-xs text-brand-900 font-bold hover:text-gold-600 transition-colors flex items-center gap-1">
+                        <span>Ver todas as contas</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
                     </a>
                 </div>
 
                 <!-- Estado Vazio -->
-                <div th:if="${#lists.isEmpty(proximosVencimentos)}" class="p-8 text-center text-gray-500 text-sm">
-                    Nenhuma conta com vencimento previsto para os próximos 7 dias.
+                <div th:if="${#lists.isEmpty(proximosVencimentos)}"
+                    class="p-10 text-center text-gray-400 text-sm flex flex-col items-center justify-center gap-2">
+                    <i class="fa-regular fa-calendar-xmark text-3xl text-gray-300"></i>
+                    <p>Nenhuma conta com vencimento previsto para os próximos 7 dias.</p>
                 </div>
 
-                <!-- Tabela com os Vencimentos Próximos -->
+                <!-- Tabela com os 5 Primeiros Vencimentos -->
                 <div th:unless="${#lists.isEmpty(proximosVencimentos)}" class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-sm">
                         <thead>
                             <tr
-                                class="border-b border-gray-200 bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
-                                <th class="py-3 px-6">Descrição</th>
-                                <th class="py-3 px-6">Local / Unidade</th>
-                                <th class="py-3 px-6">Vencimento</th>
-                                <th class="py-3 px-6">Valor</th>
-                                <th class="py-3 px-6 text-right">Ação</th>
+                                class="border-b border-gray-100 bg-gray-50/50 text-gray-400 font-bold uppercase text-[11px] tracking-wider">
+                                <th class="py-3.5 px-6">Descrição</th>
+                                <th class="py-3.5 px-6">Local / Unidade</th>
+                                <th class="py-3.5 px-6">Vencimento</th>
+                                <th class="py-3.5 px-6">Valor</th>
+                                <th class="py-3.5 px-6 text-right">Ação</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <tr th:each="conta : ${proximosVencimentos}" class="hover:bg-gray-50/80 transition-colors">
-                                <td class="py-3.5 px-6 font-semibold text-gray-800" th:text="${conta.descricao}">Energia
+                            <!-- th:if limita a exibição aos primeiros 5 itens (index 0 a 4) -->
+                            <tr th:each="conta, iterStat : ${proximosVencimentos}" th:if="${iterStat.index < 5}"
+                                class="hover:bg-gray-50/80 transition-colors">
+                                <td class="py-4 px-6 font-semibold text-gray-800" th:text="${conta.descricao}">Energia
                                     Elétrica</td>
-                                <td class="py-3.5 px-6 text-gray-600" th:text="${conta.local.nome}">Hotel Central</td>
-                                <td class="py-3.5 px-6 text-amber-800 font-medium"
-                                    th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}">05/11/2026</td>
-                                <td class="py-3.5 px-6 font-bold text-gray-800"
-                                    th:text="${#numbers.formatCurrency(conta.valor)}">R$ 1.250,00</td>
-                                <td class="py-3.5 px-6 text-right">
+                                <td class="py-4 px-6 text-gray-600">
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gray-100 text-gray-700 text-xs font-medium">
+                                        <i class="fa-solid fa-location-dot text-[10px] text-gray-400"></i>
+                                        <span th:text="${conta.local != null ? conta.local.nome : 'Sem local'}">Hotel
+                                            Central</span>
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span
+                                        class="text-amber-800 bg-amber-50 border border-amber-200/60 font-semibold px-2.5 py-1 rounded-md text-xs inline-flex items-center gap-1">
+                                        <i class="fa-regular fa-clock text-[10px]"></i>
+                                        <span
+                                            th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}">05/11/2026</span>
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 font-bold text-gray-900"
+                                    th:text="${'R$ ' + #numbers.formatDecimal(conta.valor, 1, 'POINT', 2, 'COMMA')}">R$
+                                    1.250,00</td>
+                                <td class="py-4 px-6 text-right">
                                     <form th:action="@{/contas/{id}/pagar(id=${conta.id})}" method="post"
                                         class="inline">
                                         <button type="submit"
-                                            class="px-2.5 py-1 rounded bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold transition-colors">
-                                            Pagar
+                                            class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 ml-auto">
+                                            <i class="fa-solid fa-check"></i>
+                                            <span>Pagar</span>
                                         </button>
                                     </form>
                                 </td>
@@ -324,39 +472,111 @@
                 </div>
             </div>
 
-            <!-- ACESSO RÁPIDO / ATALHOS EM GRID -->
+            <!-- ATALHOS EM GRID (MÓDULOS DO SISTEMA) -->
             <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">Atalhos e Mapeamento do Sistema
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-cubes text-gold-500"></i> Mapeamento e Atalhos Rápidos
                 </p>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
+                    <!-- Gestão de Contas -->
                     <a th:href="@{/contas}"
-                        class="p-5 bg-white rounded-xl border border-gray-200 hover:border-[#a58b50] hover:shadow-md transition-all group">
-                        <span class="text-[#a58b50] font-bold text-lg block mb-1">01.</span>
-                        <h4 class="font-bold text-gray-800 group-hover:text-[#244638]">Gestão de Contas</h4>
-                        <p class="text-xs text-gray-500 mt-1">Listar, filtrar e dar baixa em parcelas e pagamentos.</p>
+                        class="p-5 bg-white rounded-2xl border border-gray-100 hover:border-gold-500 hover:shadow-md transition-all group relative overflow-hidden">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-brand-50 group-hover:bg-brand-900 text-brand-900 group-hover:text-gold-400 flex items-center justify-center text-xl transition-all shrink-0">
+                                <i class="fa-solid fa-receipt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 group-hover:text-brand-900 text-base">Contas a Pagar
+                                </h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Listar, filtrar e efetuar baixas financeiras.
+                                </p>
+                            </div>
+                        </div>
                     </a>
 
+                    <!-- Apólices de Seguro -->
+                    <a th:href="@{/apolices}"
+                        class="p-5 bg-white rounded-2xl border border-gray-100 hover:border-gold-500 hover:shadow-md transition-all group relative overflow-hidden">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-brand-50 group-hover:bg-brand-900 text-brand-900 group-hover:text-gold-400 flex items-center justify-center text-xl transition-all shrink-0">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 group-hover:text-brand-900 text-base">Apólices e
+                                    Seguros</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Controle de renovações, valores e coberturas.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Gestão de Fornecedores -->
                     <a th:href="@{/fornecedores}"
-                        class="p-5 bg-white rounded-xl border border-gray-200 hover:border-[#a58b50] hover:shadow-md transition-all group">
-                        <span class="text-[#a58b50] font-bold text-lg block mb-1">02.</span>
-                        <h4 class="font-bold text-gray-800 group-hover:text-[#244638]">Gestão de Fornecedores</h4>
-                        <p class="text-xs text-gray-500 mt-1">Consultar parceiros, status ativo/inativo e contatos.</p>
+                        class="p-5 bg-white rounded-2xl border border-gray-100 hover:border-gold-500 hover:shadow-md transition-all group relative overflow-hidden">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-brand-50 group-hover:bg-brand-900 text-brand-900 group-hover:text-gold-400 flex items-center justify-center text-xl transition-all shrink-0">
+                                <i class="fa-solid fa-truck-field"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 group-hover:text-brand-900 text-base">Fornecedores
+                                </h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Cadastro e status de parceiros comerciais.</p>
+                            </div>
+                        </div>
                     </a>
 
+                    <!-- Locais e Ambientes -->
                     <a th:href="@{/locais}"
-                        class="p-5 bg-white rounded-xl border border-gray-200 hover:border-[#a58b50] hover:shadow-md transition-all group">
-                        <span class="text-[#a58b50] font-bold text-lg block mb-1">03.</span>
-                        <h4 class="font-bold text-gray-800 group-hover:text-[#244638]">Gestão de Locais</h4>
-                        <p class="text-xs text-gray-500 mt-1">Unidades físicas, escritórios, salões e eventos.</p>
+                        class="p-5 bg-white rounded-2xl border border-gray-100 hover:border-gold-500 hover:shadow-md transition-all group relative overflow-hidden">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-brand-50 group-hover:bg-brand-900 text-brand-900 group-hover:text-gold-400 flex items-center justify-center text-xl transition-all shrink-0">
+                                <i class="fa-solid fa-building-user"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 group-hover:text-brand-900 text-base">Unidades e
+                                    Locais</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Centros de custo e espaços físicos do hotel.</p>
+                            </div>
+                        </div>
                     </a>
 
-                    <a th:href="@{/contas/nova}"
-                        class="p-5 bg-white rounded-xl border border-gray-200 hover:border-[#a58b50] hover:shadow-md transition-all group">
-                        <span class="text-[#a58b50] font-bold text-lg block mb-1">04.</span>
-                        <h4 class="font-bold text-gray-800 group-hover:text-[#244638]">Novo Lançamento</h4>
-                        <p class="text-xs text-gray-500 mt-1">Cadastrar novas despesas e agendar vencimentos.</p>
+                    <!-- Importar Planilhas -->
+                    <a th:href="@{/importacao}"
+                        class="p-5 bg-white rounded-2xl border border-gray-100 hover:border-gold-500 hover:shadow-md transition-all group relative overflow-hidden">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-brand-50 group-hover:bg-brand-900 text-brand-900 group-hover:text-gold-400 flex items-center justify-center text-xl transition-all shrink-0">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 group-hover:text-brand-900 text-base">Importação
+                                    Excel</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Carga em lote de contas e apólices de seguros.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Novo Usuário -->
+                    <a th:href="@{/usuarios/novo}"
+                        class="p-5 bg-white rounded-2xl border border-gray-100 hover:border-gold-500 hover:shadow-md transition-all group relative overflow-hidden">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-brand-50 group-hover:bg-brand-900 text-brand-900 group-hover:text-gold-400 flex items-center justify-center text-xl transition-all shrink-0">
+                                <i class="fa-solid fa-user-plus"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 group-hover:text-brand-900 text-base">Gestão de
+                                    Acessos</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Cadastrar novos operadores do sistema.</p>
+                            </div>
+                        </div>
                     </a>
 
                 </div>
@@ -366,9 +586,13 @@
     </div>
 
     <!-- RODAPÉ DA APLICAÇÃO -->
-    <footer class="bg-white border-t border-gray-200 mt-12 py-6 text-center text-xs text-gray-500">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <p>&copy; Olinda Hotel & Eventos &bull; Sistema de Gestão Financeira Interna</p>
+    <footer class="bg-white border-t border-gray-100 mt-12 py-6 text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-['Cormorant_Garamond'] text-gold-600 font-bold text-base">Olinda Hotel &
+                    Eventos</span>
+                <span>&bull; Sistema de Gestão Financeira</span>
+            </div>
             <p class="text-gray-400">Versão 2.4.0</p>
         </div>
     </footer>

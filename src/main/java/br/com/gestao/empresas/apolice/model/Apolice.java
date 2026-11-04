@@ -45,10 +45,12 @@ public class Apolice {
 
     private Integer parcelas;
 
+    private BigDecimal valorParcela;
+
     private BigDecimal comissao;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "local_id", nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "local_id", nullable = true)
     private Local local;
 
     public Apolice() {
@@ -156,6 +158,14 @@ public class Apolice {
 
     public void setParcelas(Integer parcelas) {
         this.parcelas = parcelas;
+    }
+
+    public BigDecimal getValorParcela() {
+        return valorParcela;
+    }
+
+    public void setValorParcela(BigDecimal valorParcela) {
+        this.valorParcela = valorParcela;
     }
 
     public BigDecimal getComissao() {

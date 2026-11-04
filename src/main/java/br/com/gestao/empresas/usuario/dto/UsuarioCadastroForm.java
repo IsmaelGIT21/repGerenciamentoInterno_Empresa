@@ -1,4 +1,4 @@
-package br.com.gestao.empresas.usuario.model;
+package br.com.gestao.empresas.usuario.dto;
 
 public class UsuarioCadastroForm {
 

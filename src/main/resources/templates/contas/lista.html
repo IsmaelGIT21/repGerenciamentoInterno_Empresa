@@ -6,209 +6,380 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão Financeira | Olinda Hotel & Eventos</title>
 
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
+
+    <script th:src="@{/js/contas.js}"></script>
 </head>
 
-<body class="bg-[#f7f5ef] text-gray-800" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+<body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
 
-    <div class="max-w-6xl mx-auto px-6 py-10">
+    <!-- BARRA SUPERIOR DE NAVEGAÇÃO / HEADER -->
+    <header
+        class="bg-brand-900 text-white sticky top-0 z-50 border-b border-gold-500/30 shadow-lg backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center gap-4">
 
-        <!-- Cabeçalho da Página -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-            <div>
-                <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
-                    Olinda Hotel & Eventos
-                </p>
-
-                <h1 class="text-4xl text-[#244638] mt-1" style="font-family: 'Cormorant Garamond', serif;">
-                    Gestão Financeira
-                </h1>
-
-                <p class="text-gray-500 mt-1">
-                    Acompanhamento e controle de vencimentos e pagamentos.
-                </p>
-
-                <!-- Nome do local, quando estiver consultando um local específico -->
-                <p th:if="${local != null}" class="mt-2 text-[#244638] font-semibold">
-                    Local: <span th:text="${local.nome}">Nome do local</span>
-                </p>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-3">
-                <a th:href="@{/}"
-                    class="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium transition-colors text-sm shadow-sm">
-                    ← Voltar ao Dashboard
-                </a>
-
-                <a th:href="@{/locais}"
-                    class="px-5 py-3 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium transition-colors text-sm">
-                    Locais
-                </a>
-
-                <a th:href="@{/contas/nova}"
-                    class="inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold transition-colors shadow-sm text-sm">
-                    + Nova Conta
-                </a>
-
-                <a th:if="${local != null}" th:href="@{/apolices/nova}"
-                    class="inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[#a58b50] hover:bg-[#8d7541] text-white font-semibold transition-colors shadow-sm text-sm">
-                    + Nova Apólice
+            <!-- Logo & Nome do Hotel -->
+            <div class="flex items-center gap-3">
+                <a th:href="@{/}" class="flex items-center gap-3 group">
+                    <div
+                        class="w-10 h-10 rounded-xl border border-gold-500/50 bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
+                        <span
+                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">O</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-bold block">
+                            Olinda Hotel & Eventos
+                        </span>
+                        <h1
+                            class="text-lg sm:text-xl font-bold tracking-tight text-white font-['Cormorant_Garamond'] leading-none">
+                            Gestão Empresarial
+                        </h1>
+                    </div>
                 </a>
             </div>
-        </div>
 
-        <!-- Mensagens de Sucesso / Alerta -->
-        <div th:if="${mensagem}"
-            class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-lg mb-6 flex items-center justify-between">
-
-            <span th:text="${mensagem}">Operação realizada com sucesso!</span>
-
-            <button onclick="this.parentElement.remove()" class="text-emerald-800 font-bold ml-4">
-                &times;
-            </button>
-        </div>
-
-        <!-- ================================================== -->
-        <!-- SEÇÃO DE CONTAS -->
-        <!-- ================================================== -->
-
-        <div class="mb-10">
-
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                <h2 class="text-2xl text-[#244638]" style="font-family: 'Cormorant Garamond', serif;">
-                    Contas
-                </h2>
-
-                <span class="text-xs text-gray-500">
-                    Total:
-                    <strong class="text-[#244638]" th:text="${#lists.size(contas)}">0</strong>
-                    registros
-                </span>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-
-                <!-- Estado Vazio -->
-                <div th:if="${#lists.isEmpty(contas)}" class="p-12 text-center">
-                    <p class="text-gray-500 mb-4">
-                        Nenhuma conta cadastrada para este local.
+            <!-- Perfil, Logout e Botão Mobile -->
+            <div class="flex items-center gap-3 sm:gap-6 text-xs">
+                <div class="text-right hidden sm:block border-r border-white/10 pr-6">
+                    <p class="font-semibold text-white flex items-center gap-2 justify-end"
+                        th:text="${#authentication != null ? #authentication.name : 'Administrador'}">
+                        <i class="fa-solid fa-circle-user text-gold-400 text-sm"></i> Administrador
                     </p>
+                    <p class="text-emerald-200/70 text-[11px]">Sistema Interno</p>
+                </div>
+
+                <form th:action="@{/logout}" method="post" class="inline">
+                    <button type="submit"
+                        class="px-3.5 py-2 rounded-lg border border-red-500/30 text-red-200 bg-red-950/40 hover:bg-red-600 hover:text-white font-semibold transition-all text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="hidden sm:inline">Sair</span>
+                    </button>
+                </form>
+
+                <!-- Botão Menu Mobile -->
+                <button id="mobile-menu-btn"
+                    class="lg:hidden p-2 rounded-lg bg-brand-800 text-white hover:bg-brand-700 transition-colors">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTAINER PRINCIPAL (LAYOUT COM SIDEBAR) -->
+    <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 flex flex-col lg:flex-row gap-8 flex-1">
+
+        <!-- MENU LATERAL / SIDEBAR -->
+        <aside id="sidebar" class="w-full lg:w-64 shrink-0 hidden lg:block transition-all duration-300">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sticky top-24 space-y-6">
+
+                <!-- NAVEGAÇÃO PRINCIPAL -->
+                <div>
+                    <p
+                        class="text-[11px] font-bold uppercase tracking-wider text-gold-600 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-compass"></i> Módulos Principais
+                    </p>
+                    <nav class="space-y-1.5">
+                        <a th:href="@{/}"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-brand-900 font-medium text-sm transition-all group">
+                            <i class="fa-solid fa-chart-pie text-gray-400 group-hover:text-brand-900 w-5"></i>
+                            <span>Dashboard</span>
+                        </a>
+
+                        <a th:href="@{/contas}"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-brand-900 text-white font-semibold text-sm shadow-sm transition-all">
+                            <i class="fa-solid fa-file-invoice-dollar text-gold-400 w-5"></i>
+                            <span>Contas a Pagar</span>
+                        </a>
+
+                        <a th:href="@{/apolices}"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-brand-900 font-medium text-sm transition-all group">
+                            <i class="fa-solid fa-shield-halved text-gray-400 group-hover:text-brand-900 w-5"></i>
+                            <span>Apólices e Seguros</span>
+                        </a>
+
+                        <a th:href="@{/fornecedores}"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-brand-900 font-medium text-sm transition-all group">
+                            <i class="fa-solid fa-truck-field text-gray-400 group-hover:text-brand-900 w-5"></i>
+                            <span>Fornecedores</span>
+                        </a>
+
+                        <a th:href="@{/locais}"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-brand-900 font-medium text-sm transition-all group">
+                            <i class="fa-solid fa-building-user text-gray-400 group-hover:text-brand-900 w-5"></i>
+                            <span>Locais e Ambientes</span>
+                        </a>
+
+                        <a th:href="@{/importacao}"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-brand-900 font-medium text-sm transition-all group">
+                            <i class="fa-solid fa-file-excel text-gray-400 group-hover:text-brand-900 w-5"></i>
+                            <span>Importar Planilhas</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- AÇÕES RÁPIDAS (CADASTROS) -->
+                <div class="pt-4 border-t border-gray-100">
+                    <p
+                        class="text-[11px] font-bold uppercase tracking-wider text-gold-600 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle"></i> Novos Lançamentos
+                    </p>
+                    <nav class="space-y-1">
+                        <a th:href="@{/contas/nova}"
+                            class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-600 hover:text-brand-900 hover:bg-emerald-50/60 text-xs font-medium transition-all group">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-plus text-gold-500 text-[10px]"></i>
+                                Nova Conta
+                            </span>
+                            <i
+                                class="fa-solid fa-chevron-right text-[10px] text-gray-300 group-hover:text-brand-900"></i>
+                        </a>
+
+                        <a th:href="@{/fornecedores/novo}"
+                            class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-600 hover:text-brand-900 hover:bg-emerald-50/60 text-xs font-medium transition-all group">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-plus text-gold-500 text-[10px]"></i>
+                                Novo Fornecedor
+                            </span>
+                            <i
+                                class="fa-solid fa-chevron-right text-[10px] text-gray-300 group-hover:text-brand-900"></i>
+                        </a>
+
+                        <a th:href="@{/locais/novo}"
+                            class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-600 hover:text-brand-900 hover:bg-emerald-50/60 text-xs font-medium transition-all group">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-plus text-gold-500 text-[10px]"></i>
+                                Novo Local
+                            </span>
+                            <i
+                                class="fa-solid fa-chevron-right text-[10px] text-gray-300 group-hover:text-brand-900"></i>
+                        </a>
+
+                        <a th:href="@{/usuarios/novo}"
+                            class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-600 hover:text-brand-900 hover:bg-emerald-50/60 text-xs font-medium transition-all group">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-user-plus text-gold-500 text-[10px]"></i>
+                                Novo Usuário
+                            </span>
+                            <i
+                                class="fa-solid fa-chevron-right text-[10px] text-gray-300 group-hover:text-brand-900"></i>
+                        </a>
+                    </nav>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- ÁREA PRINCIPAL DE CONTEÚDO DA PÁGINA -->
+        <main class="flex-1 space-y-6 min-w-0">
+
+            <!-- CABEÇALHO DO MÓDULO -->
+            <div
+                class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <span class="text-[11px] font-bold text-gold-600 uppercase tracking-widest block mb-1">
+                        <i class="fa-solid fa-wallet mr-1"></i> Módulo Financeiro
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-brand-900 font-['Cormorant_Garamond']">
+                        Gestão Financeira
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1" th:if="${local == null}">
+                        Acompanhamento e controle centralizado de vencimentos, despesas e pagamentos.
+                    </p>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1" th:if="${local != null}">
+                        Exibindo lançamentos vinculados à unidade: <strong class="text-brand-900"
+                            th:text="${local.nome}">Nome do Local</strong>
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+                    <a th:href="@{/locais}"
+                        class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-700 bg-white hover:bg-gray-50 font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-building-user"></i>
+                        <span>Locais</span>
+                    </a>
 
                     <a th:href="@{/contas/nova}"
-                        class="inline-flex items-center px-4 py-2 rounded-lg bg-[#244638] hover:bg-[#193629] text-white text-sm font-semibold transition-colors">
-                        Cadastrar primeira conta
+                        class="px-5 py-2.5 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Nova Conta</span>
+                    </a>
+
+                    <a th:if="${local != null}" th:href="@{/apolices/nova}"
+                        class="px-5 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-400 text-brand-900 font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Nova Apólice</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- MENSAGEM DE SUCESSO -->
+            <div th:if="${mensagem}"
+                class="bg-emerald-50/80 border border-emerald-200/80 text-emerald-900 px-4 py-3 rounded-2xl text-xs font-semibold flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+                    <span th:text="${mensagem}">Operação realizada com sucesso!</span>
+                </div>
+                <button onclick="this.parentElement.remove()"
+                    class="text-emerald-800 hover:text-emerald-950 font-bold text-base px-1">
+                    &times;
+                </button>
+            </div>
+
+            <!-- ================================================== -->
+            <!-- SEÇÃO DE CONTAS -->
+            <!-- ================================================== -->
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+                <!-- Header da Seção -->
+                <div
+                    class="p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <span class="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-file-invoice-dollar text-gold-500"></i>
+                        Contas a Pagar
+                    </span>
+
+                    <div th:unless="${#lists.isEmpty(contas)}" class="text-xs text-gray-500 font-medium">
+                        Total: <strong class="text-brand-900 font-bold" th:text="${#lists.size(contas)}">0</strong>
+                        registros
+                    </div>
+                </div>
+
+                <!-- Estado Vazio -->
+                <div th:if="${#lists.isEmpty(contas)}" class="p-12 text-center space-y-4">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-gray-50 text-gray-300 mx-auto flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Nenhuma conta cadastrada para este filtro.</p>
+                        <p class="text-xs text-gray-400 mt-1">Lançe uma nova despesa para iniciar o acompanhamento
+                            financeiro.</p>
+                    </div>
+                    <a th:href="@{/contas/nova}"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-900 hover:bg-brand-800 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Cadastrar Primeira Conta</span>
                     </a>
                 </div>
 
                 <!-- Tabela de Contas -->
                 <div th:unless="${#lists.isEmpty(contas)}" class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-sm">
-
+                    <table class="w-full text-left border-collapse text-xs whitespace-nowrap">
                         <thead>
                             <tr
-                                class="border-b border-gray-200 bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
-                                <th class="py-3.5 px-6">ID</th>
-                                <th class="py-3.5 px-6">Descrição</th>
-                                <th class="py-3.5 px-6">Valor</th>
-                                <th class="py-3.5 px-6">Vencimento</th>
-                                <th class="py-3.5 px-6">Local</th>
-                                <th class="py-3.5 px-6">Situação</th>
-                                <th class="py-3.5 px-6">Data Pagto.</th>
-                                <th class="py-3.5 px-6 text-right">Ações</th>
+                                class="border-b border-gray-100 bg-gray-50/80 text-gray-400 font-bold uppercase text-[10px] tracking-wider">
+                                <th class="py-3.5 px-5">ID</th>
+                                <th class="py-3.5 px-5">Descrição</th>
+                                <th class="py-3.5 px-5">Valor</th>
+                                <th class="py-3.5 px-5">Vencimento</th>
+                                <th class="py-3.5 px-5">Local / Unidade</th>
+                                <th class="py-3.5 px-5 text-center">Situação</th>
+                                <th class="py-3.5 px-5">Data Pagto.</th>
+                                <th class="py-3.5 px-5 text-right">Ações</th>
                             </tr>
                         </thead>
-
                         <tbody class="divide-y divide-gray-100">
-
                             <tr th:each="conta : ${contas}" class="hover:bg-gray-50/80 transition-colors">
 
                                 <!-- ID -->
-                                <td class="py-4 px-6 font-medium text-gray-400" th:text="${conta.id}">
-                                    1
+                                <td class="py-4 px-5 font-bold text-gray-400"
+                                    th:text="${#numbers.formatInteger(conta.id, 3)}">
+                                    001
                                 </td>
 
                                 <!-- Descrição -->
-                                <td class="py-4 px-6 font-semibold text-gray-800" th:text="${conta.descricao}">
+                                <td class="py-4 px-5 font-bold text-gray-800" th:text="${conta.descricao}">
                                     Fornecedor Alimentício
                                 </td>
 
                                 <!-- Valor -->
-                                <td class="py-4 px-6 font-semibold text-gray-800 whitespace-nowrap">
-                                    R$&nbsp;<span
-                                        th:text="${#numbers.formatDecimal(conta.valor, 1, 'POINT', 2, 'COMMA')}">
-                                        0,00
-                                    </span>
+                                <td class="py-4 px-5 font-bold text-gray-900"
+                                    th:text="${'R$ ' + #numbers.formatDecimal(conta.valor, 1, 'POINT', 2, 'COMMA')}">
+                                    R$ 0,00
                                 </td>
 
                                 <!-- Vencimento -->
-                                <td class="py-4 px-6 text-gray-600 whitespace-nowrap"
-                                    th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}">
-                                    01/10/2026
+                                <td class="py-4 px-5 text-gray-700 font-medium">
+                                    <span class="inline-flex items-center gap-1.5">
+                                        <i class="fa-regular fa-calendar text-[11px] text-gray-400"></i>
+                                        <span
+                                            th:text="${#temporals.format(conta.dataVencimento, 'dd/MM/yyyy')}">01/10/2026</span>
+                                    </span>
                                 </td>
 
                                 <!-- Local -->
-                                <td class="py-4 px-6 text-gray-600" th:text="${conta.local.nome}">
-                                    Restaurante Principal
+                                <td class="py-4 px-5 text-gray-600">
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gray-100 text-gray-700 text-xs font-medium">
+                                        <i class="fa-solid fa-location-dot text-[10px] text-gray-400"></i>
+                                        <span
+                                            th:text="${conta.local != null ? conta.local.nome : 'Sem local'}">Restaurante
+                                            Principal</span>
+                                    </span>
                                 </td>
 
                                 <!-- Situação -->
-                                <td class="py-4 px-6 whitespace-nowrap">
-
+                                <td class="py-4 px-5 text-center">
                                     <span th:if="${conta.status == 'PAGA'}"
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                                        Paga
+                                        class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center justify-center gap-1 w-fit mx-auto">
+                                        <i class="fa-solid fa-circle-check"></i> Paga
                                     </span>
 
                                     <span
                                         th:if="${conta.status != 'PAGA' and conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-100 text-rose-800">
-                                        Vencida
+                                        class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200 flex items-center justify-center gap-1 w-fit mx-auto">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> Vencida
                                     </span>
 
                                     <span
                                         th:if="${conta.status != 'PAGA' and !conta.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                                        Pendente
+                                        class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200 flex items-center justify-center gap-1 w-fit mx-auto">
+                                        <i class="fa-regular fa-clock"></i> Pendente
                                     </span>
-
                                 </td>
 
                                 <!-- Data Pagamento -->
-                                <td class="py-4 px-6 text-gray-500 whitespace-nowrap"
+                                <td class="py-4 px-5 text-gray-500 font-medium"
                                     th:text="${conta.dataPagamento != null ? #temporals.format(conta.dataPagamento, 'dd/MM/yyyy') : '-'}">
                                     -
                                 </td>
 
                                 <!-- Ações -->
-                                <td class="py-4 px-6 text-right whitespace-nowrap">
+                                <td class="py-4 px-5 text-right">
                                     <div class="flex items-center justify-end gap-2">
 
                                         <form th:if="${conta.status != 'PAGA'}"
                                             th:action="@{/contas/{id}/pagar(id=${conta.id})}" method="post"
                                             class="inline">
-
                                             <button type="submit"
-                                                class="px-2.5 py-1.5 rounded-md bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-medium transition-colors">
-                                                Pagar
+                                                class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-all text-[11px] flex items-center gap-1 shadow-sm">
+                                                <i class="fa-solid fa-check"></i>
+                                                <span>Pagar</span>
                                             </button>
                                         </form>
 
                                         <a th:href="@{/contas/{id}/editar(id=${conta.id})}"
-                                            class="px-2.5 py-1.5 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 text-xs font-medium transition-colors">
-                                            Editar
+                                            class="px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-100 font-bold transition-all text-[11px] flex items-center gap-1">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            <span>Editar</span>
                                         </a>
 
                                         <form th:action="@{/contas/{id}/excluir(id=${conta.id})}" method="post"
                                             onsubmit="return confirm('Tem certeza de que deseja excluir esta conta?');"
                                             class="inline">
-
                                             <button type="submit"
-                                                class="px-2.5 py-1.5 rounded-md border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium transition-colors">
-                                                Excluir
+                                                class="px-2.5 py-1.5 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50 font-bold transition-all text-[11px] flex items-center gap-1">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                                <span>Excluir</span>
                                             </button>
                                         </form>
 
@@ -216,208 +387,214 @@
                                 </td>
 
                             </tr>
-
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Rodapé das Contas -->
                 <div th:unless="${#lists.isEmpty(contas)}"
-                    class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-500">
-
+                    class="px-6 py-4 bg-gray-50/80 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-gray-500 font-medium">
                     <div>
-                        Total de contas:
-                        <strong class="text-gray-800" th:text="${#lists.size(contas)}">0</strong>
+                        Total de contas: <strong class="text-brand-900" th:text="${#lists.size(contas)}">0</strong>
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <span class="flex items-center gap-1">
+                    <div class="flex items-center gap-4">
+                        <span class="flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                            Paga
+                            <span>Paga</span>
                         </span>
-
-                        <span class="flex items-center gap-1">
+                        <span class="flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                            Pendente
+                            <span>Pendente</span>
                         </span>
-
-                        <span class="flex items-center gap-1">
+                        <span class="flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-                            Vencida
+                            <span>Vencida</span>
                         </span>
                     </div>
                 </div>
 
-            </div>
-        </div>
+            </section>
 
-        <!-- ================================================== -->
-        <!-- SEÇÃO DE APÓLICES -->
-        <!-- Aparece somente quando um local específico é aberto -->
-        <!-- ================================================== -->
+            <!-- ================================================== -->
+            <!-- SEÇÃO DE APÓLICES -->
+            <!-- Aparece somente quando um local específico é selecionado -->
+            <!-- ================================================== -->
+            <section th:if="${local != null}"
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
 
-        <div th:if="${local != null}" class="mb-10">
+                <!-- Header da Seção de Apólices -->
+                <div
+                    class="p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <span class="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-gold-500"></i>
+                        Apólices de Seguro do Local
+                    </span>
 
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-
-                <h2 class="text-2xl text-[#244638]" style="font-family: 'Cormorant Garamond', serif;">
-                    Apólices de Seguro
-                </h2>
-
-                <span class="text-xs text-gray-500">
-                    Total:
-                    <strong class="text-[#244638]" th:text="${#lists.size(apolices)}">0</strong>
-                    registros
-                </span>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div th:unless="${#lists.isEmpty(apolices)}" class="text-xs text-gray-500 font-medium">
+                        Total: <strong class="text-brand-900 font-bold" th:text="${#lists.size(apolices)}">0</strong>
+                        registros
+                    </div>
+                </div>
 
                 <!-- Estado Vazio -->
-                <div th:if="${#lists.isEmpty(apolices)}" class="p-12 text-center">
-
-                    <p class="text-gray-500 mb-4">
-                        Nenhuma apólice cadastrada para este local.
-                    </p>
-
+                <div th:if="${#lists.isEmpty(apolices)}" class="p-12 text-center space-y-4">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-gray-50 text-gray-300 mx-auto flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-shield-cat"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Nenhuma apólice cadastrada para este local.</p>
+                        <p class="text-xs text-gray-400 mt-1">Cadastre uma apólice para vincular seguros a esta unidade.
+                        </p>
+                    </div>
                     <a th:href="@{/apolices/nova}"
-                        class="inline-flex items-center px-4 py-2 rounded-lg bg-[#244638] hover:bg-[#193629] text-white text-sm font-semibold transition-colors">
-                        Cadastrar primeira apólice
+                        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-400 text-brand-900 text-xs font-bold uppercase tracking-wider transition-all shadow-sm">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Cadastrar Primeira Apólice</span>
                     </a>
                 </div>
 
                 <!-- Tabela de Apólices -->
                 <div th:unless="${#lists.isEmpty(apolices)}" class="overflow-x-auto">
-
-                    <table class="w-full text-left border-collapse text-sm">
-
+                    <table class="w-full text-left border-collapse text-xs whitespace-nowrap">
                         <thead>
                             <tr
-                                class="border-b border-gray-200 bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
-                                <th class="py-3.5 px-6">ID</th>
-                                <th class="py-3.5 px-6">Descrição</th>
-                                <th class="py-3.5 px-6">Nº Apólice</th>
-                                <th class="py-3.5 px-6">Seguradora</th>
-                                <th class="py-3.5 px-6">Corretor</th>
-                                <th class="py-3.5 px-6">Vencimento</th>
-                                <th class="py-3.5 px-6">Prêmio</th>
-                                <th class="py-3.5 px-6">Situação</th>
-                                <th class="py-3.5 px-6 text-right">Ações</th>
+                                class="border-b border-gray-100 bg-gray-50/80 text-gray-400 font-bold uppercase text-[10px] tracking-wider">
+                                <th class="py-3.5 px-5">ID</th>
+                                <th class="py-3.5 px-5">Descrição</th>
+                                <th class="py-3.5 px-5">Nº Apólice</th>
+                                <th class="py-3.5 px-5">Seguradora</th>
+                                <th class="py-3.5 px-5">Corretor</th>
+                                <th class="py-3.5 px-5">Vencimento</th>
+                                <th class="py-3.5 px-5">Prêmio</th>
+                                <th class="py-3.5 px-5 text-center">Situação</th>
+                                <th class="py-3.5 px-5 text-right">Ações</th>
                             </tr>
                         </thead>
-
                         <tbody class="divide-y divide-gray-100">
-
                             <tr th:each="apolice : ${apolices}" class="hover:bg-gray-50/80 transition-colors">
 
                                 <!-- ID -->
-                                <td class="py-4 px-6 font-medium text-gray-400" th:text="${apolice.id}">
-                                    1
+                                <td class="py-4 px-5 font-bold text-gray-400"
+                                    th:text="${#numbers.formatInteger(apolice.id, 3)}">
+                                    001
                                 </td>
 
                                 <!-- Descrição -->
-                                <td class="py-4 px-6 font-semibold text-gray-800" th:text="${apolice.descricao}">
-                                    Seguro do veículo
+                                <td class="py-4 px-5 font-bold text-gray-800" th:text="${apolice.descricao}">
+                                    Seguro do Veículo
                                 </td>
 
                                 <!-- Número da Apólice -->
-                                <td class="py-4 px-6 text-gray-600"
+                                <td class="py-4 px-5 font-mono text-xs text-gray-600 font-medium"
                                     th:text="${apolice.numeroApolice != null ? apolice.numeroApolice : '-'}">
                                     123456
                                 </td>
 
                                 <!-- Seguradora -->
-                                <td class="py-4 px-6 text-gray-600"
+                                <td class="py-4 px-5 text-gray-700 font-medium"
                                     th:text="${apolice.seguradora != null ? apolice.seguradora : '-'}">
                                     Seguradora
                                 </td>
 
                                 <!-- Corretor -->
-                                <td class="py-4 px-6 text-gray-600"
+                                <td class="py-4 px-5 text-gray-600"
                                     th:text="${apolice.corretor != null ? apolice.corretor : '-'}">
                                     Corretor
                                 </td>
 
                                 <!-- Vencimento -->
-                                <td class="py-4 px-6 text-gray-600 whitespace-nowrap"
-                                    th:text="${apolice.dataVencimento != null ? #temporals.format(apolice.dataVencimento, 'dd/MM/yyyy') : '-'}">
-                                    01/10/2026
+                                <td class="py-4 px-5 text-gray-700 font-medium">
+                                    <span th:if="${apolice.dataVencimento != null}"
+                                        class="inline-flex items-center gap-1.5">
+                                        <i class="fa-regular fa-calendar text-[11px] text-gray-400"></i>
+                                        <span
+                                            th:text="${#temporals.format(apolice.dataVencimento, 'dd/MM/yyyy')}">01/10/2026</span>
+                                    </span>
+                                    <span th:if="${apolice.dataVencimento == null}" class="text-gray-400">-</span>
                                 </td>
 
                                 <!-- Valor do Prêmio -->
-                                <td class="py-4 px-6 font-semibold text-gray-800 whitespace-nowrap">
-                                    <span th:if="${apolice.valorPremio != null}">
-                                        R$&nbsp;<span
-                                            th:text="${#numbers.formatDecimal(apolice.valorPremio, 1, 'POINT', 2, 'COMMA')}">
-                                            0,00
-                                        </span>
+                                <td class="py-4 px-5 font-bold text-gray-900">
+                                    <span th:if="${apolice.valorPremio != null}"
+                                        th:text="${'R$ ' + #numbers.formatDecimal(apolice.valorPremio, 1, 'POINT', 2, 'COMMA')}">
+                                        R$ 0,00
                                     </span>
-
-                                    <span th:unless="${apolice.valorPremio != null}">-</span>
+                                    <span th:unless="${apolice.valorPremio != null}" class="text-gray-400">-</span>
                                 </td>
 
                                 <!-- Situação -->
-                                <td class="py-4 px-6 whitespace-nowrap">
-
+                                <td class="py-4 px-5 text-center">
                                     <span th:if="${apolice.dataVencimento == null}"
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                                        class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-gray-100 text-gray-700 border border-gray-200">
                                         Sem vencimento
                                     </span>
 
                                     <span
                                         th:if="${apolice.dataVencimento != null and apolice.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-100 text-rose-800">
-                                        Vencida
+                                        class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200 flex items-center justify-center gap-1 w-fit mx-auto">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> Vencida
                                     </span>
 
                                     <span
                                         th:if="${apolice.dataVencimento != null and !apolice.dataVencimento.isBefore(T(java.time.LocalDate).now())}"
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                                        Vigente
+                                        class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center justify-center gap-1 w-fit mx-auto">
+                                        <i class="fa-solid fa-check"></i> Vigente
                                     </span>
-
                                 </td>
 
                                 <!-- Ações -->
-                                <td class="py-4 px-6 text-right whitespace-nowrap">
+                                <td class="py-4 px-5 text-right">
                                     <div class="flex items-center justify-end gap-2">
-
                                         <a th:href="@{/apolices/{id}/editar(id=${apolice.id})}"
-                                            class="px-2.5 py-1.5 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 text-xs font-medium transition-colors">
-                                            Editar
+                                            class="px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-100 font-bold transition-all text-[11px] flex items-center gap-1">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            <span>Editar</span>
                                         </a>
 
                                         <form th:action="@{/apolices/{id}/excluir(id=${apolice.id})}" method="post"
                                             onsubmit="return confirm('Tem certeza de que deseja excluir esta apólice?');"
                                             class="inline">
-
                                             <button type="submit"
-                                                class="px-2.5 py-1.5 rounded-md border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium transition-colors">
-                                                Excluir
+                                                class="px-2.5 py-1.5 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50 font-bold transition-all text-[11px] flex items-center gap-1">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                                <span>Excluir</span>
                                             </button>
                                         </form>
-
                                     </div>
                                 </td>
 
                             </tr>
-
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Rodapé das Apólices -->
                 <div th:unless="${#lists.isEmpty(apolices)}"
-                    class="px-6 py-4 bg-gray-50 border-t border-gray-200 text-xs text-gray-500">
-
-                    Total de apólices:
-                    <strong class="text-gray-800" th:text="${#lists.size(apolices)}">0</strong>
+                    class="px-6 py-4 bg-gray-50/80 border-t border-gray-100 flex justify-between items-center text-xs text-gray-500 font-medium">
+                    <div>
+                        Total de apólices do local: <strong class="text-brand-900"
+                            th:text="${#lists.size(apolices)}">0</strong>
+                    </div>
                 </div>
 
-            </div>
-        </div>
+            </section>
 
+        </main>
     </div>
+
+    <!-- RODAPÉ DA APLICAÇÃO -->
+    <footer class="bg-white border-t border-gray-100 mt-12 py-6 text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-['Cormorant_Garamond'] text-gold-600 font-bold text-base">Olinda Hotel &
+                    Eventos</span>
+                <span>&bull; Sistema de Gestão Financeira</span>
+            </div>
+            <p class="text-gray-400">Versão 2.4.0</p>
+        </div>
+    </footer>
 
 </body>
 

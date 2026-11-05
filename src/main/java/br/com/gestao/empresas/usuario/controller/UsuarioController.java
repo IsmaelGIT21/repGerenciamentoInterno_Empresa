@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class UsuarioController {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
 
     public UsuarioController(
             UsuarioRepository usuarioRepository,
@@ -68,7 +71,7 @@ public class UsuarioController {
 
         redirectAttributes.addFlashAttribute(
                 "mensagem", "Usuário cadastrado com sucesso!");
-
+        logger.info("Usuário cadastrado com sucesso: {}", username);
         return "redirect:/locais";
     }
 }

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title
-        th:text="${acaoFormulario == '/fornecedores' ? 'Novo Fornecedor | Olinda Hotel & Eventos' : 'Editar Fornecedor | Olinda Hotel & Eventos'}">
-        Fornecedor | Olinda Hotel & Eventos
+        th:text="${acaoFormulario == '/fornecedores' ? 'Novo Fornecedor | Sperafico Incorporadora' : 'Editar Fornecedor | Sperafico Incorporadora'}">
+        Fornecedor | Sperafico Incorporadora
     </title>
 
     <!-- Tailwind CSS CDN -->
@@ -36,11 +36,11 @@
                     <div
                         class="w-10 h-10 rounded-xl border border-gold-500/50 bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
                         <span
-                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">O</span>
+                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">S</span>
                     </div>
                     <div>
                         <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-bold block">
-                            Olinda Hotel & Eventos
+                                Sperafico Incorporadora
                         </span>
                         <h1
                             class="text-lg sm:text-xl font-bold tracking-tight text-white font-['Cormorant_Garamond'] leading-none">
@@ -71,7 +71,7 @@
         </div>
     </header>
 
-    <!-- ÁREA PRINCIPAL CENTRALIZADA (FORMATO IMPORTAÇÃO) -->
+    <!-- ÁREA PRINCIPAL -->
     <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 flex-1 space-y-8">
 
         <!-- CABEÇALHO DA PÁGINA -->
@@ -96,7 +96,7 @@
             </a>
         </div>
 
-        <!-- MENSAGEM DE ERRO (SE HOUVER) -->
+        <!-- MENSAGEM DE ERRO -->
         <div th:if="${erro}"
             class="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl text-xs font-medium flex items-center gap-3">
             <i class="fa-solid fa-circle-exclamation text-rose-600 text-base"></i>
@@ -121,9 +121,14 @@
                                 class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
                                 Nome / Razão Social <span class="text-rose-500">*</span>
                             </label>
+
                             <input type="text" id="nome" th:field="*{nome}" maxlength="150" required
                                 placeholder="Ex.: COPEL, SANEPAR, Claro, Hortifrúti Real..."
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+
+                            <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"
+                                class="text-rose-600 text-xs mt-1">
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -147,11 +152,13 @@
         </section>
 
     </main>
+
     <footer class="bg-white border-t border-gray-100 mt-12 py-6 text-xs text-gray-500">
         <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-2">
-                <span class="font-['Cormorant_Garamond'] text-gold-600 font-bold text-base">Olinda Hotel &
-                    Eventos</span>
+                <span class="font-['Cormorant_Garamond'] text-gold-600 font-bold text-base">
+                    Olinda Hotel & Eventos
+                </span>
                 <span>&bull; Sistema de Gestão Financeira</span>
             </div>
             <p class="text-gray-400">Versão 2.4.0</p>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${codigo + ' | Sperafico Incorporadora'}">Erro | Sperafico Incorporadora</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            800: '#1b365d',
+                            900: '#00205b',
+                        },
+                        gold: {
+                            400: '#d4af37',
+                            500: '#c2a15f',
+                            600: '#8c733e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex items-center justify-center p-6 font-['Plus_Jakarta_Sans',sans-serif]">
+
+    <main class="max-w-lg w-full text-center">
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 sm:p-12">
+
+            <!-- Ícone / Alerta -->
+            <div class="w-20 h-20 rounded-2xl bg-amber-50 text-amber-600 mx-auto flex items-center justify-center mb-6 border border-amber-100">
+                <i class="fa-solid fa-triangle-exclamation text-3xl"></i>
+            </div>
+
+            <!-- Identificação da Empresa -->
+            <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-gold-600 mb-3">
+                Sperafico Incorporadora
+            </p>
+
+            <!-- Código do Erro -->
+            <h1 class="text-7xl font-bold text-brand-900 font-['Cormorant_Garamond']"
+                th:text="${codigo}">
+                404
+            </h1>
+
+            <!-- Título do Erro -->
+            <h2 class="text-2xl font-bold text-gray-800 mt-3"
+                th:text="${titulo}">
+                Página não encontrada
+            </h2>
+
+            <!-- Mensagem de Erro -->
+            <p class="text-sm text-gray-500 mt-4 leading-relaxed"
+                th:text="${mensagem}">
+                O recurso solicitado não foi encontrado.
+            </p>
+
+            <!-- Botões de Ação -->
+            <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
+
+                <a th:href="@{/}"
+                    class="px-6 py-3 rounded-xl bg-brand-900 hover:bg-brand-800 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Voltar ao início</span>
+                </a>
+
+                <button onclick="history.back()"
+                    class="px-6 py-3 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-600 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Voltar</span>
+                </button>
+
+            </div>
+
+        </div>
+
+        <p class="text-xs text-gray-400 mt-6">
+            &copy; Sperafico Incorporadora &bull; Gestão Empresarial
+        </p>
+
+    </main>
+
+</body>
+</html>

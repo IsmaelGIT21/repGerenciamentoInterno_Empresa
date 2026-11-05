@@ -3,7 +3,8 @@ package br.com.gestao.empresas.fornecedor.controller;
 import br.com.gestao.empresas.fornecedor.dto.FornecedorFormDTO;
 import br.com.gestao.empresas.fornecedor.model.Fornecedor;
 import br.com.gestao.empresas.fornecedor.service.FornecedorService;
-
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,16 @@ public class FornecedorController {
 
     @PostMapping
     public String salvar(
-            @ModelAttribute("fornecedor") FornecedorFormDTO dadosFormulario,
+            @Valid @ModelAttribute("fornecedor") FornecedorFormDTO dadosFormulario,
+            BindingResult resultado,
+            Model model,
             RedirectAttributes redirectAttributes) {
+
+        if (resultado.hasErrors()) {
+            model.addAttribute("acaoFormulario", "/fornecedores");
+            model.addAttribute("erro", "Verifique os campos preenchidos.");
+            return "fornecedores/formulario";
+        }
 
         try {
             fornecedorService.cadastrar(dadosFormulario);
@@ -45,8 +54,9 @@ public class FornecedorController {
                     "Fornecedor cadastrado com sucesso!");
 
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("erro", e.getMessage());
-            return "redirect:/fornecedores/novo";
+            model.addAttribute("acaoFormulario", "/fornecedores");
+            model.addAttribute("erro", e.getMessage());
+            return "fornecedores/formulario";
         }
 
         return "redirect:/fornecedores";
@@ -73,8 +83,16 @@ public class FornecedorController {
     @PostMapping("/{id}/editar")
     public String atualizar(
             @PathVariable Long id,
-            @ModelAttribute("fornecedor") FornecedorFormDTO dadosFormulario,
+            @Valid @ModelAttribute("fornecedor") FornecedorFormDTO dadosFormulario,
+            BindingResult resultado,
+            Model model,
             RedirectAttributes redirectAttributes) {
+
+        if (resultado.hasErrors()) {
+            model.addAttribute("acaoFormulario", "/fornecedores/" + id + "/editar");
+            model.addAttribute("erro", "Verifique os campos preenchidos.");
+            return "fornecedores/formulario";
+        }
 
         try {
             fornecedorService.atualizar(id, dadosFormulario);
@@ -84,8 +102,9 @@ public class FornecedorController {
                     "Fornecedor atualizado com sucesso!");
 
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("erro", e.getMessage());
-            return "redirect:/fornecedores/" + id + "/editar";
+            model.addAttribute("acaoFormulario", "/fornecedores/" + id + "/editar");
+            model.addAttribute("erro", e.getMessage());
+            return "fornecedores/formulario";
         }
 
         return "redirect:/fornecedores";

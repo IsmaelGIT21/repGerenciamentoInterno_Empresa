@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -6,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title
-        th:text="${acaoFormulario == '/apolices' ? 'Nova Apólice | Olinda Hotel & Eventos' : 'Editar Apólice | Olinda Hotel & Eventos'}">
-        Apólice | Olinda Hotel & Eventos
+        th:text="${acaoFormulario == '/apolices' ? 'Nova Apólice | Sperafico Incorporadora' : 'Editar Apólice | Sperafico Incorporadora'}">
+        Apólice | Sperafico Incorporadora
     </title>
 
     <!-- Tailwind CSS CDN -->
@@ -22,6 +23,7 @@
         rel="stylesheet">
 
     <script th:src="@{/js/apolices-formulario.js}"></script>
+
 </head>
 
 <body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
@@ -33,15 +35,15 @@
 
             <!-- Logo & Nome do Hotel -->
             <div class="flex items-center gap-3">
-                <a th:href="@{/}" class="flex items-center gap-3 group">
+                <a th:href="@{\/}" class="flex items-center gap-3 group">
                     <div
                         class="w-10 h-10 rounded-xl border border-gold-500/50 bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
                         <span
-                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">O</span>
+                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">S</span>
                     </div>
                     <div>
                         <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-bold block">
-                            Olinda Hotel & Eventos
+                            Sperafico Incorporadora
                         </span>
                         <h1
                             class="text-lg sm:text-xl font-bold tracking-tight text-white font-['Cormorant_Garamond'] leading-none">
@@ -72,7 +74,7 @@
         </div>
     </header>
 
-    <!-- ÁREA PRINCIPAL CENTRALIZADA (MESMO FORMATO DA PÁGINA DE IMPORTAÇÃO) -->
+    <!-- ÁREA PRINCIPAL CENTRALIZADA -->
     <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 flex-1 space-y-8">
 
         <!-- CABEÇALHO -->
@@ -125,6 +127,8 @@
                             <input type="text" id="descricao" th:field="*{descricao}" required maxlength="255"
                                 placeholder="Ex.: Veículo, imóvel, equipamento..."
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            <p th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"
+                                class="text-rose-600 text-xs mt-1"></p>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -136,6 +140,8 @@
                                 <input type="text" id="anoModelo" th:field="*{anoModelo}" maxlength="50"
                                     placeholder="Ex.: 2022/2023"
                                     class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                                <p th:if="${#fields.hasErrors('anoModelo')}" th:errors="*{anoModelo}"
+                                    class="text-rose-600 text-xs mt-1"></p>
                             </div>
 
                             <div>
@@ -146,6 +152,8 @@
                                 <input type="text" id="identificador" th:field="*{identificador}" maxlength="100"
                                     placeholder="Ex.: ABC1D23"
                                     class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                                <p th:if="${#fields.hasErrors('identificador')}" th:errors="*{identificador}"
+                                    class="text-rose-600 text-xs mt-1"></p>
                             </div>
                         </div>
                     </div>
@@ -167,6 +175,8 @@
                             <input type="text" id="numeroApolice" th:field="*{numeroApolice}" maxlength="100"
                                 placeholder="Número da apólice ou proposta"
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            <p th:if="${#fields.hasErrors('numeroApolice')}" th:errors="*{numeroApolice}"
+                                class="text-rose-600 text-xs mt-1"></p>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -178,6 +188,8 @@
                                 <input type="text" id="seguradora" th:field="*{seguradora}" maxlength="150"
                                     placeholder="Nome da seguradora"
                                     class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                                <p th:if="${#fields.hasErrors('seguradora')}" th:errors="*{seguradora}"
+                                    class="text-rose-600 text-xs mt-1"></p>
                             </div>
 
                             <div>
@@ -188,6 +200,8 @@
                                 <input type="text" id="corretor" th:field="*{corretor}" maxlength="150"
                                     placeholder="Nome do corretor"
                                     class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                                <p th:if="${#fields.hasErrors('corretor')}" th:errors="*{corretor}"
+                                    class="text-rose-600 text-xs mt-1"></p>
                             </div>
                         </div>
                     </div>
@@ -206,8 +220,7 @@
                                 class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
                                 Data de Início
                             </label>
-                            <input type="date" id="dataInicio" name="dataInicio"
-                                th:value="${apolice.dataInicio != null ? #temporals.format(apolice.dataInicio, 'yyyy-MM-dd') : ''}"
+                            <input type="date" id="dataInicio" th:field="*{dataInicio}"
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
                         </div>
 
@@ -216,8 +229,7 @@
                                 class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
                                 Data de Vencimento
                             </label>
-                            <input type="date" id="dataVencimento" name="dataVencimento"
-                                th:value="${apolice.dataVencimento != null ? #temporals.format(apolice.dataVencimento, 'yyyy-MM-dd') : ''}"
+                            <input type="date" id="dataVencimento" th:field="*{dataVencimento}"
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
                         </div>
                     </div>
@@ -239,6 +251,8 @@
                             <input type="number" id="valorPremio" th:field="*{valorPremio}" min="0" step="0.01"
                                 placeholder="0.00"
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            <p th:if="${#fields.hasErrors('valorPremio')}" th:errors="*{valorPremio}"
+                                class="text-rose-600 text-xs mt-1"></p>
                         </div>
 
                         <div>
@@ -249,6 +263,8 @@
                             <input type="number" id="valorFranquia" th:field="*{valorFranquia}" min="0" step="0.01"
                                 placeholder="0.00"
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            <p th:if="${#fields.hasErrors('valorFranquia')}" th:errors="*{valorFranquia}"
+                                class="text-rose-600 text-xs mt-1"></p>
                         </div>
 
                         <div>
@@ -258,6 +274,8 @@
                             </label>
                             <input type="number" id="lmi" th:field="*{lmi}" min="0" step="0.01" placeholder="0.00"
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            <p th:if="${#fields.hasErrors('lmi')}" th:errors="*{lmi}"
+                                class="text-rose-600 text-xs mt-1"></p>
                         </div>
 
                         <div>
@@ -268,6 +286,8 @@
                             <input type="number" id="comissao" th:field="*{comissao}" min="0" step="0.01"
                                 placeholder="0.00"
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                            <p th:if="${#fields.hasErrors('comissao')}" th:errors="*{comissao}"
+                                class="text-rose-600 text-xs mt-1"></p>
                         </div>
                     </div>
 
@@ -279,6 +299,8 @@
                         <input type="number" id="valorParcela" th:field="*{valorParcela}" min="0" step="0.01"
                             placeholder="Ex.: 450.00"
                             class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+                        <p th:if="${#fields.hasErrors('valorParcela')}" th:errors="*{valorParcela}"
+                            class="text-rose-600 text-xs mt-1"></p>
                     </div>
                 </div>
 

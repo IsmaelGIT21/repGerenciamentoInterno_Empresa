@@ -2,23 +2,51 @@ package br.com.gestao.empresas.apolice.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class ApoliceFormDTO {
 
+    @NotBlank(message = "A descrição da apólice é obrigatória.")
+    @Size(max = 255, message = "A descrição deve ter no máximo 255 caracteres.")
     private String descricao;
+
+    @Size(max = 50, message = "O ano/modelo deve ter no máximo 50 caracteres.")
     private String anoModelo;
+
+    @Size(max = 100, message = "O identificador deve ter no máximo 100 caracteres.")
     private String identificador;
+
     private LocalDate dataInicio;
     private LocalDate dataVencimento;
+
+    @Size(max = 100, message = "O número da apólice deve ter no máximo 100 caracteres.")
     private String numeroApolice;
+
+    @Size(max = 150, message = "O nome da seguradora deve ter no máximo 150 caracteres.")
     private String seguradora;
+
+    @Size(max = 150, message = "O nome do corretor deve ter no máximo 150 caracteres.")
     private String corretor;
+
+    @DecimalMin(value = "0.00", message = "O prêmio não pode ser negativo.")
     private BigDecimal valorPremio;
+
+    @DecimalMin(value = "0.00", message = "A franquia não pode ser negativa.")
     private BigDecimal valorFranquia;
+
+    @DecimalMin(value = "0.00", message = "O LMI não pode ser negativo.")
     private BigDecimal lmi;
+
     private Integer parcelas;
+
+    @DecimalMin(value = "0.00", message = "O valor da parcela não pode ser negativo.")
     private BigDecimal valorParcela;
+
+    @DecimalMin(value = "0.00", message = "A comissão não pode ser negativa.")
     private BigDecimal comissao;
+
     private Long localId;
 
     public String getDescricao() {

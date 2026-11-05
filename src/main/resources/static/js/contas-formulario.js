@@ -4,20 +4,20 @@ tailwind.config = {
         extend: {
             colors: {
                 brand: {
-                    50: '#f4f6f4',
-                    100: '#e5ebe6',
-                    800: '#193629',
-                    900: '#244638',
+                    50: '#f0f3f8',   // Fundo muito suave/áreas destacadas de tabelas
+                    100: '#dce3ef',  // Bordas leves e fundos de badges
+                    800: '#2C4268',  // Azul Aço Escuro (hover de botões e destaques secundários)
+                    900: '#1A2B4C',  // Navy Real / Azul Marinho Clássico (Header, Sidebar e Botões Principais)
                 },
                 gold: {
-                    400: '#c5a059',
-                    500: '#a58b50',
-                    600: '#8c733e',
+                    400: '#d4b36e',  // Dourado Iluminado (hover de detalhes)
+                    500: '#C5A059',  // Dourado Champagne Clássico (Ícones, badges e accents)
+                    600: '#9e7d3b',  // Dourado Escuro (textos pequenos e detalhes de contraste)
                 }
             }
         }
     }
-};
+}
 
 // Controle do campo de data de pagamento
 document.addEventListener("DOMContentLoaded", function () {

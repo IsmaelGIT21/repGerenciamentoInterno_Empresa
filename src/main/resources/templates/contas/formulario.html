@@ -1,12 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title
-        th:text="${acaoFormulario == '/contas' ? 'Nova Conta | Olinda Hotel & Eventos' : 'Editar Conta | Olinda Hotel & Eventos'}">
-        Conta | Olinda Hotel & Eventos
+        th:text="${acaoFormulario == '/contas' ? 'Nova Conta | Sperafico Incorporadora' : 'Editar Conta | Sperafico Incorporadora'}">
+        Conta | Sperafico Incorporadora
     </title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,6 +20,7 @@
         rel="stylesheet">
 
     <script th:src="@{/js/contas-formulario.js}"></script>
+
 </head>
 
 <body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
@@ -27,15 +30,15 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center gap-4">
 
             <div class="flex items-center gap-3">
-                <a th:href="@{ / }" class="flex items-center gap-3 group">
+                <a th:href="@{/}" class="flex items-center gap-3 group">
                     <div
                         class="w-10 h-10 rounded-xl border border-gold-500/50 bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
                         <span
-                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">O</span>
+                            class="font-['Cormorant_Garamond'] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">S</span>
                     </div>
                     <div>
                         <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-bold block">
-                            Olinda Hotel & Eventos
+                                            Sperafico Incorporadora
                         </span>
                         <h1
                             class="text-lg sm:text-xl font-bold tracking-tight text-white font-['Cormorant_Garamond'] leading-none">
@@ -110,9 +113,13 @@
                                 class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
                                 Descrição da Conta <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="descricao" th:field="*{descricao}" required
+                            <input type="text" id="descricao" th:field="*{descricao}" required maxlength="255"
                                 placeholder="Ex.: Fornecimento de Hortifrúti - Evento Corporativo"
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+
+                            <p th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"
+                                class="text-rose-600 text-xs mt-1">
+                            </p>
                         </div>
 
                         <div>
@@ -152,6 +159,10 @@
                                     placeholder="0,00"
                                     class="w-full border border-gray-200 rounded-xl pl-11 pr-4 py-3 text-sm font-semibold text-gray-900 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
                             </div>
+
+                            <p th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"
+                                class="text-rose-600 text-xs mt-1">
+                            </p>
                         </div>
 
                         <div>
@@ -161,6 +172,10 @@
                             </label>
                             <input type="date" id="dataVencimento" th:field="*{dataVencimento}" required
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
+
+                            <p th:if="${#fields.hasErrors('dataVencimento')}" th:errors="*{dataVencimento}"
+                                class="text-rose-600 text-xs mt-1">
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -183,6 +198,10 @@
                                 <option th:each="local : ${locais}" th:value="${local.id}" th:text="${local.nome}">
                                 </option>
                             </select>
+
+                            <p th:if="${#fields.hasErrors('localId')}" th:errors="*{localId}"
+                                class="text-rose-600 text-xs mt-1">
+                            </p>
                         </div>
 
                         <div>
@@ -195,6 +214,10 @@
                                 <option value="PENDENTE">Pendente</option>
                                 <option value="PAGA">Paga</option>
                             </select>
+
+                            <p th:if="${#fields.hasErrors('status')}" th:errors="*{status}"
+                                class="text-rose-600 text-xs mt-1">
+                            </p>
                         </div>
                     </div>
 
@@ -218,9 +241,13 @@
                     </h2>
 
                     <div>
-                        <textarea id="observacoes" th:field="*{observacoes}" rows="3"
+                        <textarea id="observacoes" th:field="*{observacoes}" rows="3" maxlength="255"
                             placeholder="Anotações adicionais, número da nota fiscal ou detalhes do pagamento..."
                             class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50"></textarea>
+
+                        <p th:if="${#fields.hasErrors('observacoes')}" th:errors="*{observacoes}"
+                            class="text-rose-600 text-xs mt-1">
+                        </p>
                     </div>
                 </div>
 

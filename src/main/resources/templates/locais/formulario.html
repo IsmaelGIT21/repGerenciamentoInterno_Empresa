@@ -4,13 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title
-    th:text="${acaoFormulario == '/locais' ? 'Novo Local | Olinda Hotel & Eventos' : 'Editar Local | Olinda Hotel & Eventos'}">
-    Local | Olinda Hotel & Eventos
-</title>
 
-    <!-- Tailwind CSS -->
+    <title
+        th:text="${acaoFormulario == '/locais' ? 'Novo Local | Sperafico Incorporadora' : 'Editar Local | Sperafico Incorporadora'}">
+        Local | Sperafico Incorporadora
+    </title>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Script de Configuração Personalizado JS -->
+    <script th:src="@{/js/locais-formulario.js}"></script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Google Fonts -->
     <link
@@ -18,86 +25,182 @@
         rel="stylesheet">
 </head>
 
-<body class="bg-[#f7f5ef] text-gray-800" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+<body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
 
-    <div class="max-w-2xl mx-auto px-6 py-10">
+    <!-- BARRA SUPERIOR DE NAVEGAÇÃO / HEADER -->
+    <header
+        class="bg-[#00205b] bg-brand-900 text-white sticky top-0 z-50 border-b border-gold-500/30 shadow-lg backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center gap-4">
 
-        <!-- Cabeçalho da Página -->
-        <div class="mb-8">
-            <p class="text-sm uppercase tracking-widest text-[#a58b50] font-semibold">
-                Olinda Hotel & Eventos
-            </p>
-
-            <h1 class="text-4xl text-[#244638] mt-2" style="font-family: 'Cormorant Garamond', serif;"
-                th:text="${acaoFormulario == '/locais'} ? 'Novo local' : 'Editar local'">
-            </h1>
-
-            <p class="text-gray-500 mt-1">
-                Informe os dados da unidade ou espaço físico.
-            </p>
-        </div>
-
-        <!-- Mensagem de Erro (se houver) -->
-        <div th:if="${erro}" class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-5"
-            th:text="${erro}">
-        </div>
-
-        <!-- Formulário -->
-        <form th:action="${acaoFormulario}" th:object="${local}" method="post"
-            class="bg-white rounded-xl shadow-sm border border-gray-200 p-7 space-y-6">
-
-            <!-- Nome do Local -->
-            <div>
-                <label for="nome" class="block font-semibold text-gray-700 mb-2">
-                    Nome do local <span class="text-[#a58b50]">*</span>
-                </label>
-                <input type="text" id="nome" th:field="*{nome}" required
-                    placeholder="Ex.: Salão Nobre, Escritório Central..."
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-            </div>
-
-            <!-- Tipo de Local -->
-            <div>
-                <label for="tipo" class="block font-semibold text-gray-700 mb-2">
-                    Tipo de local <span class="text-[#a58b50]">*</span>
-                </label>
-                <select id="tipo" th:field="*{tipo}" required
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#244638]">
-                    <option value="">Selecione um tipo</option>
-                    <option value="ESCRITORIO">Escritório</option>
-                    <option value="CASA">Casa</option>
-                    <option value="CHACARA">Chácara</option>
-                    <option value="APARTAMENTO">Apartamento</option>
-                    <option value="OUTRO">Outro</option>
-                </select>
-            </div>
-
-            <!-- Endereço -->
-            <div>
-                <label for="endereco" class="block font-semibold text-gray-700 mb-2">
-                    Endereço
-                </label>
-                <input type="text" id="endereco" th:field="*{endereco}"
-                    placeholder="Ex.: Av. Parigot de Souza, 1200 - Toledo, PR"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#244638]">
-            </div>
-
-            <!-- Botões de Ação -->
-            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                <a th:href="@{/locais}"
-                    class="px-5 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors">
-                    Cancelar
+            <!-- Logo & Nome da Incorporadora -->
+            <div class="flex items-center gap-3">
+                <a th:href="@{/}" class="flex items-center gap-3 group">
+                    <div
+                        class="w-10 h-10 rounded-xl border border-gold-500/50 bg-[#1b365d] bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
+                        <span
+                            class="font-['Cormorant_Garamond'] text-[#c2a15f] text-gold-400 font-bold text-2xl group-hover:text-white transition-colors">S</span>
+                    </div>
+                    <div>
+                        <span
+                            class="text-[9px] tracking-[0.25em] text-[#c2a15f] text-gold-400 uppercase font-bold block">
+                            Sperafico Incorporadora
+                        </span>
+                        <h1
+                            class="text-lg sm:text-xl font-bold tracking-tight text-white font-['Cormorant_Garamond'] leading-none">
+                            Gestão Empresarial
+                        </h1>
+                    </div>
                 </a>
-
-                <button type="submit"
-                    class="px-5 py-3 rounded-lg bg-[#244638] hover:bg-[#193629] text-white font-semibold transition-colors">
-                    Salvar local
-                </button>
             </div>
 
-        </form>
+            <!-- Perfil e Logout -->
+            <div class="flex items-center gap-3 sm:gap-6 text-xs">
+                <div class="text-right hidden sm:block border-r border-white/10 pr-6">
+                    <p class="font-semibold text-white flex items-center gap-2 justify-end"
+                        th:text="${#authentication != null ? #authentication.name : 'Administrador'}">
+                        <i class="fa-solid fa-circle-user text-[#c2a15f] text-gold-400 text-sm"></i> Administrador
+                    </p>
+                    <!-- Mantido o tom de verde (emerald) no Sistema Interno -->
+                    <p class="text-emerald-200/70 text-[11px]">Sistema Interno</p>
+                </div>
 
-    </div>
+                <form th:action="@{/logout}" method="post" class="inline">
+                    <button type="submit"
+                        class="px-3.5 py-2 rounded-lg border border-red-500/30 text-red-200 bg-red-950/40 hover:bg-red-600 hover:text-white font-semibold transition-all text-xs flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="hidden sm:inline">Sair</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <!-- ÁREA PRINCIPAL CENTRALIZADA -->
+    <main class="max-w-2xl mx-auto w-full px-4 sm:px-6 py-10 flex-1 space-y-8">
+
+        <!-- CABEÇALHO DA PÁGINA -->
+        <div
+            class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <span class="text-[11px] font-bold text-[#8c733e] text-gold-600 uppercase tracking-widest block mb-1">
+                    <i class="fa-solid fa-building-user mr-1"></i> Sperafico Incorporadora
+                </span>
+                <h1 class="text-2xl sm:text-3xl font-bold text-[#00205b] text-brand-900 font-['Cormorant_Garamond']"
+                    th:text="${acaoFormulario == '/locais' ? 'Novo Local' : 'Editar Local'}">
+                    Novo Local
+                </h1>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1">
+                    Informe os dados da unidade ou espaço físico.
+                </p>
+            </div>
+            <a th:href="@{/locais}"
+                class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold transition-all flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Voltar para Lista</span>
+            </a>
+        </div>
+
+        <!-- MENSAGEM DE ERRO -->
+        <div th:if="${erro}"
+            class="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl text-xs font-medium flex items-center gap-3">
+            <i class="fa-solid fa-circle-exclamation text-rose-600 text-base"></i>
+            <span th:text="${erro}"></span>
+        </div>
+
+        <!-- FORMULÁRIO PRINCIPAL -->
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+
+            <form th:action="${acaoFormulario}" th:object="${local}" method="post" class="space-y-6">
+
+                <!-- Nome do Local -->
+                <div>
+                    <label for="nome" class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                        Nome do Local <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="relative rounded-xl">
+                        <span
+                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#c2a15f] text-gold-500 text-sm">
+                            <i class="fa-solid fa-building"></i>
+                        </span>
+                        <input type="text" id="nome" th:field="*{nome}" required maxlength="255"
+                            placeholder="Ex.: Empreendimento Central, Almoxarifado Obras..."
+                            class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-[#00205b] focus:border-[#00205b] focus:outline-none bg-gray-50/50">
+                    </div>
+                    <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-rose-600 text-xs mt-1"></p>
+                </div>
+
+                <!-- Tipo de Local -->
+                <div>
+                    <label for="tipo" class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                        Tipo de Local <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="relative rounded-xl">
+                        <span
+                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#c2a15f] text-gold-500 text-sm">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </span>
+                        <select id="tipo" th:field="*{tipo}" required
+                            class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-700 bg-gray-50/50 focus:ring-2 focus:ring-[#00205b] focus:border-[#00205b] focus:outline-none">
+                            <option value="">Selecione um tipo</option>
+                            <option value="ESCRITORIO">Escritório</option>
+                            <option value="CASA">Casa</option>
+                            <option value="CHACARA">Chácara</option>
+                            <option value="APARTAMENTO">Apartamento</option>
+                            <option value="OUTRO">Outro</option>
+                        </select>
+                    </div>
+                    <p th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" class="text-rose-600 text-xs mt-1"></p>
+                </div>
+
+                <!-- Endereço -->
+                <div>
+                    <label for="endereco" class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                        Endereço
+                    </label>
+                    <div class="relative rounded-xl">
+                        <span
+                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#c2a15f] text-gold-500 text-sm">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </span>
+                        <input type="text" id="endereco" th:field="*{endereco}" maxlength="255"
+                            placeholder="Ex.: Av. Parigot de Souza, 1200 - Toledo, PR"
+                            class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-[#00205b] focus:border-[#00205b] focus:outline-none bg-gray-50/50">
+                    </div>
+                    <p th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}"
+                        class="text-rose-600 text-xs mt-1"></p>
+                </div>
+
+                <!-- Botões de Ação -->
+                <div class="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                    <a th:href="@{/locais}"
+                        class="px-5 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold uppercase tracking-wider transition-all">
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                        class="px-6 py-3 rounded-xl bg-[#00205b] hover:bg-[#1b365d] bg-brand-900 hover:bg-brand-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Salvar Local</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ DA APLICAÇÃO -->
+    <footer class="bg-white border-t border-gray-100 mt-12 py-6 text-xs text-gray-500">
+        <div class="max-w-2xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-['Cormorant_Garamond'] text-[#8c733e] text-gold-600 font-bold text-base">Sperafico
+                    Incorporadora</span>
+                <span>&bull; Gestão de Locais</span>
+            </div>
+            <p class="text-gray-400">Versão 2.4.0</p>
+        </div>
+    </footer>
 
 </body>
 

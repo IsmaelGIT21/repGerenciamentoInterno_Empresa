@@ -4,10 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso ao Sistema | Olinda Hotel & Eventos</title>
+    <title>Login | Sperafico Incorporadora</title>
 
-    <!-- Tailwind CSS CDN -->
+    <!-- 1. Primeiro carrega o CDN do Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 2. Depois carrega o seu ficheiro login.js para estender as configurações -->
+    <script th:src="@{/js/login.js}"></script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Google Fonts -->
     <link
@@ -15,145 +21,112 @@
         rel="stylesheet">
 </head>
 
-<body class="bg-[#f7f5ef] text-gray-800 min-h-screen flex items-center justify-center p-4 sm:p-6"
-    style="font-family: 'Plus Jakarta Sans', sans-serif;">
+<body
+    class="bg-[#f8f9fa] text-gray-800 min-h-screen flex items-center justify-center font-['Plus_Jakarta_Sans',sans-serif] px-4 py-12">
 
-    <!-- CONTAINER PRINCIPAL DE LOGIN -->
-    <main
-        class="w-full max-w-5xl bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden grid grid-cols-1 md:grid-cols-2 min-h-[600px]">
+    <div class="max-w-md w-full space-y-6">
 
-        <!-- PAINEL DA ESQUERDA (BRANDING & IDENTIDADE) -->
-        <section class="bg-[#244638] text-white p-8 sm:p-12 flex flex-col justify-between relative overflow-hidden">
-
-            <!-- Círculos decorativos em Dourado no fundo -->
+        <!-- CABEÇALHO / MONOGRAMA SPERAFICO -->
+        <div class="text-center space-y-3">
             <div
-                class="absolute -right-32 -bottom-24 w-80 h-80 rounded-full border border-[#a58b50]/20 pointer-events-none">
+                class="inline-flex items-center justify-center w-16 h-16 rounded-2xl border border-gold-500/50 bg-[#00205b] bg-brand-900 shadow-xl shadow-brand-900/20 group hover:scale-105 transition-all">
+                <span class="font-['Cormorant_Garamond'] text-[#c2a15f] text-gold-400 font-bold text-4xl">S</span>
             </div>
-            <div
-                class="absolute -right-20 -bottom-12 w-56 h-56 rounded-full border border-[#a58b50]/15 pointer-events-none">
+            <div>
+                <span class="text-[10px] tracking-[0.3em] text-[#8c733e] text-gold-600 uppercase font-bold block">
+                    Sperafico Incorporadora
+                </span>
+                <h1
+                    class="text-2xl sm:text-3xl font-bold text-[#00205b] text-brand-900 font-['Cormorant_Garamond'] mt-1">
+                    Gestão Empresarial
+                </h1>
             </div>
+        </div>
 
-            <!-- Cabeçalho da Marca -->
-            <div class="relative z-10">
-                <div class="flex items-center gap-3 mb-2">
-                    <div
-                        class="w-10 h-10 rounded-full border border-[#a58b50] bg-[#193629] flex items-center justify-center shrink-0">
-                        <span class="font-serif text-[#a58b50] font-bold text-xl"
-                            style="font-family: 'Cormorant Garamond', serif;">O</span>
-                    </div>
-                    <div>
-                        <span class="text-[10px] tracking-[0.2em] text-[#a58b50] uppercase font-bold block">
-                            Olinda Hotel & Eventos
-                        </span>
-                        <h1 class="text-2xl font-bold tracking-tight text-white"
-                            style="font-family: 'Cormorant Garamond', serif;">
-                            Gestão de Empresas
-                        </h1>
-                    </div>
-                </div>
-            </div>
+        <!-- MENSAGEM DE ERRO -->
+        <div th:if="${param.error}"
+            class="bg-rose-50 border border-rose-200 text-rose-900 px-4 py-3 rounded-2xl text-xs font-semibold flex items-center gap-3 shadow-sm">
+            <i class="fa-solid fa-circle-exclamation text-rose-600 text-base shrink-0"></i>
+            <span>Usuário ou senha inválidos. Tente novamente.</span>
+        </div>
 
-            <!-- Mensagem Institucional -->
-            <div class="relative z-10 my-8">
-                <p class="text-xs font-bold uppercase tracking-widest text-[#a58b50] mb-3">
-                    Gestão & Organização
-                </p>
-                <h2 class="text-3xl sm:text-4xl text-white font-semibold leading-tight mb-4"
-                    style="font-family: 'Cormorant Garamond', serif;">
-                    Controle e eficiência para sua empresa.
+        <!-- MENSAGEM DE LOGOUT -->
+        <div th:if="${param.logout}"
+            class="bg-emerald-50 border border-emerald-200 text-emerald-900 px-4 py-3 rounded-2xl text-xs font-semibold flex items-center gap-3 shadow-sm">
+            <i class="fa-solid fa-circle-check text-emerald-600 text-base shrink-0"></i>
+            <span>Você foi desconectado com sucesso.</span>
+        </div>
+
+        <!-- CARTÃO DO FORMULÁRIO DE LOGIN -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 space-y-6">
+
+            <div class="border-b border-gray-100 pb-4 text-center">
+                <h2 class="text-base font-bold text-[#00205b] text-brand-900 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock text-[#c2a15f] text-gold-500 text-sm"></i>
+                    Acesso ao Sistema
                 </h2>
-                <p class="text-sm text-gray-300 leading-relaxed max-w-sm">
-                    Uma plataforma centralizada para administrar locais, acompanhar despesas e organizar informações
-                    financeiras com total segurança.
-                </p>
+                <p class="text-xs text-gray-400 mt-1">Informe suas credenciais para continuar</p>
             </div>
 
-            <!-- Rodapé do Card -->
-            <div class="relative z-10 text-xs text-gray-400 border-t border-white/10 pt-4">
-                &copy; Olinda Hotel & Eventos &bull; Sistema Administrativo Interno
-            </div>
-
-        </section>
-
-        <!-- PAINEL DA DIREITA (FORMULÁRIO DE ACESSO) -->
-        <section class="p-8 sm:p-12 flex flex-col justify-center">
-
-            <!-- Cabeçalho do Formulário -->
-            <div class="mb-8">
-                <p class="text-xs font-bold uppercase tracking-widest text-[#a58b50] mb-1">
-                    Área Restrita
-                </p>
-                <h2 class="text-3xl sm:text-4xl text-[#244638] font-bold"
-                    style="font-family: 'Cormorant Garamond', serif;">
-                    Bem-vindo
-                </h2>
-                <p class="text-sm text-gray-500 mt-1">
-                    Informe suas credenciais para acessar o painel.
-                </p>
-            </div>
-
-            <!-- Mensagem de Erro do Spring Security -->
-            <div th:if="${param.error}"
-                class="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-lg text-xs font-medium mb-6">
-                Usuário ou senha incorretos. Verifique suas credenciais.
-            </div>
-
-            <!-- Mensagem de Sucesso (Logout) -->
-            <div th:if="${param.logout}"
-                class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-lg text-xs font-medium mb-6">
-                Você saiu do sistema com segurança.
-            </div>
-
-            <!-- Formulário Thymeleaf / Spring Security -->
             <form th:action="@{/login}" method="post" class="space-y-5">
 
                 <!-- Campo Usuário -->
                 <div>
-                    <label for="username"
-                        class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-2">
-                        Usuário <span class="text-[#a58b50]">*</span>
+                    <label for="username" class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                        Usuário <span class="text-rose-500">*</span>
                     </label>
-                    <input type="text" id="username" name="username" placeholder="Digite seu usuário"
-                        autocomplete="username" required autofocus
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#244638] transition-all">
+                    <div class="relative rounded-xl">
+                        <span
+                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#c2a15f] text-gold-500 text-sm">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" id="username" name="username" required autocomplete="username"
+                            placeholder="Digite seu usuário"
+                            class="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-[#00205b] focus:border-[#00205b] focus:outline-none bg-gray-50/50">
+                    </div>
                 </div>
 
                 <!-- Campo Senha -->
                 <div>
-                    <label for="password"
-                        class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-2">
-                        Senha <span class="text-[#a58b50]">*</span>
+                    <label for="password" class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
+                        Senha <span class="text-rose-500">*</span>
                     </label>
-                    <div class="relative">
-                        <input type="password" id="password" name="password" placeholder="Digite sua senha"
-                            autocomplete="current-password" required
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-800 placeholder-gray-400 pr-20 focus:outline-none focus:ring-2 focus:ring-[#244638] transition-all">
+                    <div class="relative rounded-xl">
+                        <span
+                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#c2a15f] text-gold-500 text-sm">
+                            <i class="fa-solid fa-key"></i>
+                        </span>
+
+                        <input type="password" id="password" name="password" required autocomplete="current-password"
+                            placeholder="Digite sua senha"
+                            class="w-full border border-gray-200 rounded-xl pl-10 pr-20 py-3 text-sm focus:ring-2 focus:ring-[#00205b] focus:border-[#00205b] focus:outline-none bg-gray-50/50">
 
                         <button type="button" id="togglePassword"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-500 hover:text-[#244638] transition-colors px-2 py-1">
+                            class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-xs font-bold text-gray-500 hover:text-[#00205b] transition-colors">
                             Mostrar
                         </button>
                     </div>
                 </div>
 
-                <!-- Botão Entrar -->
-                <button type="submit"
-                    class="w-full bg-[#244638] hover:bg-[#193629] text-white font-semibold py-3.5 px-4 rounded-lg text-sm uppercase tracking-wider transition-all shadow-sm hover:shadow-md">
-                    Entrar no Sistema
-                </button>
+                <!-- Botão Entrar no Sistema -->
+                <div class="pt-2">
+                    <button type="submit"
+                        class="w-full py-3.5 px-6 rounded-xl bg-[#00205b] hover:bg-[#1b365d] bg-brand-900 hover:bg-brand-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Entrar no Sistema</span>
+                    </button>
+                </div>
 
             </form>
 
-            <!-- Rodapé do Formulário -->
-            <div class="mt-8 pt-6 border-t border-gray-100 text-center text-xs text-gray-400">
-                Acesso exclusivo para funcionários autorizados
-            </div>
+        </div>
 
-        </section>
+        <!-- RODAPÉ DA TELA DE LOGIN -->
+        <p class="text-center text-xs text-gray-400">
+            &copy; Sperafico Incorporadora &bull; Todos os direitos reservados
+        </p>
 
-    </main>
-
-    <script th:src="@{/js/login.js}"></script>
+    </div>
 
 </body>
 

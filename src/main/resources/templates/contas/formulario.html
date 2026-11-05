@@ -5,17 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title
-        th:text="${conta.id == null ? 'Nova Conta | Olinda Hotel & Eventos' : 'Editar Conta | Olinda Hotel & Eventos'}">
+        th:text="${acaoFormulario == '/contas' ? 'Nova Conta | Olinda Hotel & Eventos' : 'Editar Conta | Olinda Hotel & Eventos'}">
         Conta | Olinda Hotel & Eventos
     </title>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
@@ -25,14 +22,12 @@
 
 <body class="bg-[#f8f9fa] text-gray-800 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
 
-    <!-- BARRA SUPERIOR DE NAVEGAÇÃO / HEADER -->
     <header
         class="bg-brand-900 text-white sticky top-0 z-50 border-b border-gold-500/30 shadow-lg backdrop-blur-md bg-opacity-95">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center gap-4">
 
-            <!-- Logo & Nome do Hotel -->
             <div class="flex items-center gap-3">
-                <a th:href="@{/}" class="flex items-center gap-3 group">
+                <a th:href="@{ / }" class="flex items-center gap-3 group">
                     <div
                         class="w-10 h-10 rounded-xl border border-gold-500/50 bg-brand-800 flex items-center justify-center shrink-0 shadow-inner group-hover:border-gold-400 group-hover:scale-105 transition-all">
                         <span
@@ -50,7 +45,6 @@
                 </a>
             </div>
 
-            <!-- Perfil e Logout -->
             <div class="flex items-center gap-3 sm:gap-6 text-xs">
                 <div class="text-right hidden sm:block border-r border-white/10 pr-6">
                     <p class="font-semibold text-white flex items-center gap-2 justify-end"
@@ -71,10 +65,8 @@
         </div>
     </header>
 
-    <!-- ÁREA PRINCIPAL CENTRALIZADA (FORMATO IMPORTAÇÃO) -->
     <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 flex-1 space-y-8">
 
-        <!-- CABEÇALHO DA PÁGINA -->
         <div
             class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
@@ -82,7 +74,7 @@
                     <i class="fa-solid fa-file-invoice-dollar mr-1"></i> Módulo Financeiro
                 </span>
                 <h1 class="text-2xl sm:text-3xl font-bold text-brand-900 font-['Cormorant_Garamond']"
-                    th:text="${conta.id == null} ? 'Nova Conta' : 'Editar Conta'">
+                    th:text="${acaoFormulario == '/contas' ? 'Nova Conta' : 'Editar Conta'}">
                     Nova Conta
                 </h1>
                 <p class="text-xs sm:text-sm text-gray-500 mt-1">
@@ -96,19 +88,16 @@
             </a>
         </div>
 
-        <!-- MENSAGEM DE ERRO (SE HOUVER) -->
         <div th:if="${erro}"
             class="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl text-xs font-medium flex items-center gap-3">
             <i class="fa-solid fa-circle-exclamation text-rose-600 text-base"></i>
             <span th:text="${erro}"></span>
         </div>
 
-        <!-- FORMULÁRIO PRINCIPAL -->
         <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
 
             <form th:action="${acaoFormulario}" th:object="${conta}" method="post" class="space-y-8">
 
-                <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
                 <div>
                     <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-circle-info text-gold-500"></i>
@@ -116,7 +105,6 @@
                     </h2>
 
                     <div class="space-y-4">
-                        <!-- Descrição -->
                         <div>
                             <label for="descricao"
                                 class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
@@ -127,13 +115,12 @@
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none bg-gray-50/50">
                         </div>
 
-                        <!-- Fornecedor -->
                         <div>
-                            <label for="fornecedor"
+                            <label for="fornecedorId"
                                 class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
                                 Fornecedor / Credor
                             </label>
-                            <select id="fornecedor" th:field="*{fornecedor.id}"
+                            <select id="fornecedorId" th:field="*{fornecedorId}"
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 bg-gray-50/50 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none">
                                 <option value="">Nenhum fornecedor selecionado</option>
                                 <option th:each="fornecedor : ${fornecedores}" th:value="${fornecedor.id}"
@@ -144,7 +131,6 @@
                     </div>
                 </div>
 
-                <!-- SEÇÃO 2: VALOR E DATAS -->
                 <div class="pt-6 border-t border-gray-100">
                     <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-coins text-gold-500"></i>
@@ -152,7 +138,6 @@
                     </h2>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Valor -->
                         <div>
                             <label for="valor"
                                 class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
@@ -169,7 +154,6 @@
                             </div>
                         </div>
 
-                        <!-- Vencimento -->
                         <div>
                             <label for="dataVencimento"
                                 class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
@@ -181,7 +165,6 @@
                     </div>
                 </div>
 
-                <!-- SEÇÃO 3: CLASSICAÇÃO E STATUS -->
                 <div class="pt-6 border-t border-gray-100">
                     <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-building-user text-gold-500"></i>
@@ -189,13 +172,12 @@
                     </h2>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Local / Unidade -->
                         <div>
-                            <label for="local"
+                            <label for="localId"
                                 class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
                                 Local / Unidade <span class="text-rose-500">*</span>
                             </label>
-                            <select id="local" th:field="*{local.id}" required
+                            <select id="localId" th:field="*{localId}" required
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 bg-gray-50/50 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none">
                                 <option value="">Selecione um local</option>
                                 <option th:each="local : ${locais}" th:value="${local.id}" th:text="${local.nome}">
@@ -203,7 +185,6 @@
                             </select>
                         </div>
 
-                        <!-- Situação -->
                         <div>
                             <label for="status"
                                 class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
@@ -217,7 +198,6 @@
                         </div>
                     </div>
 
-                    <!-- Data do Pagamento (Condicional via JavaScript) -->
                     <div id="campoDataPagamento"
                         th:style="${conta.status == 'PAGA'} ? 'display: block' : 'display: none'"
                         class="mt-4 p-4 bg-emerald-50/50 border border-emerald-200/80 rounded-xl space-y-2">
@@ -231,7 +211,6 @@
                     </div>
                 </div>
 
-                <!-- SEÇÃO 4: OBSERVAÇÕES -->
                 <div class="pt-6 border-t border-gray-100">
                     <h2 class="text-base font-bold text-brand-900 mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-comment-dots text-gold-500"></i>
@@ -245,7 +224,6 @@
                     </div>
                 </div>
 
-                <!-- BOTÕES DE AÇÃO -->
                 <div class="flex justify-end gap-3 pt-6 border-t border-gray-100">
                     <a th:href="@{/contas}"
                         class="px-5 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold uppercase tracking-wider transition-all">
@@ -265,7 +243,6 @@
 
     </main>
 
-    <!-- RODAPÉ DA APLICAÇÃO -->
     <footer class="bg-white border-t border-gray-100 mt-12 py-6 text-xs text-gray-500">
         <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-2">

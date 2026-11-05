@@ -1,5 +1,6 @@
 package br.com.gestao.empresas.apolice.service;
 
+import br.com.gestao.empresas.apolice.dto.ApoliceFormDTO;
 import br.com.gestao.empresas.apolice.model.Apolice;
 import br.com.gestao.empresas.apolice.repository.ApoliceRepository;
 import br.com.gestao.empresas.local.model.Local;
@@ -7,6 +8,7 @@ import br.com.gestao.empresas.local.repository.LocalRepository;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -40,36 +42,35 @@ public class ApoliceService {
         return apoliceRepository.findByLocalId(localId);
     }
 
-    public Apolice cadastrar(Apolice apolice) {
+    @Transactional
+    public Apolice cadastrar(ApoliceFormDTO dadosFormulario) {
 
-        Local local = null;
+        Apolice apolice = new Apolice();
 
-        if (apolice.getLocal() != null && apolice.getLocal().getId() != null) {
-            local = localRepository.findById(apolice.getLocal().getId())
-                    .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND,
-                            "Local não encontrado"));
-        }
-
-        apolice.setLocal(local);
+        preencherDados(apolice, dadosFormulario);
 
         return apoliceRepository.save(apolice);
     }
 
-    public Apolice atualizar(Long id, Apolice dadosFormulario) {
+    @Transactional
+    public Apolice atualizar(Long id, ApoliceFormDTO dadosFormulario) {
 
         Apolice apolice = buscarPorId(id);
 
-        Local local = null;
+        preencherDados(apolice, dadosFormulario);
 
-        if (dadosFormulario.getLocal() != null
-                && dadosFormulario.getLocal().getId() != null) {
+        return apoliceRepository.save(apolice);
+    }
 
-            local = localRepository.findById(dadosFormulario.getLocal().getId())
-                    .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND,
-                            "Local não encontrado"));
-        }
+    @Transactional
+    public void excluir(Long id) {
+        Apolice apolice = buscarPorId(id);
+        apoliceRepository.delete(apolice);
+    }
+
+    private void preencherDados(
+            Apolice apolice,
+            ApoliceFormDTO dadosFormulario) {
 
         apolice.setDescricao(dadosFormulario.getDescricao());
         apolice.setAnoModelo(dadosFormulario.getAnoModelo());
@@ -85,13 +86,19 @@ public class ApoliceService {
         apolice.setParcelas(dadosFormulario.getParcelas());
         apolice.setValorParcela(dadosFormulario.getValorParcela());
         apolice.setComissao(dadosFormulario.getComissao());
-        apolice.setLocal(local);
 
-        return apoliceRepository.save(apolice);
+        apolice.setLocal(buscarLocal(dadosFormulario.getLocalId()));
     }
 
-    public void excluir(Long id) {
-        Apolice apolice = buscarPorId(id);
-        apoliceRepository.delete(apolice);
+    private Local buscarLocal(Long localId) {
+
+        if (localId == null) {
+            return null;
+        }
+
+        return localRepository.findById(localId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Local não encontrado"));
     }
 }

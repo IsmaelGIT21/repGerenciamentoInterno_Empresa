@@ -1,16 +1,19 @@
 package br.com.gestao.empresas.conta.service;
 
+import br.com.gestao.empresas.conta.dto.ContaFormDTO;
 import br.com.gestao.empresas.conta.model.Conta;
 import br.com.gestao.empresas.conta.repository.ContaRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.stereotype.Service;
-import java.util.List;
 import br.com.gestao.empresas.local.model.Local;
 import br.com.gestao.empresas.local.repository.LocalRepository;
 import br.com.gestao.empresas.fornecedor.model.Fornecedor;
 import br.com.gestao.empresas.fornecedor.repository.FornecedorRepository;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ContaService {
@@ -23,6 +26,7 @@ public class ContaService {
             ContaRepository contaRepository,
             LocalRepository localRepository,
             FornecedorRepository fornecedorRepository) {
+
         this.contaRepository = contaRepository;
         this.localRepository = localRepository;
         this.fornecedorRepository = fornecedorRepository;
@@ -43,97 +47,42 @@ public class ContaService {
         return contaRepository.findByLocalId(localId);
     }
 
-    public Conta cadastrar(Conta conta) {
-        if (conta.getLocal() == null || conta.getLocal().getId() == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Selecione um local para a conta");
-        }
+    public Conta cadastrar(ContaFormDTO dadosFormulario) {
 
-        Long localId = conta.getLocal().getId();
+        Local local = buscarLocal(dadosFormulario.getLocalId());
+        Fornecedor fornecedor = buscarFornecedor(dadosFormulario.getFornecedorId());
 
-        Local local = localRepository.findById(localId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Local não encontrado"));
+        Conta conta = new Conta();
 
-        if (conta.getFornecedor() != null
-                && conta.getFornecedor().getId() != null) {
-
-            Fornecedor fornecedor = fornecedorRepository
-                    .findById(conta.getFornecedor().getId())
-                    .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND,
-                            "Fornecedor não encontrado"));
-
-            conta.setFornecedor(fornecedor);
-
-        } else {
-            conta.setFornecedor(null);
-        }
-
+        conta.setDescricao(dadosFormulario.getDescricao());
+        conta.setValor(dadosFormulario.getValor());
+        conta.setDataVencimento(dadosFormulario.getDataVencimento());
+        conta.setDataPagamento(dadosFormulario.getDataPagamento());
+        conta.setStatus(normalizarStatus(dadosFormulario.getStatus()));
+        conta.setObservacoes(dadosFormulario.getObservacoes());
         conta.setLocal(local);
+        conta.setFornecedor(fornecedor);
 
-        if (conta.getStatus() == null || conta.getStatus().isBlank()) {
-            conta.setStatus("PENDENTE");
-        }
-
-        if ("PAGA".equals(conta.getStatus())) {
-            if (conta.getDataPagamento() == null) {
-                conta.setDataPagamento(LocalDate.now());
-            }
-        } else {
-            conta.setDataPagamento(null);
-        }
+        ajustarDataPagamento(conta);
 
         return contaRepository.save(conta);
     }
 
-    public Conta atualizar(Long id, Conta dadosFormulario) {
+    public Conta atualizar(Long id, ContaFormDTO dadosFormulario) {
+
         Conta conta = buscarPorId(id);
 
-        if (dadosFormulario.getLocal() == null
-                || dadosFormulario.getLocal().getId() == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Selecione um local para a conta");
-        }
-
-        Long localId = dadosFormulario.getLocal().getId();
-
-        Local local = localRepository.findById(localId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Local não encontrado"));
-
-        // Atualiza o fornecedor
-        if (dadosFormulario.getFornecedor() != null
-                && dadosFormulario.getFornecedor().getId() != null) {
-
-            Fornecedor fornecedor = fornecedorRepository
-                    .findById(dadosFormulario.getFornecedor().getId())
-                    .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND,
-                            "Fornecedor não encontrado"));
-
-            conta.setFornecedor(fornecedor);
-
-        } else {
-            conta.setFornecedor(null);
-        }
+        Local local = buscarLocal(dadosFormulario.getLocalId());
+        Fornecedor fornecedor = buscarFornecedor(dadosFormulario.getFornecedorId());
 
         conta.setDescricao(dadosFormulario.getDescricao());
         conta.setValor(dadosFormulario.getValor());
         conta.setDataVencimento(dadosFormulario.getDataVencimento());
         conta.setObservacoes(dadosFormulario.getObservacoes());
         conta.setLocal(local);
+        conta.setFornecedor(fornecedor);
 
-        String status = dadosFormulario.getStatus();
-
-        if (status == null || status.isBlank()) {
-            status = "PENDENTE";
-        }
-
+        String status = normalizarStatus(dadosFormulario.getStatus());
         conta.setStatus(status);
 
         if ("PAGA".equals(status)) {
@@ -150,6 +99,7 @@ public class ContaService {
     }
 
     public Conta marcarComoPaga(Long id) {
+
         Conta conta = buscarPorId(id);
 
         if (!"PAGA".equals(conta.getStatus())) {
@@ -165,5 +115,48 @@ public class ContaService {
     public void excluir(Long id) {
         Conta conta = buscarPorId(id);
         contaRepository.delete(conta);
+    }
+
+    private Local buscarLocal(Long localId) {
+
+        if (localId == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Selecione um local para a conta");
+        }
+
+        return localRepository.findById(localId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Local não encontrado"));
+    }
+
+    private Fornecedor buscarFornecedor(Long fornecedorId) {
+
+        if (fornecedorId == null) {
+            return null;
+        }
+
+        return fornecedorRepository.findById(fornecedorId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Fornecedor não encontrado"));
+    }
+
+    private String normalizarStatus(String status) {
+        return status == null || status.isBlank()
+                ? "PENDENTE"
+                : status;
+    }
+
+    private void ajustarDataPagamento(Conta conta) {
+
+        if ("PAGA".equals(conta.getStatus())) {
+            if (conta.getDataPagamento() == null) {
+                conta.setDataPagamento(LocalDate.now());
+            }
+        } else {
+            conta.setDataPagamento(null);
+        }
     }
 }

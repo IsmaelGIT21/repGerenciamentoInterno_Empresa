@@ -1,5 +1,6 @@
 package br.com.gestao.empresas.fornecedor.controller;
 
+import br.com.gestao.empresas.fornecedor.dto.FornecedorFormDTO;
 import br.com.gestao.empresas.fornecedor.model.Fornecedor;
 import br.com.gestao.empresas.fornecedor.service.FornecedorService;
 
@@ -26,18 +27,18 @@ public class FornecedorController {
 
     @GetMapping("/novo")
     public String formulario(Model model) {
-        model.addAttribute("fornecedor", new Fornecedor());
+        model.addAttribute("fornecedor", new FornecedorFormDTO());
         model.addAttribute("acaoFormulario", "/fornecedores");
         return "fornecedores/formulario";
     }
 
     @PostMapping
     public String salvar(
-            @ModelAttribute Fornecedor fornecedor,
+            @ModelAttribute("fornecedor") FornecedorFormDTO dadosFormulario,
             RedirectAttributes redirectAttributes) {
 
         try {
-            fornecedorService.cadastrar(fornecedor);
+            fornecedorService.cadastrar(dadosFormulario);
 
             redirectAttributes.addFlashAttribute(
                     "mensagem",
@@ -58,7 +59,10 @@ public class FornecedorController {
 
         Fornecedor fornecedor = fornecedorService.buscarPorId(id);
 
-        model.addAttribute("fornecedor", fornecedor);
+        FornecedorFormDTO formulario = new FornecedorFormDTO();
+        formulario.setNome(fornecedor.getNome());
+
+        model.addAttribute("fornecedor", formulario);
         model.addAttribute(
                 "acaoFormulario",
                 "/fornecedores/" + id + "/editar");
@@ -69,7 +73,7 @@ public class FornecedorController {
     @PostMapping("/{id}/editar")
     public String atualizar(
             @PathVariable Long id,
-            @ModelAttribute Fornecedor dadosFormulario,
+            @ModelAttribute("fornecedor") FornecedorFormDTO dadosFormulario,
             RedirectAttributes redirectAttributes) {
 
         try {

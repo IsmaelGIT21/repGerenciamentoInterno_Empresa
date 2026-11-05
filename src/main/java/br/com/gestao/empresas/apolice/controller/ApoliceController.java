@@ -1,33 +1,27 @@
 package br.com.gestao.empresas.apolice.controller;
 
+import br.com.gestao.empresas.apolice.dto.ApoliceFormDTO;
 import br.com.gestao.empresas.apolice.model.Apolice;
 import br.com.gestao.empresas.apolice.service.ApoliceService;
-import br.com.gestao.empresas.local.model.Local;
-import br.com.gestao.empresas.local.repository.LocalRepository;
+import br.com.gestao.empresas.local.service.LocalService;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/apolices")
 public class ApoliceController {
 
-    private final LocalRepository localRepository;
+    private final LocalService localService;
     private final ApoliceService apoliceService;
 
     public ApoliceController(
-            LocalRepository localRepository,
+            LocalService localService,
             ApoliceService apoliceService) {
 
-        this.localRepository = localRepository;
+        this.localService = localService;
         this.apoliceService = apoliceService;
     }
 
@@ -42,40 +36,31 @@ public class ApoliceController {
             @PathVariable Long localId,
             Model model) {
 
-        Local local = localRepository.findById(localId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Local não encontrado"));
-
         model.addAttribute(
                 "apolices",
                 apoliceService.listarPorLocal(localId));
 
-        model.addAttribute("local", local);
+        model.addAttribute("local", localService.buscarPorId(localId));
 
         return "apolices/lista";
     }
 
-    // Abre o formulário de cadastro
     @GetMapping("/nova")
     public String formulario(Model model) {
 
-        Apolice apolice = new Apolice();
-
-        model.addAttribute("apolice", apolice);
-        model.addAttribute("locais", localRepository.findAll());
+        model.addAttribute("apolice", new ApoliceFormDTO());
+        model.addAttribute("locais", localService.listarTodos());
         model.addAttribute("acaoFormulario", "/apolices");
 
         return "apolices/formulario";
     }
 
-    // Salva uma nova apólice
     @PostMapping
     public String salvar(
-            @ModelAttribute Apolice apolice,
+            @ModelAttribute("apolice") ApoliceFormDTO dadosFormulario,
             RedirectAttributes redirectAttributes) {
 
-        apoliceService.cadastrar(apolice);
+        apoliceService.cadastrar(dadosFormulario);
 
         redirectAttributes.addFlashAttribute(
                 "mensagem",
@@ -84,17 +69,15 @@ public class ApoliceController {
         return "redirect:/apolices";
     }
 
-    // Abre o formulário de edição
     @GetMapping("/{id}/editar")
     public String formularioEdicao(
             @PathVariable Long id,
             Model model) {
 
         Apolice apolice = apoliceService.buscarPorId(id);
-	System.out.println("Data início: " + apolice.getDataInicio());
-System.out.println("Data vencimento: " + apolice.getDataVencimento());
-       model.addAttribute("apolice", apolice);
-        model.addAttribute("locais", localRepository.findAll());
+
+        model.addAttribute("apolice", converterParaDTO(apolice));
+        model.addAttribute("locais", localService.listarTodos());
         model.addAttribute(
                 "acaoFormulario",
                 "/apolices/" + id + "/editar");
@@ -102,11 +85,10 @@ System.out.println("Data vencimento: " + apolice.getDataVencimento());
         return "apolices/formulario";
     }
 
-    // Salva as alterações de uma apólice
     @PostMapping("/{id}/editar")
     public String atualizar(
             @PathVariable Long id,
-            @ModelAttribute Apolice dadosFormulario,
+            @ModelAttribute("apolice") ApoliceFormDTO dadosFormulario,
             RedirectAttributes redirectAttributes) {
 
         apoliceService.atualizar(id, dadosFormulario);
@@ -118,7 +100,6 @@ System.out.println("Data vencimento: " + apolice.getDataVencimento());
         return "redirect:/apolices";
     }
 
-    // Exclui uma apólice
     @PostMapping("/{id}/excluir")
     public String excluir(
             @PathVariable Long id,
@@ -131,5 +112,31 @@ System.out.println("Data vencimento: " + apolice.getDataVencimento());
                 "Apólice excluída com sucesso!");
 
         return "redirect:/apolices";
+    }
+
+    private ApoliceFormDTO converterParaDTO(Apolice apolice) {
+
+        ApoliceFormDTO formulario = new ApoliceFormDTO();
+
+        formulario.setDescricao(apolice.getDescricao());
+        formulario.setAnoModelo(apolice.getAnoModelo());
+        formulario.setIdentificador(apolice.getIdentificador());
+        formulario.setDataInicio(apolice.getDataInicio());
+        formulario.setDataVencimento(apolice.getDataVencimento());
+        formulario.setNumeroApolice(apolice.getNumeroApolice());
+        formulario.setSeguradora(apolice.getSeguradora());
+        formulario.setCorretor(apolice.getCorretor());
+        formulario.setValorPremio(apolice.getValorPremio());
+        formulario.setValorFranquia(apolice.getValorFranquia());
+        formulario.setLmi(apolice.getLmi());
+        formulario.setParcelas(apolice.getParcelas());
+        formulario.setValorParcela(apolice.getValorParcela());
+        formulario.setComissao(apolice.getComissao());
+
+        if (apolice.getLocal() != null) {
+            formulario.setLocalId(apolice.getLocal().getId());
+        }
+
+        return formulario;
     }
 }

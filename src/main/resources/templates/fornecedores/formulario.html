@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title
-        th:text="${fornecedor.id == null ? 'Novo Fornecedor | Olinda Hotel & Eventos' : 'Editar Fornecedor | Olinda Hotel & Eventos'}">
+        th:text="${acaoFormulario == '/fornecedores' ? 'Novo Fornecedor | Olinda Hotel & Eventos' : 'Editar Fornecedor | Olinda Hotel & Eventos'}">
         Fornecedor | Olinda Hotel & Eventos
     </title>
 
@@ -82,7 +82,7 @@
                     <i class="fa-solid fa-truck-field mr-1"></i> Módulo de Parceiros
                 </span>
                 <h1 class="text-2xl sm:text-3xl font-bold text-brand-900 font-['Cormorant_Garamond']"
-                    th:text="${fornecedor.id == null} ? 'Novo Fornecedor' : 'Editar Fornecedor'">
+                    th:text="${acaoFormulario == '/fornecedores'} ? 'Novo Fornecedor' : 'Editar Fornecedor'">
                     Novo Fornecedor
                 </h1>
                 <p class="text-xs sm:text-sm text-gray-500 mt-1">

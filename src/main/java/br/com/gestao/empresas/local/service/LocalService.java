@@ -1,11 +1,14 @@
 package br.com.gestao.empresas.local.service;
 
+import br.com.gestao.empresas.local.dto.LocalFormDTO;
 import br.com.gestao.empresas.local.model.Local;
 import br.com.gestao.empresas.local.repository.LocalRepository;
+import br.com.gestao.empresas.conta.repository.ContaRepository;
+import br.com.gestao.empresas.apolice.repository.ApoliceRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-import br.com.gestao.empresas.conta.repository.ContaRepository;
 
 import java.util.List;
 
@@ -14,19 +17,34 @@ public class LocalService {
 
     private final LocalRepository localRepository;
     private final ContaRepository contaRepository;
+    private final ApoliceRepository apoliceRepository;
 
     public LocalService(
             LocalRepository localRepository,
-            ContaRepository contaRepository) {
+            ContaRepository contaRepository,
+            ApoliceRepository apoliceRepository) {
+
         this.localRepository = localRepository;
         this.contaRepository = contaRepository;
+        this.apoliceRepository = apoliceRepository;
     }
 
     public List<Local> listarTodos() {
         return localRepository.findAll();
     }
 
-    public Local cadastrar(Local local) {
+    public Local cadastrar(LocalFormDTO dadosFormulario) {
+
+        Local local = new Local();
+
+        local.setNome(dadosFormulario.getNome());
+        local.setTipo(dadosFormulario.getTipo());
+        local.setEndereco(dadosFormulario.getEndereco());
+        local.setAtivo(
+                dadosFormulario.getAtivo() != null
+                        ? dadosFormulario.getAtivo()
+                        : true);
+
         return localRepository.save(local);
     }
 
@@ -37,7 +55,8 @@ public class LocalService {
                         "Local não encontrado"));
     }
 
-    public Local atualizar(Long id, Local dadosFormulario) {
+    public Local atualizar(Long id, LocalFormDTO dadosFormulario) {
+
         Local local = buscarPorId(id);
 
         local.setNome(dadosFormulario.getNome());
@@ -48,14 +67,18 @@ public class LocalService {
     }
 
     public boolean excluir(Long id) {
+
         Local local = buscarPorId(id);
 
-        if (!contaRepository.findByLocalId(id).isEmpty()) {
+        boolean possuiContas = contaRepository.existsByLocalId(id);
+        boolean possuiApolices = apoliceRepository.existsByLocalId(id);
+
+        if (possuiContas || possuiApolices) {
             return false;
         }
 
         localRepository.delete(local);
+
         return true;
     }
-
 }

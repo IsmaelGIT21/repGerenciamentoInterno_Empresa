@@ -9,17 +9,17 @@ import java.util.List;
 
 public interface ApoliceRepository extends JpaRepository<Apolice, Long> {
 
-    List<Apolice> findByLocalId(Long localId);
+        List<Apolice> findByLocalId(Long localId);
 
-    boolean existsByNumeroApoliceIgnoreCaseAndSeguradoraIgnoreCase(
-            String numeroApolice,
-            String seguradora
-    );
+        boolean existsByLocalId(Long localId);
 
-    boolean existsByIdentificadorIgnoreCaseAndSeguradoraIgnoreCaseAndDataInicioAndDataVencimento(
-            String identificador,
-            String seguradora,
-            LocalDate dataInicio,
-            LocalDate dataVencimento
-    );
+        boolean existsByNumeroApoliceIgnoreCaseAndSeguradoraIgnoreCase(
+                        String numeroApolice,
+                        String seguradora);
+
+        boolean existsByIdentificadorIgnoreCaseAndSeguradoraIgnoreCaseAndDataInicioAndDataVencimento(
+                        String identificador,
+                        String seguradora,
+                        LocalDate dataInicio,
+                        LocalDate dataVencimento);
 }

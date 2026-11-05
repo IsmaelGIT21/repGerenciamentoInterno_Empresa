@@ -12,6 +12,8 @@ public interface ContaRepository extends JpaRepository<Conta, Long> {
 
         List<Conta> findByLocalId(Long localId);
 
+        boolean existsByLocalId(Long localId);
+
         long countByStatus(String status);
 
         @Query("SELECT COALESCE(SUM(c.valor), 0) FROM Conta c WHERE c.status = :status")

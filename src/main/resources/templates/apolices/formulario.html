@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title
-        th:text="${apolice.id == null ? 'Nova Apólice | Olinda Hotel & Eventos' : 'Editar Apólice | Olinda Hotel & Eventos'}">
+        th:text="${acaoFormulario == '/apolices' ? 'Nova Apólice | Olinda Hotel & Eventos' : 'Editar Apólice | Olinda Hotel & Eventos'}">
         Apólice | Olinda Hotel & Eventos
     </title>
 
@@ -83,7 +83,7 @@
                     <i class="fa-solid fa-shield-halved mr-1"></i> Gestão de Apólices
                 </span>
                 <h1 class="text-2xl sm:text-3xl font-bold text-brand-900 font-['Cormorant_Garamond']"
-                    th:text="${apolice.id == null} ? 'Nova Apólice' : 'Editar Apólice'">
+                    th:text="${acaoFormulario == '/apolices' ? 'Nova Apólice' : 'Editar Apólice'}">
                     Nova Apólice
                 </h1>
                 <p class="text-xs sm:text-sm text-gray-500 mt-1">
@@ -293,7 +293,7 @@
                         <label for="local" class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
                             Local / Unidade
                         </label>
-                        <select id="local" th:field="*{local.id}"
+                        <select id="local" th:field="*{localId}"
                             class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 bg-gray-50/50 focus:ring-2 focus:ring-brand-900 focus:border-brand-900 focus:outline-none">
                             <option value="">Sem vínculo com local</option>
                             <option th:each="local : ${locais}" th:value="${local.id}" th:text="${local.nome}">

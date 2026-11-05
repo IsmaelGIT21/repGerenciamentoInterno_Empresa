@@ -1,7 +1,9 @@
 package br.com.gestao.empresas.fornecedor.service;
 
+import br.com.gestao.empresas.fornecedor.dto.FornecedorFormDTO;
 import br.com.gestao.empresas.fornecedor.model.Fornecedor;
 import br.com.gestao.empresas.fornecedor.repository.FornecedorRepository;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,17 +25,18 @@ public class FornecedorService {
     }
 
     @Transactional
-    public Fornecedor cadastrar(Fornecedor fornecedor) {
+    public Fornecedor cadastrar(FornecedorFormDTO dadosFormulario) {
 
-        validarNome(fornecedor.getNome());
+        validarNome(dadosFormulario.getNome());
 
-        String nome = fornecedor.getNome().trim();
+        String nome = dadosFormulario.getNome().trim();
 
         if (fornecedorRepository.existsByNomeIgnoreCase(nome)) {
             throw new IllegalArgumentException(
                     "Já existe um fornecedor cadastrado com esse nome.");
         }
 
+        Fornecedor fornecedor = new Fornecedor();
         fornecedor.setNome(nome);
         fornecedor.setAtivo(true);
 
@@ -48,7 +51,7 @@ public class FornecedorService {
     }
 
     @Transactional
-    public Fornecedor atualizar(Long id, Fornecedor dadosFormulario) {
+    public Fornecedor atualizar(Long id, FornecedorFormDTO dadosFormulario) {
 
         Fornecedor fornecedor = buscarPorId(id);
 

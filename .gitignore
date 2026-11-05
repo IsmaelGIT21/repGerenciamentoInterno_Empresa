@@ -40,3 +40,4 @@ build/
 # Arquivos de log
 logs/
 *.log
+.env.local

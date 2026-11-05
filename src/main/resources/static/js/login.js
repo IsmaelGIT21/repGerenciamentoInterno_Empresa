@@ -20,13 +20,17 @@ tailwind.config = {
     }
 };
 
-
 document.addEventListener("DOMContentLoaded", function () {
     const passwordInput = document.getElementById("password");
     const toggleButton = document.getElementById("togglePassword");
 
+    if (!passwordInput || !toggleButton) {
+        return;
+    }
+
     toggleButton.addEventListener("click", function () {
         const mostrarSenha = passwordInput.type === "password";
+
         passwordInput.type = mostrarSenha ? "text" : "password";
         toggleButton.textContent = mostrarSenha ? "Ocultar" : "Mostrar";
     });
